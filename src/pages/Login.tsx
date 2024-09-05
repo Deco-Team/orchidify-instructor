@@ -5,7 +5,7 @@ export default function Login() {
   const { accessToken, login } = useAuth()
 
   if (accessToken) {
-    return <Navigate to='/' replace={true} />
+    return <Navigate to='/home' replace={true} />
   }
 
   const handleClick = () => {

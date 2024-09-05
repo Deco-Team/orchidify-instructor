@@ -1,18 +1,23 @@
+import Courses from '~/pages/Courses'
 import Home from '~/pages/Home'
 import Login from '~/pages/Login'
 import Logout from '~/pages/Logout'
 
 export const publicRoute = {
   login: {
-    path: '/login',
+    path: '/',
     component: Login
   }
 }
 
 export const protectedRoute = {
   home: {
-    path: '/',
+    path: '/home',
     component: Home
+  },
+  course: {
+    path: '/courses',
+    component: Courses
   },
   logout: {
     path: '/logout',
