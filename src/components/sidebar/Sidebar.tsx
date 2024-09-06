@@ -1,5 +1,5 @@
 import { DrawerHeader, Logo, LogoWrapper, StyledDrawer } from './Sidebar.styled'
-import { Button, Divider, Typography } from '@mui/material'
+import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import OptionList from './OptionList'
 import { Logout } from '@mui/icons-material'
 
@@ -24,23 +24,38 @@ const Sidebar = ({ open, drawerWidth }: SidebarProps) => {
       </DrawerHeader>
       <Divider />
       <OptionList open={open} />
-      <Button
-        endIcon={<Logout />}
-        sx={{
-          width: '300px',
-          color: '#ff022399',
-          position: 'fixed',
-          bottom: 10,
-          textTransform: 'none',
-          fontFamily: 'inherit',
-          alignSelf: 'center',
-          ':hover': { backgroundColor: 'none' },
-          justifyContent: 'space-around'
-        }}
-        // onClick={logout}
-      >
-        Đăng xuất
-      </Button>
+      <List>
+        <ListItem
+          disablePadding
+          sx={{
+            display: 'block'
+          }}
+        >
+          <ListItemButton
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? 'initial' : 'center',
+              px: 2.5
+            }}
+            // onClick={logout}
+          >
+            <ListItemText
+              primary={'Đăng xuất'}
+              primaryTypographyProps={{ fontWeight: 500, color: '#F66868' }}
+              sx={{ opacity: open ? 1 : 0 }}
+            />
+            <ListItemIcon
+              sx={{
+                minWidth: 24,
+                mr: open ? 3 : 'auto',
+                justifyContent: 'center'
+              }}
+            >
+              <Logout sx={{ color: '#F66868' }} />
+            </ListItemIcon>
+          </ListItemButton>
+        </ListItem>
+      </List>
     </StyledDrawer>
   )
 }

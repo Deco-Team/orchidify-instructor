@@ -10,7 +10,7 @@ export default function ProtectedRoute({ Component }: ProtectedRouteProps) {
   const { accessToken } = useAuth()
 
   if (!accessToken) {
-    return <Navigate to='/login' replace={true} />
+    return <Navigate to='/' replace={true} />
   }
 
   return (
