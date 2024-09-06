@@ -2,6 +2,9 @@ import { DrawerHeader, Logo, LogoWrapper, StyledDrawer } from './Sidebar.styled'
 import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import OptionList from './OptionList'
 import { Logout } from '@mui/icons-material'
+import { useState } from 'react'
+import useAuth from '~/auth/useAuth'
+import LogoutConfirmation from '../modal/LogoutConfirmation'
 
 interface SidebarProps {
   open: boolean
@@ -9,6 +12,13 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ open, drawerWidth }: SidebarProps) => {
+  const [openLogout, setOpenLogout] = useState(false)
+  const { logout } = useAuth()
+
+  const handleLogoutOpen = () => {
+    setOpenLogout(!openLogout)
+  }
+
   return (
     <StyledDrawer
       variant='permanent'
@@ -37,7 +47,7 @@ const Sidebar = ({ open, drawerWidth }: SidebarProps) => {
               justifyContent: open ? 'initial' : 'center',
               px: 2.5
             }}
-            // onClick={logout}
+            onClick={handleLogoutOpen}
           >
             <ListItemText
               primary={'Đăng xuất'}
@@ -56,6 +66,7 @@ const Sidebar = ({ open, drawerWidth }: SidebarProps) => {
           </ListItemButton>
         </ListItem>
       </List>
+      <LogoutConfirmation open={openLogout} handleClose={handleLogoutOpen} logout={logout} />
     </StyledDrawer>
   )
 }
