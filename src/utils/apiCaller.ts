@@ -31,18 +31,17 @@ export const callApi = async (
   } catch (err) {
     error = err as AxiosError
 
+    console.error(`API ERROR: ${error.message}`)
+
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
-      console.error(`API ERROR: ${error.response.data}`)
+      console.error(error.response)
     } else if (error.request) {
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
-      console.error(`API ERROR: ${error.request}`)
-    } else {
-      // Something happened in setting up the request that triggered an Error
-      console.error(`API ERROR: ${error.message}`)
+      console.error(error.request)
     }
   }
 

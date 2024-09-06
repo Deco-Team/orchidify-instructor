@@ -1,5 +1,8 @@
 import { decodeJwt } from 'jose'
 import { createContext, ReactNode, useMemo, useState } from 'react'
+import { LoginResponseDto } from '~/data/auth.dto'
+import { ErrorResponseDto } from '~/data/error.dto'
+import { callApi } from '~/utils/apiCaller'
 
 interface IUserTokenPayload {
   name?: string
@@ -13,7 +16,7 @@ interface IAuthContextValue {
   userTokenPayload: IUserTokenPayload | null
   accessToken: string | null
   refreshToken: string | null
-  login: (accessToken: string, refreshToken: string) => void
+  login: (email: string, password: string) => Promise<ErrorResponseDto | null>
   logout: () => void
 }
 
@@ -21,7 +24,7 @@ const defaultContextValue: IAuthContextValue = {
   accessToken: null,
   refreshToken: null,
   userTokenPayload: null,
-  login: () => {},
+  login: () => Promise.resolve(null),
   logout: () => {}
 }
 
@@ -39,11 +42,20 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     return null
   }, [accessToken])
 
-  const login = (accessToken: string, refreshToken: string) => {
-    localStorage.setItem('accessToken', accessToken)
-    localStorage.setItem('refreshToken', refreshToken)
-    setAccessToken(accessToken)
-    setRefreshToken(refreshToken)
+  const login = async (email: string, password: string) => {
+    const { response, error } = await callApi('/auth/instructor/login', 'POST', {}, {}, { email, password })
+    if (response) {
+      const { accessToken, refreshToken } = response.data.data as LoginResponseDto
+      localStorage.setItem('accessToken', accessToken)
+      localStorage.setItem('refreshToken', refreshToken)
+      setAccessToken(accessToken)
+      setRefreshToken(refreshToken)
+      return null
+    } else if (error!.response) {
+      return error!.response.data as ErrorResponseDto
+    } else {
+      return { message: 'Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại sau.' } as ErrorResponseDto
+    }
   }
 
   const logout = () => {
