@@ -5,10 +5,10 @@ import { Route, Routes } from 'react-router-dom'
 import AuthProvider from './auth/AuthProvider'
 import { publicRoute, protectedRoute } from './routes/routes'
 import ProtectedRoute from './routes/ProtectedRoute'
-import '@fontsource/inter/300.css'
-import '@fontsource/inter/400.css'
-import '@fontsource/inter/500.css'
-import '@fontsource/inter/700.css'
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
 
 function App() {
   return (
