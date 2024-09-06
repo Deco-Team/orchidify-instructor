@@ -32,7 +32,7 @@ const ControlledSelect = <TFieldValues extends FieldValues>({
           </MenuItem>
         ))}
       </Select>
-      {error ? <FormHelperText>{error.message}</FormHelperText> : null}
+      {error ? <FormHelperText error>{error.message}</FormHelperText> : null}
     </>
   )
 }
