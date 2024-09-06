@@ -14,9 +14,8 @@
   "dependencies": {
     "@emotion/react": "11.13",
     "@emotion/styled": "11.13",
-    "@fontsource/inter": "5",
-    "@fontsource/roboto": "^5.0.14",
-    "@mui/icons-material": "5.16.7",
+    "@fontsource/roboto": "5",
+    "@mui/icons-material": "5.16",
     "@mui/material": "5",
     "axios": "1.7",
     "jose": "5",

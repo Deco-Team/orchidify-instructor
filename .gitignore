@@ -23,10 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# Lock file
-yarn.lock
-package-lock.json
-
 #env
 
 .env
