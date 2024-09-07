@@ -15,7 +15,6 @@
     "@emotion/react": "11.13",
     "@emotion/styled": "11.13",
     "@fontsource/roboto": "5",
-    "@mui/icons-material": "5.16",
     "@hookform/resolvers": "3.9",
     "@mui/icons-material": "5.16",
     "@mui/material": "5",

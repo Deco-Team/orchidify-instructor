@@ -12,8 +12,8 @@ export const publicRoute = {
 }
 
 export const protectedRoute = {
-  home: {
-    path: '/home',
+  dashboard: {
+    path: '/dashboard',
     Component: Home
   },
   course: {

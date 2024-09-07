@@ -4,6 +4,8 @@ import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Ty
 import OptionList from './OptionList'
 import { Logout } from '@mui/icons-material'
 import Loading from '../loading/Loading'
+import logo from '~/assets/logo.jpg'
+import { protectedRoute } from '~/routes/routes'
 
 const LogoutConfirmation = lazy(() => import('./LogoutConfirmation'))
 
@@ -30,9 +32,9 @@ const Sidebar = ({ open, drawerWidth }: SidebarProps) => {
       drawerWidth={drawerWidth}
       PaperProps={{ sx: { backgroundColor: '#F7F7FA' } }}
     >
-      <DrawerHeader to='/home'>
+      <DrawerHeader to={protectedRoute.dashboard.path}>
         <LogoWrapper>
-          <Logo src='src\assets\logo.jpg' alt='logo' />
+          <Logo src={logo} alt='logo' />
           <Typography variant='h6'>Orchidify</Typography>
         </LogoWrapper>
       </DrawerHeader>

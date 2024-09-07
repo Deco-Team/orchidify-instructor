@@ -2,6 +2,7 @@ import { Badge, Box, IconButton, Toolbar } from '@mui/material'
 import { StyledAppBar } from './AppBar.styled'
 import { Menu, Notifications, AccountCircle } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
+import { protectedRoute } from '~/routes/routes'
 
 interface AppBarProps {
   open: boolean
@@ -38,7 +39,7 @@ const AppBar = ({ open, drawerWidth, handleDrawer }: AppBarProps) => {
               <Notifications sx={{ color: '#2EC4B6' }} />
             </Badge>
           </IconButton>
-          <IconButton size='large' edge='end' color='inherit' component={Link} to='/profile'>
+          <IconButton size='large' edge='end' color='inherit' component={Link} to={protectedRoute.dashboard.path}>
             <AccountCircle sx={{ color: '#2EC4B6' }} />
           </IconButton>
         </Box>

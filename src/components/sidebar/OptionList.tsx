@@ -16,7 +16,7 @@ const OptionList = ({ open }: OptionListProps) => {
 
   const location = useLocation()
   useEffect(() => {
-    const option = options.find((option) => location.pathname.includes(`/${option.link}`))
+    const option = options.find((option) => location.pathname.includes(option.link))
     if (option) {
       setButton(option.id)
     } else {
@@ -46,7 +46,7 @@ const OptionList = ({ open }: OptionListProps) => {
               }}
               onClick={() => handleClick(option.id)}
               component={Link}
-              to={`/${option.link}`}
+              to={option.link}
             >
               <ListItemIcon
                 sx={{
