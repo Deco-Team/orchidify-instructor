@@ -4,12 +4,13 @@ import useAuth from '~/auth/useAuth'
 import loginImage from '~/assets/login.jpg'
 import LoginForm from './components/LoginForm'
 import { Heading, StyledBox, StyledContainer, StyledPaper, SubHeading } from './Login.styled'
+import { protectedRoute } from '~/routes/routes'
 
 export default function Login() {
   const { accessToken } = useAuth()
 
   if (accessToken) {
-    return <Navigate to='/home' replace={true} />
+    return <Navigate to={protectedRoute.dashboard.path} replace={true} />
   }
 
   return (

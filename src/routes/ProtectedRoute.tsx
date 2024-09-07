@@ -1,21 +1,19 @@
+import { ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
 import useAuth from '~/auth/useAuth'
 import Layout from '~/components/layout/Layout'
+import { publicRoute } from './routes'
 
 interface ProtectedRouteProps {
-  Component: () => JSX.Element
+  element: ReactNode
 }
 
-export default function ProtectedRoute({ Component }: ProtectedRouteProps) {
+export default function ProtectedRoute({ element }: ProtectedRouteProps) {
   const { accessToken } = useAuth()
 
   if (!accessToken) {
-    return <Navigate to='/' replace={true} />
+    return <Navigate to={publicRoute.login.path} replace={true} />
   }
 
-  return (
-    <Layout>
-      <Component />
-    </Layout>
-  )
+  return <Layout>{element}</Layout>
 }

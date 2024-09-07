@@ -2,6 +2,7 @@ import { decodeJwt } from 'jose'
 import { createContext, ReactNode, useMemo, useState } from 'react'
 import { LoginResponseDto } from '~/data/auth.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
+import { APP_MESSAGE } from '~/global/app-message'
 import { callApi } from '~/utils/apiCaller'
 
 interface IUserTokenPayload {
@@ -54,11 +55,12 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     } else if (error!.response) {
       return error!.response.data as ErrorResponseDto
     } else {
-      return { message: 'Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại sau.' } as ErrorResponseDto
+      return { message: APP_MESSAGE.LOGIN_FAIL } as ErrorResponseDto
     }
   }
 
   const logout = () => {
+    callApi('/auth/instructor/logout', 'POST', {}, {}, { refreshToken })
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
     setAccessToken(null)

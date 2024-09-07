@@ -1,7 +1,13 @@
+import { lazy, Suspense, useState } from 'react'
 import { DrawerHeader, Logo, LogoWrapper, StyledDrawer } from './Sidebar.styled'
 import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import OptionList from './OptionList'
 import { Logout } from '@mui/icons-material'
+import Loading from '../loading/Loading'
+import logo from '~/assets/logo.jpg'
+import { protectedRoute } from '~/routes/routes'
+
+const LogoutConfirmation = lazy(() => import('./LogoutConfirmation'))
 
 interface SidebarProps {
   open: boolean
@@ -9,6 +15,16 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ open, drawerWidth }: SidebarProps) => {
+  const [openDialog, setOpenDialog] = useState<boolean>(false)
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true)
+  }
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false)
+  }
+
   return (
     <StyledDrawer
       variant='permanent'
@@ -16,9 +32,9 @@ const Sidebar = ({ open, drawerWidth }: SidebarProps) => {
       drawerWidth={drawerWidth}
       PaperProps={{ sx: { backgroundColor: '#F7F7FA' } }}
     >
-      <DrawerHeader to='/home'>
+      <DrawerHeader to={protectedRoute.dashboard.path}>
         <LogoWrapper>
-          <Logo src='src\assets\logo.jpg' alt='logo' />
+          <Logo src={logo} alt='logo' />
           <Typography variant='h6'>Orchidify</Typography>
         </LogoWrapper>
       </DrawerHeader>
@@ -37,10 +53,10 @@ const Sidebar = ({ open, drawerWidth }: SidebarProps) => {
               justifyContent: open ? 'initial' : 'center',
               px: 2.5
             }}
-            // onClick={logout}
+            onClick={handleOpenDialog}
           >
             <ListItemText
-              primary={'Đăng xuất'}
+              primary='Đăng xuất'
               primaryTypographyProps={{ fontWeight: 500, color: '#F66868' }}
               sx={{ opacity: open ? 1 : 0 }}
             />
@@ -56,6 +72,9 @@ const Sidebar = ({ open, drawerWidth }: SidebarProps) => {
           </ListItemButton>
         </ListItem>
       </List>
+      <Suspense fallback={<Loading />}>
+        <LogoutConfirmation open={openDialog} handleClose={handleCloseDialog} />
+      </Suspense>
     </StyledDrawer>
   )
 }

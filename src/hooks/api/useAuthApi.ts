@@ -1,8 +1,7 @@
-import { ErrorResponseDto } from '~/data/error.dto'
 import useAuth from '~/auth/useAuth'
 import { RefreshTokenResponseDto } from '~/data/auth.dto'
 import { callApi } from '~/utils/apiCaller'
-import { notifyError } from '~/utils/toastify'
+import { AxiosError } from 'axios'
 
 const handleRefreshToken = async (refreshToken: string): Promise<RefreshTokenResponseDto | null> => {
   const { response } = await callApi('/auth/refresh', 'POST', {
@@ -18,7 +17,7 @@ const handleRefreshToken = async (refreshToken: string): Promise<RefreshTokenRes
 
 export const useAuthApi = <T>() => {
   let data: T | null = null
-  let error: ErrorResponseDto | null = null
+  let error: AxiosError | null = null
 
   const { accessToken, refreshToken, logout } = useAuth()
 
@@ -49,6 +48,7 @@ export const useAuthApi = <T>() => {
 
     if (apiResponse) {
       data = apiResponse.data.data as T
+      return
     }
 
     if (apiError!.response?.status === 401) {
@@ -59,6 +59,8 @@ export const useAuthApi = <T>() => {
 
       const refreshTokenResponse = await handleRefreshToken(refreshToken)
       if (refreshTokenResponse) {
+        localStorage.setItem('accessToken', refreshTokenResponse.accessToken)
+        localStorage.setItem('refreshToken', refreshTokenResponse.refreshToken)
         const { response: newApiResponse, error: newApiError } = await callApi(
           endpoint,
           method,
@@ -74,14 +76,9 @@ export const useAuthApi = <T>() => {
 
         if (newApiResponse) {
           data = newApiResponse.data.data as T
+          return
         }
-
-        if (newApiError!.response) {
-          error = newApiError!.response.data as ErrorResponseDto
-        }
-
-        notifyError('Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại sau.')
-
+        error = newApiError
         return
       }
 
@@ -89,11 +86,7 @@ export const useAuthApi = <T>() => {
       return
     }
 
-    if (apiError!.response) {
-      error = apiError!.response.data as ErrorResponseDto
-    }
-
-    notifyError('Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại sau.')
+    error = apiError
   }
 
   return { data, error, callAuthApi }
