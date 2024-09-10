@@ -39,7 +39,7 @@ const AppBar = ({ open, drawerWidth, handleDrawer }: AppBarProps) => {
               <Notifications sx={{ color: '#2EC4B6' }} />
             </Badge>
           </IconButton>
-          <IconButton size='large' edge='end' color='inherit' component={Link} to={protectedRoute.dashboard.path}>
+          <IconButton size='large' edge='end' color='inherit' component={Link} to={protectedRoute.profile.path}>
             <AccountCircle sx={{ color: '#2EC4B6' }} />
           </IconButton>
         </Box>
