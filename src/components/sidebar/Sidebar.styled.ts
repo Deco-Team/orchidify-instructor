@@ -11,8 +11,7 @@ export const LogoWrapper = styled.div`
 
 export const Logo = styled.img`
   border-radius: 100px;
-  width: 4rem;
-  height: 2rem;
+  height: 3rem;
   object-fit: cover;
   margin: 0 1rem;
 `

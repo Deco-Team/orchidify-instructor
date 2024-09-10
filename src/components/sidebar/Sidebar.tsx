@@ -4,7 +4,7 @@ import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Ty
 import OptionList from './OptionList'
 import { Logout } from '@mui/icons-material'
 import Loading from '../loading/Loading'
-import logo from '~/assets/logo.jpg'
+import logo from '~/assets/logo.png'
 import { protectedRoute } from '~/routes/routes'
 
 const LogoutConfirmation = lazy(() => import('./LogoutConfirmation'))
