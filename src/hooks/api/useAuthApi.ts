@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import useAuth from '~/auth/useAuth'
 import { RefreshTokenResponseDto } from '~/data/auth.dto'
 import { callApi } from '~/utils/apiCaller'
@@ -16,8 +17,8 @@ const handleRefreshToken = async (refreshToken: string): Promise<RefreshTokenRes
 }
 
 export const useAuthApi = <T>() => {
-  let data: T | null = null
-  let error: AxiosError | null = null
+  const [data, setData] = useState<T | null>(null)
+  const [error, setError] = useState<AxiosError | null>(null)
 
   const { accessToken, refreshToken, logout } = useAuth()
 
@@ -47,7 +48,7 @@ export const useAuthApi = <T>() => {
     )
 
     if (apiResponse) {
-      data = apiResponse.data.data as T
+      setData(apiResponse.data.data as T)
       return
     }
 
@@ -75,10 +76,11 @@ export const useAuthApi = <T>() => {
         )
 
         if (newApiResponse) {
-          data = newApiResponse.data.data as T
+          setData(newApiResponse.data.data as T)
           return
         }
-        error = newApiError
+
+        setError(newApiError)
         return
       }
 
@@ -86,7 +88,7 @@ export const useAuthApi = <T>() => {
       return
     }
 
-    error = apiError
+    setError(apiError)
   }
 
   return { data, error, callAuthApi }
