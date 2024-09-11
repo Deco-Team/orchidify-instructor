@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box } from '@mui/material'
+import { Box, Avatar as MuiAvatar } from '@mui/material'
 
 export const StyledContainer = styled(Box)`
   display: flex;
@@ -20,10 +20,10 @@ export const HeaderWrapper = styled(Box)`
   align-items: center;
 `
 
-export const Avatar = styled.img`
+export const Avatar = styled(MuiAvatar)`
   border-radius: 100px;
   height: 160px;
-  aspect-ratio: 1/1;
+  width: 160px;
   object-fit: cover;
 `
 
