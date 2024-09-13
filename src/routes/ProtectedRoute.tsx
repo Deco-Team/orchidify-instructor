@@ -9,9 +9,9 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ element }: ProtectedRouteProps) {
-  const { accessToken } = useAuth()
+  const { userTokenPayload } = useAuth()
 
-  if (!accessToken) {
+  if (!userTokenPayload) {
     return <Navigate to={publicRoute.login.path} replace={true} />
   }
 

@@ -7,9 +7,9 @@ import { Heading, StyledBox, StyledContainer, StyledPaper, SubHeading } from './
 import { protectedRoute } from '~/routes/routes'
 
 export default function Login() {
-  const { accessToken } = useAuth()
+  const { userTokenPayload } = useAuth()
 
-  if (accessToken) {
+  if (userTokenPayload) {
     return <Navigate to={protectedRoute.dashboard.path} replace={true} />
   }
 
