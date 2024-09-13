@@ -3,3 +3,5 @@ export type ErrorResponseDto = {
   message: string
   data: unknown
 }
+
+export class TokenError extends Error {}
