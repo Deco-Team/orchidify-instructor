@@ -16,20 +16,19 @@ export const callApi = async (
   headers: object = {},
   params: object = {},
   body: object = {}
-): Promise<{ response: AxiosResponse | null; error: AxiosError | null }> => {
-  let response: AxiosResponse | null = null
-  let error: AxiosError | null = null
-
+): Promise<{ response: AxiosResponse; error: null } | { response: null; error: AxiosError }> => {
   try {
-    response = await axios({
+    const response = await axios({
       url: import.meta.env.VITE_API_URL + endpoint,
       method: method,
       headers: headers,
       params: params,
       data: body
     })
+
+    return { response, error: null }
   } catch (err) {
-    error = err as AxiosError
+    const error = err as AxiosError
 
     console.error(`API ERROR: ${error.message}`)
 
@@ -43,7 +42,7 @@ export const callApi = async (
       // http.ClientRequest in node.js
       console.error(error.request)
     }
-  }
 
-  return { response, error }
+    return { response: null, error }
+  }
 }
