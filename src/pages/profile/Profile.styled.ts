@@ -4,7 +4,7 @@ import { Box, Avatar as MuiAvatar } from '@mui/material'
 export const StyledContainer = styled(Box)`
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1.25rem;
 `
 
 export const TitleWrapper = styled(Box)`
