@@ -11,10 +11,10 @@ const LogoutConfirmation = lazy(() => import('./LogoutConfirmation'))
 
 interface SidebarProps {
   open: boolean
-  drawerWidth: number
+  drawerwidth: number
 }
 
-const Sidebar = ({ open, drawerWidth }: SidebarProps) => {
+const Sidebar = ({ open, drawerwidth }: SidebarProps) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
 
   const handleOpenDialog = () => {
@@ -29,7 +29,7 @@ const Sidebar = ({ open, drawerWidth }: SidebarProps) => {
     <StyledDrawer
       variant='permanent'
       open={open}
-      drawerWidth={drawerWidth}
+      drawerwidth={drawerwidth}
       PaperProps={{ sx: { backgroundColor: '#F7F7FA' } }}
     >
       <DrawerHeader to={protectedRoute.dashboard.path}>
