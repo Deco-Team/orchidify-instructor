@@ -70,7 +70,7 @@ const LoginForm = () => {
         label='Email'
         placeholder='Nhập địa chỉ email'
         fullWidth
-        sx={{ marginBottom: '0.7rem' }}
+        sx={{ marginBottom: '0.7rem', gap: '0.7rem' }}
       />
       <ControlledOutlinedInput
         controller={{ name: 'password', control: control }}
@@ -90,7 +90,7 @@ const LoginForm = () => {
         label='Mật khẩu'
         placeholder='Nhập mật khẩu'
         fullWidth
-        sx={{ marginBottom: '0.7rem' }}
+        sx={{ marginBottom: '0.7rem', gap: '0.7rem' }}
       />
       <Button disabled={isSubmitting} size='large' type='submit' fullWidth sx={{ marginTop: '0.7rem' }}>
         Đăng nhập

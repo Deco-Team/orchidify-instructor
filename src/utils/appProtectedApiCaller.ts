@@ -18,7 +18,7 @@ const handleRefreshToken = async () => {
   if (!refreshToken) throw new Error('refresh token does not exist')
 
   try {
-    const response = await axios(import.meta.env.VITE_API_URL + '/auth/management/refresh', {
+    const response = await axios(import.meta.env.VITE_API_URL + '/auth/instructor/refresh', {
       method: 'POST',
       headers: { Authorization: `Bearer ${refreshToken}` }
     })

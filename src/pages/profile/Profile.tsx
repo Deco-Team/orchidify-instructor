@@ -55,7 +55,7 @@ const Profile = () => {
         <Typography variant='h4' fontWeight='bold'>
           Trang cá nhân
         </Typography>
-        <Button component={Link} to={protectedRoute.profile.path} color='warning'>
+        <Button component={Link} to={protectedRoute.editProfile.path} color='warning'>
           Cập nhật
         </Button>
       </TitleWrapper>
@@ -92,6 +92,7 @@ const Profile = () => {
             marginLeft={'192px'}
             color={'inherit'}
             fontWeight={500}
+            sx={{}}
           >
             Chứng chỉ của tôi
           </MuiLink>
