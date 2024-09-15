@@ -11,8 +11,7 @@ export const LogoWrapper = styled.div`
 
 export const Logo = styled.img`
   border-radius: 100px;
-  width: 4rem;
-  height: 2rem;
+  height: 3rem;
   object-fit: cover;
   margin: 0 1rem;
 `
@@ -28,16 +27,16 @@ export const DrawerHeader = muiStyled(Link)(({ theme }) => ({
 
 interface StyledDrawerProps extends MuiDrawerProps {
   open?: boolean
-  drawerWidth: number
+  drawerwidth: number
 }
 
 export const StyledDrawer = muiStyled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })<StyledDrawerProps>(({
   theme,
   open,
-  drawerWidth
+  drawerwidth
 }) => {
   const openedMixin = (theme: Theme): CSSObject => ({
-    width: drawerWidth,
+    width: drawerwidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
@@ -58,7 +57,7 @@ export const StyledDrawer = muiStyled(MuiDrawer, { shouldForwardProp: (prop) => 
   })
 
   return {
-    width: drawerWidth,
+    width: drawerwidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
     boxSizing: 'border-box',

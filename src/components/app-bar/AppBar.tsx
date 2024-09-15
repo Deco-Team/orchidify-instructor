@@ -6,17 +6,17 @@ import { protectedRoute } from '~/routes/routes'
 
 interface AppBarProps {
   open: boolean
-  drawerWidth: number
+  drawerwidth: number
   handleDrawer: () => void
 }
 
-const AppBar = ({ open, drawerWidth, handleDrawer }: AppBarProps) => {
+const AppBar = ({ open, drawerwidth, handleDrawer }: AppBarProps) => {
   return (
     <StyledAppBar
       position='fixed'
       elevation={0}
       open={open}
-      drawerWidth={drawerWidth}
+      drawerwidth={drawerwidth}
       sx={{ bgcolor: '#FFFFFF', borderBottom: '1px solid #0000001e' }}
     >
       <Toolbar>
@@ -39,7 +39,7 @@ const AppBar = ({ open, drawerWidth, handleDrawer }: AppBarProps) => {
               <Notifications sx={{ color: '#2EC4B6' }} />
             </Badge>
           </IconButton>
-          <IconButton size='large' edge='end' color='inherit' component={Link} to={protectedRoute.dashboard.path}>
+          <IconButton size='large' edge='end' color='inherit' component={Link} to={protectedRoute.profile.path}>
             <AccountCircle sx={{ color: '#2EC4B6' }} />
           </IconButton>
         </Box>

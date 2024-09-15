@@ -8,13 +8,16 @@ const theme = createTheme({
       contrastText: '#ffffff'
     },
     secondary: {
-      main: '#5b72ee'
+      main: '#5b72ee',
+      contrastText: '#ffffff'
     },
     info: {
-      main: '#aeaeb2'
+      main: '#aeaeb2',
+      contrastText: '#ffffff'
     },
     warning: {
-      main: '#f88C3D'
+      main: '#f88C3D',
+      contrastText: '#ffffff'
     },
     error: {
       main: '#f66868',
@@ -32,6 +35,20 @@ const theme = createTheme({
         },
         sizeMedium: {
           height: '36px'
+        }
+      }
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          height: '24px',
+          padding: '2px 8px',
+          borderRadius: '4px',
+          '& .MuiChip-label': {
+            fontSize: '14px',
+            fontWeight: 500,
+            padding: 0
+          }
         }
       }
     }

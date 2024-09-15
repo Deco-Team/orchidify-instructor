@@ -18,8 +18,8 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar open={open} drawerWidth={DRAWER_WIDTH} handleDrawer={handleDrawer} />
-      <Sidebar open={open} drawerWidth={DRAWER_WIDTH} />
+      <AppBar open={open} drawerwidth={DRAWER_WIDTH} handleDrawer={handleDrawer} />
+      <Sidebar open={open} drawerwidth={DRAWER_WIDTH} />
       <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 8 }}>
         {children}
       </Box>

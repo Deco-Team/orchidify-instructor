@@ -20,7 +20,7 @@ const OptionList = ({ open }: OptionListProps) => {
     if (option) {
       setButton(option.id)
     } else {
-      setButton(1)
+      setButton(0)
     }
   }, [location])
 
