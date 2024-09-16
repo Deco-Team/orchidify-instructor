@@ -5,5 +5,10 @@ export const APP_MESSAGE = {
   LOGIN_SUCCESS: 'Đăng nhập thành công',
   LOGIN_FAIL: 'Đăng nhập không thành công. Vui lòng thử lại',
   CONFIRM_ACTION: (action: string = '', object: string = '') => `Bạn có chắc chắn muốn ${action} ${object} không?`,
-  LOAD_DATA_FAILED: (data: string = '') => `Đã xảy ra lỗi khi tải ${data}. Vui lòng thử lại sau.`
+  LOAD_DATA_FAILED: (data: string = '') => `Đã xảy ra lỗi khi tải ${data}. Vui lòng thử lại sau.`,
+  INVALID_FILE_SIZE_OR_FORMAT: (format: string = '', size: string = '') =>
+    `Phương tiện phải có định dạng hỗ trợ (${format}) và kích thước không vượt quá ${size}`,
+  THERE_IS_NO_SEARCH_RESULT: 'Không tìm thấy kết quả mà bạn tìm kiếm.',
+  ACTION_DID_SUCCESSFULLY: (asset: string = '') => `${asset} thành công.`,
+  ACTION_DID_FAILED: (action: string = '') => `${action} không thành công. Vui lòng thử lại sau.`
 }

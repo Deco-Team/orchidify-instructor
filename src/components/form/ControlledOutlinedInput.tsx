@@ -18,10 +18,12 @@ const ControlledOutlinedInput = <TFieldValues extends FieldValues>({
   } = useController(controller)
 
   return (
-    <Box sx={sx}>
-      <InputLabel sx={{ marginBottom: '0.7rem', color: '#000000' }}>{label}</InputLabel>
-      <OutlinedInput error={!!error} {...field} {...props} />
-      {error ? <FormHelperText error>{error.message}</FormHelperText> : null}
+    <Box sx={{ ...sx, display: 'flex', flexDirection: 'column' }}>
+      <InputLabel sx={{ color: '#000000' }}>{label}</InputLabel>
+      <Box>
+        <OutlinedInput error={!!error} {...field} {...props} />
+        {error ? <FormHelperText error>{error.message}</FormHelperText> : null}
+      </Box>
     </Box>
   )
 }

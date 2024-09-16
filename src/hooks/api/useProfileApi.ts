@@ -3,6 +3,7 @@ import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 import { useCallback } from 'react'
 import { useProtectedApi } from './useProtectedApi'
+import { SuccessResponseDto } from '~/data/common.dto'
 
 const ROOT_ENDPOINT = '/instructors'
 
@@ -21,9 +22,28 @@ export const useProfileApi = () => {
 
     return {
       data: null,
-      error: { message: APP_MESSAGE.LOAD_DATA_FAILED('thông tin giảng viên') } as ErrorResponseDto
+      error: { message: APP_MESSAGE.LOAD_DATA_FAILED('trang cá nhân') } as ErrorResponseDto
     }
   }, [callAppProtectedApi])
 
-  return { getProfile }
+  const putProfile = useCallback(
+    async (instructor: InstructorDto) => {
+      const endpoint = `${ROOT_ENDPOINT}/profile`
+      const result = await callAppProtectedApi<SuccessResponseDto>(endpoint, 'PUT', {}, {}, instructor)
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Cập nhật trang cá nhân') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  return { getProfile, putProfile }
 }

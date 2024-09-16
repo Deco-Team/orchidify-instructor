@@ -27,6 +27,7 @@ interface AlertDialogProps {
   open: boolean
   handleConfirm: () => void
   handleCancel: () => void
+  isProcessing?: boolean
   confirmButtonText?: string
   confirmButtonColor?: ButtonProps['color']
   cancelButtonText?: string
@@ -38,6 +39,7 @@ const AlertDialog = ({
   open,
   handleConfirm,
   handleCancel,
+  isProcessing = false,
   confirmButtonText = 'Confirm',
   confirmButtonColor = 'primary',
   cancelButtonText = 'Cancel',
@@ -57,10 +59,10 @@ const AlertDialog = ({
         <DialogContentText id='alert-dialog-slide-description'>{description}</DialogContentText>
       </DialogContent>
       <DialogActions sx={{ padding: '1rem' }}>
-        <Button color={confirmButtonColor} onClick={handleConfirm}>
+        <Button disabled={isProcessing} color={confirmButtonColor} onClick={handleConfirm}>
           {confirmButtonText}
         </Button>
-        <Button variant='outlined' color='info' onClick={handleCancel}>
+        <Button disabled={isProcessing} variant='outlined' color='info' onClick={handleCancel}>
           {cancelButtonText}
         </Button>
       </DialogActions>
