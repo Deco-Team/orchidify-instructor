@@ -12,6 +12,7 @@ const ControlledSelect = <TFieldValues extends FieldValues>({
   controller,
   label,
   labelId,
+  placeholder,
   items,
   ...props
 }: ControlledSelectProps<TFieldValues> & SelectProps) => {
@@ -25,7 +26,8 @@ const ControlledSelect = <TFieldValues extends FieldValues>({
       <InputLabel id={labelId} sx={{ marginBottom: '0.7rem', color: '#000000' }}>
         {label}
       </InputLabel>
-      <Select labelId={labelId} error={!!error} {...field} {...props}>
+      <Select {...props} error={!!error} {...field} displayEmpty labelId={labelId}>
+        <MenuItem value=''>{placeholder}</MenuItem>
         {items.map((item) => (
           <MenuItem key={item.name} value={item.value}>
             {item.name}

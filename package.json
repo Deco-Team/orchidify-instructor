@@ -12,6 +12,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "1.13",
+    "@cloudinary/url-gen": "1.21",
     "@emotion/react": "11.13",
     "@emotion/styled": "11.13",
     "@fontsource/roboto": "5",
