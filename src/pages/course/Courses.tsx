@@ -97,6 +97,7 @@ export default function Courses() {
           onPaginationChange: setPagination,
           onSortingChange: setSorting,
           onColumnFiltersChange: setColumnFilters,
+          enableColumnResizing: true,
           muiTableBodyRowProps: ({ row }) => ({
             // onClick: () => navigate(`/garden-managers/${row.original._id}`),
             sx: {
