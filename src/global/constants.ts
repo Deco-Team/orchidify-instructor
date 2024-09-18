@@ -13,6 +13,12 @@ export enum CourseStatus {
   DELETED = 'DELETED'
 }
 
+export enum CourseLevel {
+  BASIC = 'BASIC',
+  INTERMEDIATE = 'INTERMEDIATE',
+  ADVANCED = 'ADVANCED'
+}
+
 export enum RequestStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
