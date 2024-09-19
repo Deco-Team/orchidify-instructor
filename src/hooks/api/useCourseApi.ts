@@ -2,7 +2,8 @@ import { useCallback } from 'react'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 import { useProtectedApi } from './useProtectedApi'
-import { CourseListResponseDto } from '~/data/course.dto'
+import { CourseDetailResponseDto, CourseListItemResponseDto } from '~/data/course.dto'
+import { ListResponseDto } from '~/data/common.dto'
 
 const ROOT_ENDPOINT = '/courses/instructor'
 
@@ -22,7 +23,7 @@ export const useCourseApi = () => {
       filters.forEach((filter) => {
         filtersFormat = Object.assign({ [filter.field]: filter.value }, filtersFormat)
       })
-      const result = await callAppProtectedApi<CourseListResponseDto>(
+      const result = await callAppProtectedApi<ListResponseDto<CourseListItemResponseDto>>(
         endpoint,
         'GET',
         {},
@@ -49,5 +50,24 @@ export const useCourseApi = () => {
     [callAppProtectedApi]
   )
 
-  return { getAllCourses }
+  const getCourseById = useCallback(
+    async (courseId: string) => {
+      const endpoint = `${ROOT_ENDPOINT}/${courseId}`
+      const result = await callAppProtectedApi<CourseDetailResponseDto>(endpoint, 'GET')
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết khóa học/combo khóa học') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  return { getAllCourses, getCourseById }
 }

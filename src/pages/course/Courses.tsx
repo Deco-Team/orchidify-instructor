@@ -10,9 +10,11 @@ import Table from '~/components/table/Table'
 import { CoursesColumns } from './columns'
 import { useCourseApi } from '~/hooks/api/useCourseApi'
 import { ListResponseDto } from '~/data/common.dto'
+import { protectedRoute } from '~/routes/routes'
+import { useNavigate } from 'react-router-dom'
 
 export default function Courses() {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const { getAllCourses } = useCourseApi()
   const [data, setData] = useState<ListResponseDto<CourseListItemResponseDto>>({
     docs: [],
@@ -37,7 +39,7 @@ export default function Courses() {
 
   useEffect(() => {
     // eslint-disable-next-line prettier/prettier
-    (async () => {
+    ;(async () => {
       const { data: gardenManager, error: apiError } = await getAllCourses(
         pagination.pageIndex + 1,
         pagination.pageSize,
@@ -79,7 +81,7 @@ export default function Courses() {
           <Button
             color='secondary'
             onClick={() => {
-              // navigate(protectedRoute..path)
+              // navigate(protectedRoute.addCourse.path)
             }}
             sx={{ marginRight: '24px' }}
             endIcon={<Add />}
@@ -99,7 +101,7 @@ export default function Courses() {
           onColumnFiltersChange: setColumnFilters,
           enableColumnResizing: true,
           muiTableBodyRowProps: ({ row }) => ({
-            // onClick: () => navigate(`/garden-managers/${row.original._id}`),
+            onClick: () => navigate(protectedRoute.courseDetail.path.replace(':id', row.original._id)),
             sx: {
               cursor: 'pointer'
             }

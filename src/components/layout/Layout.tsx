@@ -2,6 +2,7 @@ import { ReactNode, useState } from 'react'
 import AppBar from '../app-bar/AppBar'
 import Box from '@mui/material/Box'
 import Sidebar from '../sidebar/Sidebar'
+import { useTheme } from '@mui/material'
 
 const DRAWER_WIDTH = 250
 
@@ -11,6 +12,7 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   const [open, setOpen] = useState(true)
+  const theme = useTheme()
 
   const handleDrawer = () => {
     setOpen(!open)
@@ -20,7 +22,22 @@ const Layout = ({ children }: LayoutProps) => {
     <Box sx={{ display: 'flex' }}>
       <AppBar open={open} drawerwidth={DRAWER_WIDTH} handleDrawer={handleDrawer} />
       <Sidebar open={open} drawerwidth={DRAWER_WIDTH} />
-      <Box component='main' sx={{ flexGrow: 1, p: 3, mt: 8 }}>
+      <Box
+        component='main'
+        sx={{
+          ...(open
+            ? { maxWidth: `calc(100% - ${DRAWER_WIDTH}px)` }
+            : {
+                maxWidth: `calc(100% - ${theme.spacing(7)} - 1px)`,
+                [theme.breakpoints.up('sm')]: {
+                  width: `calc(100% ${theme.spacing(8)} - 1px)`
+                }
+              }),
+          flexGrow: 1,
+          p: 3,
+          mt: 8
+        }}
+      >
         {children}
       </Box>
     </Box>

@@ -3,7 +3,7 @@ import { MRT_ColumnDef } from 'material-react-table'
 import CourseStatusTag from '~/components/tag/CourseStatusTag'
 import { CourseListItemResponseDto } from '~/data/course.dto'
 import { CourseLevel, CourseStatus } from '~/global/constants'
-import { formatCurrency } from '~/utils/format'
+import { formatCourseLevel, formatCurrency } from '~/utils/format'
 
 export const CoursesColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
   {
@@ -44,28 +44,23 @@ export const CoursesColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
     size: 130,
     Cell: ({ cell }) => {
       const level = cell.getValue() as CourseLevel
-      switch (level) {
-        case CourseLevel.BASIC:
-          return (
-            <Typography color='#20c017' variant='subtitle2'>
-              Cơ bản
-            </Typography>
-          )
-        case CourseLevel.INTERMEDIATE:
-          return (
-            <Typography color='#FFCF22' variant='subtitle2'>
-              Trung bình
-            </Typography>
-          )
-        case CourseLevel.ADVANCED:
-          return (
-            <Typography color='#F66868' variant='subtitle2'>
-              Nâng cao
-            </Typography>
-          )
-        default:
-          return '-'
-      }
+
+      return (
+        <Typography
+          variant='subtitle2'
+          color={
+            level === CourseLevel.BASIC
+              ? '#20c017'
+              : level === CourseLevel.INTERMEDIATE
+                ? '#ffcf22'
+                : level === CourseLevel.ADVANCED
+                  ? 'f66868'
+                  : undefined
+          }
+        >
+          {formatCourseLevel(level)}
+        </Typography>
+      )
     },
     filterVariant: 'multi-select',
     filterSelectOptions: [
