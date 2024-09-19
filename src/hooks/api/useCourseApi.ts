@@ -37,6 +37,7 @@ export const useCourseApi = () => {
       )
 
       if (result) {
+        console.log(result)
         const { data, error } = result
         if (data) return { data: data, error: null }
         if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
