@@ -9,8 +9,9 @@ import Table from '~/components/table/Table'
 import { CoursesColumns } from './columns'
 import { useCourseApi } from '~/hooks/api/useCourseApi'
 import { ListResponseDto } from '~/data/common.dto'
-import { CourseListItemResponseDto } from '~/data/course/course.dto'
+import { protectedRoute } from '~/routes/routes'
 import { Link, useNavigate } from 'react-router-dom'
+import { CourseListItemResponseDto } from '~/data/course/course.dto'
 
 export default function Courses() {
   const { getAllCourses } = useCourseApi()
@@ -91,7 +92,7 @@ export default function Courses() {
           onColumnFiltersChange: setColumnFilters,
           enableColumnResizing: true,
           muiTableBodyRowProps: ({ row }) => ({
-            onClick: () => navigate(`/garden-managers/${row.original._id}`),
+            onClick: () => navigate(protectedRoute.courseDetail.path.replace(':id', row.original._id)),
             sx: {
               cursor: 'pointer'
             }

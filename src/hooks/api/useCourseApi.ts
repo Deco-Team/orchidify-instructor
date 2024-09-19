@@ -4,7 +4,7 @@ import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 import { IdResponseDto, ListResponseDto } from '~/data/common.dto'
 import { CloudinaryFileUploadedInfo } from '~/components/cloudinary/cloudinary-type'
-import { CourseListItemResponseDto } from '~/data/course/course.dto'
+import { CourseDto, CourseListItemResponseDto } from '~/data/course/course.dto'
 
 const ROOT_ENDPOINT = '/courses/instructor'
 
@@ -92,5 +92,24 @@ export const useCourseApi = () => {
     [callAppProtectedApi]
   )
 
-  return { getAllCourses, createCourse }
+  const getCourseById = useCallback(
+    async (courseId: string) => {
+      const endpoint = `${ROOT_ENDPOINT}/${courseId}`
+      const result = await callAppProtectedApi<CourseDto>(endpoint, 'GET')
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết khóa học/combo khóa học') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  return { getAllCourses, createCourse, getCourseById }
 }

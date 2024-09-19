@@ -2,6 +2,7 @@ import { lazy } from 'react'
 
 const Home = lazy(() => import('~/pages/Home'))
 const Courses = lazy(() => import('~/pages/course/Courses'))
+const CourseDetail = lazy(() => import('~/pages/course/detail/CourseDetail'))
 const Login = lazy(() => import('~/pages/login/Login'))
 const Profile = lazy(() => import('~/pages/profile/Profile'))
 const EditProfile = lazy(() => import('~/pages/profile/edit-profile/EditProfile'))
@@ -24,6 +25,11 @@ export const protectedRoute = {
     name: 'Khóa học',
     path: '/courses',
     Component: Courses
+  },
+  courseDetail: {
+    name: 'Chi tiết khóa học',
+    path: '/courses/:id',
+    Component: CourseDetail
   },
   profile: {
     name: 'Trang cá nhân',
