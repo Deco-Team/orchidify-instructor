@@ -13,6 +13,12 @@ export enum CourseStatus {
   DELETED = 'DELETED'
 }
 
+export enum CourseLevel {
+  BASIC = 'BASIC',
+  INTERMEDIATE = 'INTERMEDIATE',
+  ADVANCED = 'ADVANCED'
+}
+
 export enum RequestStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
@@ -32,5 +38,6 @@ export const FileFormat = {
   jpeg: 'jpeg',
   png: 'png',
   video: 'mp4',
-  doc: 'doc'
+  doc: 'doc',
+  docx: 'docx'
 }

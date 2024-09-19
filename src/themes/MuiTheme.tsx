@@ -1,6 +1,20 @@
 import { createTheme, ThemeProvider } from '@mui/material'
 import { ReactNode } from 'react'
 
+declare module '@mui/material/styles' {
+  interface Theme {
+    label: {
+      secondary: string
+    }
+  }
+  // allow configuration using `createTheme`
+  interface ThemeOptions {
+    label?: {
+      secondary?: string
+    }
+  }
+}
+
 const theme = createTheme({
   palette: {
     primary: {

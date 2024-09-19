@@ -1,11 +1,11 @@
-import { CourseStatus } from '~/global/constants'
+import { CourseLevel, CourseStatus } from '~/global/constants'
 
 export interface CourseDto {
   _id?: string
   title: string
   description: string
   price: number
-  level: string
+  level: CourseLevel
   duration?: number
   type: string
   thumbnail: string
@@ -41,4 +41,19 @@ export interface MediaDto {
   asset_folder: string
   original_filename: string
   original_extension: string
+}
+
+export type CourseListItemResponseDto = {
+  _id: string
+  title: string
+  startDate: string
+  price: number
+  level: CourseLevel
+  type: string
+  duration: number
+  status: CourseStatus
+  learnerLimit: number
+  learnerQuantity: number
+  createdAt: string
+  updatedAt: string
 }

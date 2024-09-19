@@ -78,7 +78,13 @@ const AssignmentFields = ({
               <ControlledFileAreaUpload
                 controller={{ name: `assignments.${index}.attachment`, control: control }}
                 label='Tài liệu'
-                clientAllowedFormats={[FileFormat.jpeg, FileFormat.jpg, FileFormat.png, FileFormat.doc]}
+                clientAllowedFormats={[
+                  FileFormat.jpeg,
+                  FileFormat.jpg,
+                  FileFormat.png,
+                  FileFormat.doc,
+                  FileFormat.docx
+                ]}
                 minFile={1}
                 maxFiles={1}
                 maxFileSize={FileSize['20MB']}

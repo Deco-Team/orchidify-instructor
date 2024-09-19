@@ -12,7 +12,7 @@ import {
   useTheme
 } from '@mui/material'
 import { FieldValues, useController, UseControllerProps } from 'react-hook-form'
-import { Cloud, Delete, InsertDriveFile } from '@mui/icons-material'
+import { Cloud, Delete, InsertDriveFileOutlined } from '@mui/icons-material'
 import CloudinaryUploadWidget from '../cloudinary/CloudinaryUploadWidget'
 import { CloudinaryFileUploadedInfo } from '../cloudinary/cloudinary-type'
 import { APP_MESSAGE } from '~/global/app-message'
@@ -94,12 +94,16 @@ export const ControlledFileFieldUpload = <TFieldValues extends FieldValues>({
         <Box maxWidth='100%' overflow={'auto'}>
           <ImageList sx={{ width: 'fit-content', display: 'flex', m: 0, gap: '8px !important' }}>
             {selectedFiles.map((image, index) => (
-              <ImageListItem key={image.public_id} sx={{ width: '200px', height: '200px !important' }}>
-                <img src={image.url} alt={image.display_name} style={{ height: '100%', borderRadius: 4 }} />
+              <ImageListItem key={image.public_id} sx={{ width: '100%', borderRadius: 1, overflow: 'hidden' }}>
+                <img src={image.url} alt={image.display_name} style={{ width: '200px', height: '200px' }} />
                 <ImageListItemBar
                   sx={{
+                    height: '58px',
                     background:
-                      'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' + 'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)'
+                      'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, ' + 'rgba(0,0,0,0.15) 50%, rgba(0,0,0,0) 100%)',
+                    '.MuiImageListItemBar-actionIcon': {
+                      mr: 1
+                    }
                   }}
                   position='top'
                   actionIcon={
@@ -160,33 +164,44 @@ export const ControlledFileAreaUpload = <TFieldValues extends FieldValues>({
         <Box maxWidth='100%' overflow={'auto'}>
           <ImageList sx={{ width: 'fit-content', display: 'flex', m: 0, gap: '8px !important' }}>
             {selectedFiles.map((file, index) => (
-              <ImageListItem key={file.public_id} sx={{ width: '200px', height: '200px !important' }}>
+              <ImageListItem key={file.public_id} sx={{ width: '100%', borderRadius: 1, overflow: 'hidden' }}>
                 {file.resource_type === 'video' ? (
-                  <video width='200' height='200' controls>
+                  <video width='100%' height='250' controls>
                     <source src={file.url} type='video/mp4' />
                     {APP_MESSAGE.LOAD_DATA_FAILED('video')}
                   </video>
                 ) : file.resource_type === 'image' ? (
-                  <img src={file.url} alt={file.display_name} style={{ height: '100%' }} />
+                  <img src={file.url} alt={file.display_name} style={{ width: '200px', height: '200px' }} />
                 ) : (
                   <Box
                     sx={{
                       display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
                       alignItems: 'center',
-                      flexGrow: 1
+                      gap: 1,
+                      width: '250px',
+                      border: '1px solid #0000001F',
+                      borderRadius: 1,
+                      p: 2
                     }}
                   >
-                    <InsertDriveFile sx={{ width: 150, height: 150 }} />
-                    <Typography variant='subtitle2'>{file.original_filename}</Typography>
+                    <InsertDriveFileOutlined sx={{ width: 24, height: 24 }} />
+                    <Typography
+                      variant='subtitle2'
+                      sx={{ width: '100%', mr: 3, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}
+                    >
+                      {file.original_filename}
+                    </Typography>
                   </Box>
                 )}
 
                 <ImageListItemBar
                   sx={{
+                    height: '58px',
                     background:
-                      'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' + 'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)'
+                      'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, ' + 'rgba(0,0,0,0.15) 50%, rgba(0,0,0,0) 100%)',
+                    '.MuiImageListItemBar-actionIcon': {
+                      mr: 1
+                    }
                   }}
                   position='top'
                   actionIcon={
