@@ -39,5 +39,6 @@ export const FileFormat = {
   png: 'png',
   video: 'mp4',
   doc: 'doc',
-  docx: 'docx'
+  docx: 'docx',
+  pdf: 'pdf'
 }

@@ -83,7 +83,8 @@ const AssignmentFields = ({
                   FileFormat.jpg,
                   FileFormat.png,
                   FileFormat.doc,
-                  FileFormat.docx
+                  FileFormat.docx,
+                  FileFormat.pdf
                 ]}
                 minFile={1}
                 maxFiles={1}
