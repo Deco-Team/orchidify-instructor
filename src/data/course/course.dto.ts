@@ -1,15 +1,17 @@
 import { CourseLevel, CourseStatus } from '~/global/constants'
+import { BaseMediaDto } from '../common.dto'
 
 export interface CourseDto {
   _id?: string
   title: string
   description: string
+  startDate: string
   price: number
   level: CourseLevel
   duration?: number
   type: string
   thumbnail: string
-  media: MediaDto[]
+  media: BaseMediaDto[]
   status?: CourseStatus
   learnerLimit: number
   learnerQuantity?: number
@@ -19,28 +21,17 @@ export interface CourseDto {
 }
 
 export interface LessonDto {
+  _id: string
   title: string
   description: string
-  media: MediaDto[]
+  media: BaseMediaDto[]
 }
 
 export interface AssignmentDto {
+  _id: string
   title: string
   description: string
-  attachment: MediaDto[]
-}
-
-export interface MediaDto {
-  asset_id: string
-  public_id: string
-  format: string
-  resource_type: string
-  createAt: string
-  type: 'authenticated' | 'upload' | 'private'
-  url: string
-  asset_folder: string
-  original_filename: string
-  original_extension: string
+  attachment: BaseMediaDto[]
 }
 
 export type CourseListItemResponseDto = {

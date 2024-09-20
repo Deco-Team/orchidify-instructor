@@ -1,3 +1,5 @@
+import { CourseLevel } from '~/global/constants'
+
 export const formatNumber = (num: number): string => {
   const numStr = num.toString()
   const formattedNum: string[] = []
@@ -17,4 +19,17 @@ export function formatCurrency(value: number, currency: string = 'VND', locale: 
     currency: currency
   })
   return formatter.format(value)
+}
+
+export function formatCourseLevel(level: CourseLevel): string {
+  switch (level) {
+    case CourseLevel.BASIC:
+      return 'Cơ bản'
+    case CourseLevel.INTERMEDIATE:
+      return 'Trung bình'
+    case CourseLevel.ADVANCED:
+      return 'Nâng cao'
+    default:
+      return 'Chưa xác định'
+  }
 }
