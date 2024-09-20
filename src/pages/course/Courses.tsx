@@ -10,7 +10,7 @@ import { CoursesColumns } from './columns'
 import { useCourseApi } from '~/hooks/api/useCourseApi'
 import { ListResponseDto } from '~/data/common.dto'
 import { CourseListItemResponseDto } from '~/data/course/course.dto'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Courses() {
   const { getAllCourses } = useCourseApi()
@@ -34,10 +34,11 @@ export default function Courses() {
   const [sorting, setSorting] = useState<MRT_SortingState>([])
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
   const [error, setError] = useState<ErrorResponseDto | null>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     // eslint-disable-next-line prettier/prettier
-    ;(async () => {
+    (async () => {
       const { data: gardenManager, error: apiError } = await getAllCourses(
         pagination.pageIndex + 1,
         pagination.pageSize,
@@ -90,7 +91,7 @@ export default function Courses() {
           onColumnFiltersChange: setColumnFilters,
           enableColumnResizing: true,
           muiTableBodyRowProps: ({ row }) => ({
-            // onClick: () => navigate(`/garden-managers/${row.original._id}`),
+            onClick: () => navigate(`/garden-managers/${row.original._id}`),
             sx: {
               cursor: 'pointer'
             }
