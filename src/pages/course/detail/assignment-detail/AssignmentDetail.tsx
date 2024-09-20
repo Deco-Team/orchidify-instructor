@@ -17,17 +17,16 @@ const AssignmentDetail = () => {
   const navigate = useNavigate()
   const courseId = params.courseId
   const assignmentId = params.assignmentId
-  const { getCourseById } = useCourseApi()
+  const { getAssignmentById } = useCourseApi()
   useEffect(() => {
     if (courseId && assignmentId) {
-      // eslint-disable-next-line prettier/prettier
-      (async () => {
-        const { data: course, error: apiError } = await getCourseById(courseId)
-        setData(course?.assignments.filter((value) => value._id === assignmentId)[0] as unknown as BaseAssignmentDto)
+      ;(async () => {
+        const { data: assignment, error: apiError } = await getAssignmentById(courseId, assignmentId)
+        setData(assignment as unknown as BaseAssignmentDto)
         setError(apiError)
       })()
     }
-  }, [courseId, data, getCourseById, assignmentId])
+  }, [courseId, assignmentId, getAssignmentById])
 
   if (error) {
     notifyError(error.message)

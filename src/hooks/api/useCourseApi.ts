@@ -2,9 +2,11 @@ import { useCallback } from 'react'
 import { useProtectedApi } from './useProtectedApi'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
-import { IdResponseDto, ListResponseDto } from '~/data/common.dto'
+import { IdResponseDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
 import { CloudinaryFileUploadedInfo } from '~/components/cloudinary/cloudinary-type'
 import { CourseDto, CourseListItemResponseDto } from '~/data/course/course.dto'
+import { BaseLessonDto } from '~/data/lesson.dto'
+import { BaseAssignmentDto } from '~/data/assignment.dto'
 
 const ROOT_ENDPOINT = '/courses/instructor'
 
@@ -59,7 +61,6 @@ export const useCourseApi = () => {
       )
 
       if (result) {
-        console.log(result)
         const { data, error } = result
         if (data) return { data: data, error: null }
         if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
@@ -75,7 +76,6 @@ export const useCourseApi = () => {
 
   const createCourse = useCallback(
     async (course: CreateCourse) => {
-      console.log(course)
       const endpoint = `${ROOT_ENDPOINT}`
       const result = await callAppProtectedApi<IdResponseDto>(endpoint, 'POST', {}, {}, course)
 
@@ -112,5 +112,62 @@ export const useCourseApi = () => {
     [callAppProtectedApi]
   )
 
-  return { getAllCourses, createCourse, getCourseById }
+  const getLessonById = useCallback(
+    async (courseId: string, lessonId: string) => {
+      const endpoint = `${ROOT_ENDPOINT}/${courseId}/lessons/${lessonId}`
+      const result = await callAppProtectedApi<BaseLessonDto>(endpoint, 'GET')
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết bài học') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  const getAssignmentById = useCallback(
+    async (courseId: string, lessonId: string) => {
+      const endpoint = `${ROOT_ENDPOINT}/${courseId}/assignments/${lessonId}`
+      const result = await callAppProtectedApi<BaseAssignmentDto>(endpoint, 'GET')
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết bài tập') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  const deleteCourseById = useCallback(
+    async (courseId: string) => {
+      const endpoint = `${ROOT_ENDPOINT}/${courseId}`
+      const result = await callAppProtectedApi<SuccessResponseDto>(endpoint, 'DELETE')
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết khóa học/combo khóa học') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  return { getAllCourses, createCourse, getCourseById, getLessonById, getAssignmentById, deleteCourseById }
 }

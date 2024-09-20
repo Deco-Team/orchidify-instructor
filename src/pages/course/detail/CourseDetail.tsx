@@ -10,6 +10,7 @@ import Loading from '~/components/loading/Loading'
 import { protectedRoute } from '~/routes/routes'
 import CourseDetailResourceAndLearner from './components/CourseDetailResourceAndLearner'
 import { CourseDto } from '~/data/course/course.dto'
+import { CourseStatus } from '~/global/constants'
 
 export default function CourseDetail() {
   const [data, setData] = useState<CourseDto | null>(null)
@@ -21,8 +22,7 @@ export default function CourseDetail() {
 
   useEffect(() => {
     if (courseId) {
-      // eslint-disable-next-line prettier/prettier
-      (async () => {
+      ;(async () => {
         const { data: course, error: apiError } = await getCourseById(courseId)
         setData(course)
         setError(apiError)
@@ -37,7 +37,7 @@ export default function CourseDetail() {
 
   return data ? (
     <Box sx={{ marginBottom: '40px' }}>
-      <CourseDetailHeader />
+      <CourseDetailHeader courseId={data._id || ''} deleteState={data.status || CourseStatus.DRAFT} />
       <CourseDetailInformation course={data} />
       <CourseDetailResourceAndLearner course={data} />
     </Box>

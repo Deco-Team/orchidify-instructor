@@ -17,18 +17,17 @@ const LessonDetail = () => {
   const navigate = useNavigate()
   const courseId = params.courseId
   const lessonId = params.lessonId
-  const { getCourseById } = useCourseApi()
+  const { getLessonById } = useCourseApi()
 
   useEffect(() => {
     if (courseId && lessonId) {
-      // eslint-disable-next-line prettier/prettier
-      (async () => {
-        const { data: course, error: apiError } = await getCourseById(courseId)
-        setData(course?.lessons.filter((value) => value._id === lessonId)[0] as unknown as BaseLessonDto)
+      ;(async () => {
+        const { data: lesson, error: apiError } = await getLessonById(courseId, lessonId)
+        setData(lesson as unknown as BaseLessonDto)
         setError(apiError)
       })()
     }
-  }, [courseId, data, getCourseById, lessonId])
+  }, [courseId, getLessonById, lessonId])
 
   if (error) {
     notifyError(error.message)
