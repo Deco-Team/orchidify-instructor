@@ -21,7 +21,7 @@ const AssignmentDetail = () => {
   useEffect(() => {
     if (courseId && assignmentId) {
       // eslint-disable-next-line prettier/prettier
-      ;(async () => {
+      (async () => {
         const { data: course, error: apiError } = await getCourseById(courseId)
         setData(course?.assignments.filter((value) => value._id === assignmentId)[0] as unknown as BaseAssignmentDto)
         setError(apiError)
@@ -36,7 +36,7 @@ const AssignmentDetail = () => {
 
   return data ? (
     <Box sx={{ marginBottom: '40px', display: 'flex', flexDirection: 'column' }}>
-      <AssignmentDetailHeader />
+      <AssignmentDetailHeader courseId={courseId!} />
       <AssignmentDetailInformation assignment={data} />
       <Button size='large' sx={{ width: 'fit-content', alignSelf: 'center' }} color='primary'>
         Bài làm học viên

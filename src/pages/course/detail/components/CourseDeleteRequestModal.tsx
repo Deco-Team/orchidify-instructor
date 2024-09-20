@@ -25,9 +25,9 @@ interface ICourseDeleteRequestModal {
 
 const CourseDeleteRequestModal = (props: ICourseDeleteRequestModal) => {
   const {
-    handleSubmit,
+    // handleSubmit,
     control,
-    formState: { isSubmitting }
+    // formState: { isSubmitting }
   } = useForm<FormValues>({
     defaultValues: defaultFormValues,
     resolver: zodResolver(validationSchema)

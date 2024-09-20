@@ -18,10 +18,11 @@ const LessonDetail = () => {
   const courseId = params.courseId
   const lessonId = params.lessonId
   const { getCourseById } = useCourseApi()
+
   useEffect(() => {
     if (courseId && lessonId) {
       // eslint-disable-next-line prettier/prettier
-      ;(async () => {
+      (async () => {
         const { data: course, error: apiError } = await getCourseById(courseId)
         setData(course?.lessons.filter((value) => value._id === lessonId)[0] as unknown as BaseLessonDto)
         setError(apiError)
@@ -36,7 +37,7 @@ const LessonDetail = () => {
 
   return data ? (
     <Box sx={{ marginBottom: '40px', display: 'flex', flexDirection: 'column' }}>
-      <LessonDetailHeader />
+      <LessonDetailHeader courseId={courseId!} />
       <LessonDetailInformation lesson={data} />
       <Button size='large' sx={{ width: 'fit-content', alignSelf: 'center' }} color='primary'>
         Tải lên tài nguyên

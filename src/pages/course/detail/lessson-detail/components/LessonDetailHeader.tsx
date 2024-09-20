@@ -2,8 +2,16 @@ import { Box, Typography } from '@mui/material'
 import Breadcrumbs from '~/components/breadscrumbs/Breadscrumbs'
 import { protectedRoute } from '~/routes/routes'
 
-const LessonDetailHeader = () => {
-  const items = [protectedRoute.course, protectedRoute.courseDetail, protectedRoute.lessonDetail]
+interface LessonDetailHeaderProps {
+  courseId: string
+}
+
+const LessonDetailHeader = ({ courseId }: LessonDetailHeaderProps) => {
+  const items = [
+    protectedRoute.course,
+    { ...protectedRoute.courseDetail, path: protectedRoute.courseDetail.path.replace(':id', courseId) },
+    protectedRoute.lessonDetail
+  ]
 
   return (
     <Box display='flex' justifyContent='space-between' alignItems='center'>

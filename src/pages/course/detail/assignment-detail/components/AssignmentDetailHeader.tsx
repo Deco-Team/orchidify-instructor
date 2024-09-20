@@ -2,8 +2,16 @@ import { Box, Typography } from '@mui/material'
 import Breadcrumbs from '~/components/breadscrumbs/Breadscrumbs'
 import { protectedRoute } from '~/routes/routes'
 
-const AssignmentDetailHeader = () => {
-  const items = [protectedRoute.course, protectedRoute.courseDetail, protectedRoute.assignmentDetail]
+interface AssignmentDetailHeaderProps {
+  courseId: string
+}
+
+const AssignmentDetailHeader = ({ courseId }: AssignmentDetailHeaderProps) => {
+  const items = [
+    protectedRoute.course,
+    { ...protectedRoute.courseDetail, path: protectedRoute.courseDetail.path.replace(':id', courseId) },
+    protectedRoute.assignmentDetail
+  ]
 
   return (
     <Box display='flex' justifyContent='space-between' alignItems='center'>
