@@ -1,11 +1,23 @@
+import { InsertDriveFileOutlined } from '@mui/icons-material'
 import { Box, Divider, Paper, Typography } from '@mui/material'
 import Carousel from '~/components/slider/Carousel'
 import { BaseAssignmentDto } from '~/data/assignment.dto'
 
 const AssignmentDetailInformation = ({ assignment }: { assignment: BaseAssignmentDto }) => {
   const { title, description, attachment } = assignment
+
+  const handleDownload = (url: string) => {
+    const pdfUrl = url
+    const link = document.createElement('a')
+    link.href = pdfUrl
+    link.download = 'document.pdf' // specify the filename
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   return (
-    <Paper sx={{ width: '100%', marginY: '3.5rem', padding: '1.5rem' }}>
+    <Paper sx={{ width: '100%', marginY: '1.25rem', padding: '1.5rem' }}>
       <Box display='flex' alignItems='center' marginBottom='1.25rem'>
         <Typography variant='h2' sx={{ fontSize: '1.5rem', fontWeight: 700, paddingRight: '0.75rem' }}>
           Thông tin bài tập
@@ -40,11 +52,31 @@ const AssignmentDetailInformation = ({ assignment }: { assignment: BaseAssignmen
               }}
             >
               <div style={{ width: '200px', height: '200px', padding: '0 2px' }}>
-                <img
-                  src={value.url}
-                  alt={`Assignment resource ${value.public_id}`}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
-                />
+                {value.resource_type === 'image' ? (
+                  <img
+                    src={value.url}
+                    alt={`Lesson resource ${value.public_id}`}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                  />
+                ) : (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      gap: 2,
+                      background: '#f4f4f4',
+                      width: 'fit-content',
+                      p: 2.5,
+                      borderRadius: 2,
+                      border: '2px solid #d7d7d7',
+                      alignItems: 'center',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() => handleDownload(value.url)}
+                  >
+                    <InsertDriveFileOutlined />
+                    <Typography variant='subtitle1'>{value.public_id}</Typography>
+                  </Box>
+                )}
               </div>
             </div>
           ))}

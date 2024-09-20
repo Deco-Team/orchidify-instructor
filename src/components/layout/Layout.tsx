@@ -2,7 +2,6 @@ import { ReactNode, useState } from 'react'
 import AppBar from '../app-bar/AppBar'
 import { useTheme, Box } from '@mui/material'
 import Sidebar from '../sidebar/Sidebar'
-import { useTheme } from '@mui/material'
 
 const DRAWER_WIDTH = 250
 

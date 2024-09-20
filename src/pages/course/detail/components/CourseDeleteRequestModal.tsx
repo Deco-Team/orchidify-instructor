@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, Button, Modal, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
