@@ -1,7 +1,7 @@
 import { Box, Divider, Paper, Typography } from '@mui/material'
 import Carousel from '~/components/slider/Carousel'
 import CourseStatusTag from '~/components/tag/CourseStatusTag'
-import { CourseDetailResponseDto } from '~/data/course.dto'
+import { CourseDto } from '~/data/course/course.dto'
 import { CourseStatus } from '~/global/constants'
 import { formatCourseLevel, formatCurrency } from '~/utils/format'
 
@@ -26,12 +26,12 @@ const Field: React.FC<FieldProps> = ({ label, content, statusTag }) => (
 )
 
 interface CourseDetailInformationProps {
-  course: CourseDetailResponseDto
+  course: CourseDto
 }
 
 const CourseDetailInformation = ({ course }: CourseDetailInformationProps) => {
   return (
-    <Paper sx={{ width: '100%', marginY: '3.5rem', padding: '1.5rem' }}>
+    <Paper sx={{ width: '100%', marginTop: '1.25rem', padding: '1.5rem' }}>
       <Box display='flex' alignItems='center' marginBottom='1.25rem'>
         <Typography variant='h2' sx={{ fontSize: '1.5rem', fontWeight: 700, paddingRight: '0.75rem' }}>
           Thông tin khóa học

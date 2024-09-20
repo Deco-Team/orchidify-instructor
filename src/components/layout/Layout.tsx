@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react'
 import AppBar from '../app-bar/AppBar'
-import Box from '@mui/material/Box'
+import { useTheme, Box } from '@mui/material'
 import Sidebar from '../sidebar/Sidebar'
 import { useTheme } from '@mui/material'
 

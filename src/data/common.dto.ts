@@ -2,6 +2,10 @@ export type SuccessResponseDto = {
   success: boolean
 }
 
+export type IdResponseDto = {
+  _id: string
+}
+
 export type ListResponseDto<T> = {
   docs: T[]
   totalDocs: number

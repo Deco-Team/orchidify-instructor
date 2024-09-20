@@ -1,15 +1,15 @@
 import { Paper } from '@mui/material'
 import CustomTabs from '~/components/tabs/CustomTabs'
-import { CourseDetailResponseDto } from '~/data/course.dto'
+import { CourseDto } from '~/data/course/course.dto'
 
 interface CourseDetailResourceAndLearnerProps {
-  course: CourseDetailResponseDto
+  course: CourseDto
 }
 
 const CourseDetailResourceAndLearner = ({ course }: CourseDetailResourceAndLearnerProps) => {
   console.log(course)
   return (
-    <Paper sx={{ width: '100%', marginY: '3.5rem', padding: '1.5rem' }}>
+    <Paper sx={{ width: '100%', marginTop: '1.25rem', padding: '1.5rem' }}>
       <CustomTabs
         name='courseDetail'
         items={[

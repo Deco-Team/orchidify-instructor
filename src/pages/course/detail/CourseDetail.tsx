@@ -2,7 +2,6 @@ import Box from '@mui/material/Box/Box'
 import CourseDetailHeader from './components/CourseDetailHeader'
 import CourseDetailInformation from './components/CourseDetailInformation'
 import { useEffect, useState } from 'react'
-import { CourseDetailResponseDto } from '~/data/course.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useCourseApi } from '~/hooks/api/useCourseApi'
@@ -10,9 +9,10 @@ import { notifyError } from '~/utils/toastify'
 import Loading from '~/components/loading/Loading'
 import { protectedRoute } from '~/routes/routes'
 import CourseDetailResourceAndLearner from './components/CourseDetailResourceAndLearner'
+import { CourseDto } from '~/data/course/course.dto'
 
 export default function CourseDetail() {
-  const [data, setData] = useState<CourseDetailResponseDto | null>(null)
+  const [data, setData] = useState<CourseDto | null>(null)
   const [error, setError] = useState<ErrorResponseDto | null>(null)
   const params = useParams()
   const navigate = useNavigate()
@@ -22,7 +22,7 @@ export default function CourseDetail() {
   useEffect(() => {
     if (courseId) {
       // eslint-disable-next-line prettier/prettier
-      ;(async () => {
+      (async () => {
         const { data: course, error: apiError } = await getCourseById(courseId)
         setData(course)
         setError(apiError)
