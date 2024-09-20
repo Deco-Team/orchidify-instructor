@@ -9,7 +9,7 @@ interface CourseDetailResourceAndLearnerProps {
 const CourseDetailResourceAndLearner = ({ course }: CourseDetailResourceAndLearnerProps) => {
   console.log(course)
   return (
-    <Paper sx={{ width: '100%', marginY: '3.5rem', padding: '1.5rem' }}>
+    <Paper sx={{ width: '100%', marginTop: '1.25rem', padding: '1.5rem' }}>
       <CustomTabs
         name='courseDetail'
         items={[
