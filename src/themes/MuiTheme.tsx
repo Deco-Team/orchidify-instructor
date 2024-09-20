@@ -44,6 +44,9 @@ const theme = createTheme({
         variant: 'contained'
       },
       styleOverrides: {
+        root: {
+          padding: '8px 22px'
+        },
         sizeLarge: {
           height: '50px'
         },
@@ -62,6 +65,21 @@ const theme = createTheme({
             fontSize: '14px',
             fontWeight: 500,
             padding: 0
+          }
+        }
+      }
+    },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          borderColor: '#2ec4b6',
+          color: '#2ec4b6',
+          '&.Mui-selected': {
+            backgroundColor: '#2ec4b6',
+            color: '#ffffff'
+          },
+          '&.Mui-selected:hover': {
+            backgroundColor: '#2ec4b6'
           }
         }
       }

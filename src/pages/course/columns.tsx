@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 import CourseStatusTag from '~/components/tag/CourseStatusTag'
-import { CourseListItemResponseDto } from '~/data/course.dto'
+import { CourseListItemResponseDto } from '~/data/course/course.dto'
 import { CourseLevel, CourseStatus } from '~/global/constants'
 import { formatCurrency } from '~/utils/format'
 
@@ -9,7 +9,7 @@ export const CoursesColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
   {
     accessorKey: 'title',
     header: 'Tên khóa học/combo',
-    size: 220
+    grow: 1
   },
   {
     accessorKey: 'startDate',
@@ -25,7 +25,7 @@ export const CoursesColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
   {
     accessorKey: 'price',
     header: 'Giá',
-    size: 80,
+    size: 120,
     muiTableHeadCellProps: {
       align: 'right'
     },

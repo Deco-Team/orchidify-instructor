@@ -1,7 +1,6 @@
 import { Button, Typography } from '@mui/material'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 import { useEffect, useState } from 'react'
-import { CourseListItemResponseDto } from '~/data/course.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { notifyError } from '~/utils/toastify'
 import { TitleWrapper } from './Courses.styled'
@@ -10,9 +9,10 @@ import Table from '~/components/table/Table'
 import { CoursesColumns } from './columns'
 import { useCourseApi } from '~/hooks/api/useCourseApi'
 import { ListResponseDto } from '~/data/common.dto'
+import { CourseListItemResponseDto } from '~/data/course/course.dto'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Courses() {
-  // const navigate = useNavigate()
   const { getAllCourses } = useCourseApi()
   const [data, setData] = useState<ListResponseDto<CourseListItemResponseDto>>({
     docs: [],
@@ -34,6 +34,7 @@ export default function Courses() {
   const [sorting, setSorting] = useState<MRT_SortingState>([])
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
   const [error, setError] = useState<ErrorResponseDto | null>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     // eslint-disable-next-line prettier/prettier
@@ -72,21 +73,12 @@ export default function Courses() {
   return (
     <>
       <TitleWrapper>
-        <Typography variant='h5' fontSize={34} fontWeight={700}>
+        <Typography variant='h4' fontWeight='bold'>
           Khóa học
         </Typography>
-        <div style={{ display: 'flex' }}>
-          <Button
-            color='secondary'
-            onClick={() => {
-              // navigate(protectedRoute..path)
-            }}
-            sx={{ marginRight: '24px' }}
-            endIcon={<Add />}
-          >
-            Thêm khóa học
-          </Button>
-        </div>
+        <Button color='secondary' component={Link} to={'create'} sx={{ marginRight: '24px' }} endIcon={<Add />}>
+          Thêm khóa học
+        </Button>
       </TitleWrapper>
       <Table
         title='Danh sách khóa học/combo khóa học'
@@ -99,7 +91,7 @@ export default function Courses() {
           onColumnFiltersChange: setColumnFilters,
           enableColumnResizing: true,
           muiTableBodyRowProps: ({ row }) => ({
-            // onClick: () => navigate(`/garden-managers/${row.original._id}`),
+            onClick: () => navigate(`/garden-managers/${row.original._id}`),
             sx: {
               cursor: 'pointer'
             }

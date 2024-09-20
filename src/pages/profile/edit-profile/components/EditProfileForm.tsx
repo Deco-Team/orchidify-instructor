@@ -224,7 +224,7 @@ const EditProfileForm = ({ instructorData, bankData }: EditProfileFormProps) => 
           </Box>
         </Box>
         {fileError && (
-          <FormHelperText error>{APP_MESSAGE.INVALID_FILE_SIZE_OR_FORMAT('png, jpg, jpeg', '5MB')}</FormHelperText>
+          <FormHelperText error>{APP_MESSAGE.INVALID_FILE_FORMAT_OR_SIZE('png, jpg, jpeg', '5MB')}</FormHelperText>
         )}
       </Paper>
 

@@ -5,6 +5,7 @@ const Courses = lazy(() => import('~/pages/course/Courses'))
 const Login = lazy(() => import('~/pages/login/Login'))
 const Profile = lazy(() => import('~/pages/profile/Profile'))
 const EditProfile = lazy(() => import('~/pages/profile/edit-profile/EditProfile'))
+const CreateCourse = lazy(() => import('~/pages/course/create-course/CreateCourse'))
 
 export const publicRoute = {
   login: {
@@ -33,5 +34,10 @@ export const protectedRoute = {
     name: 'Cập nhật trang cá nhân ',
     path: '/profile/edit',
     Component: EditProfile
+  },
+  createCourse: {
+    name: 'Tạo khóa học',
+    path: '/courses/create',
+    Component: CreateCourse
   }
 }

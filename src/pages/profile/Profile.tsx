@@ -11,6 +11,7 @@ import Loading from '~/components/loading/Loading'
 import { InstructorDto } from '~/data/profile/instructor.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { useProfileApi } from '~/hooks/api/useProfileApi'
+import { formatCurrency } from '~/utils/format'
 
 interface FieldProps {
   label: string
@@ -120,7 +121,7 @@ const Profile = () => {
           label='STK'
           content={data.paymentInfo.accountNumber ? data.paymentInfo.accountNumber : 'Chưa cập nhật'}
         />
-        <Field label='Số dư hệ thống' content={Intl.NumberFormat('en-DE').format(data.balance || 0) + 'đ'} />
+        <Field label='Số dư hệ thống' content={formatCurrency(data.balance)} />
       </Paper>
     </StyledContainer>
   ) : (
