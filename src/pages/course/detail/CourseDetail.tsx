@@ -10,7 +10,6 @@ import Loading from '~/components/loading/Loading'
 import { protectedRoute } from '~/routes/routes'
 import CourseDetailResourceAndLearner from './components/CourseDetailResourceAndLearner'
 import { CourseDto } from '~/data/course/course.dto'
-import { CourseStatus } from '~/global/constants'
 
 export default function CourseDetail() {
   const [data, setData] = useState<CourseDto | null>(null)
@@ -30,6 +29,16 @@ export default function CourseDetail() {
     }
   }, [courseId, getCourseById])
 
+  const handleDeleteSuccess = () => {
+    if (courseId) {
+      ;(async () => {
+        const { data: course, error: apiError } = await getCourseById(courseId)
+        setData(course)
+        setError(apiError)
+      })()
+    }
+  }
+
   if (error) {
     notifyError(error.message)
     navigate(protectedRoute.course.path, { replace: true })
@@ -37,7 +46,11 @@ export default function CourseDetail() {
 
   return data ? (
     <Box sx={{ marginBottom: '40px' }}>
-      <CourseDetailHeader courseId={data._id || ''} deleteState={data.status || CourseStatus.DRAFT} />
+      <CourseDetailHeader
+        courseId={data._id || ''}
+        courseStatus={data.status}
+        handleDeleteSuccess={handleDeleteSuccess}
+      />
       <CourseDetailInformation course={data} />
       <CourseDetailResourceAndLearner course={data} />
     </Box>

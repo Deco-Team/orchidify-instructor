@@ -35,12 +35,12 @@ export const protectedRoute = {
   },
   lessonDetail: {
     name: 'Chi tiết bài học',
-    path: '/courses/:courseId/lesson/:lessonId',
+    path: '/courses/:courseId/lessons/:lessonId',
     Component: LessonDetail
   },
   assignmentDetail: {
     name: 'Chi tiết bài tập',
-    path: '/courses/:courseId/assignment/:assignmentId',
+    path: '/courses/:courseId/assignments/:assignmentId',
     Component: AssignmentDetail
   },
   profile: {

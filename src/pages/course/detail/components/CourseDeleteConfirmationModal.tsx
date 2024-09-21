@@ -1,43 +1,43 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import AlertDialog from '~/components/dialog/AlertDialog'
+import { APP_MESSAGE } from '~/global/app-message'
 import { useCourseApi } from '~/hooks/api/useCourseApi'
-import { notifyError } from '~/utils/toastify'
+import { notifyError, notifySuccess } from '~/utils/toastify'
 
-interface ICourseDeleteConfirmationModal {
+interface CourseDeleteConfirmationProps {
   open: boolean
   handleClose: () => void
   courseId: string
 }
 
-const CourseDeleteConfirmationModal = (props: ICourseDeleteConfirmationModal) => {
+const CourseDeleteConfirmationModal = (props: CourseDeleteConfirmationProps) => {
   const { handleClose, open, courseId } = props
   const { deleteCourseById } = useCourseApi()
-  const navigate = useNavigate()
+
+  const handleConfirm = async () => {
+    const { data, error } = await deleteCourseById(courseId)
+
+    if (data) notifySuccess(APP_MESSAGE.ACTION_DID_SUCCESSFULLY('Xóa khóa học'))
+    else notifyError(error.message)
+
+    handleClose()
+  }
+
+  const handleCancel = () => {
+    handleClose()
+  }
 
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Xác nhận xóa khóa học</DialogTitle>
-      <DialogContent>
-        <DialogContentText>Bạn có chắc chắn xóa khóa học này không?</DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button
-          color='error'
-          onClick={async () => {
-            const { data, error } = await deleteCourseById(courseId)
-            if (data?.success) navigate('/courses')
-            else if (error) {
-              notifyError(error?.message)
-            }
-          }}
-        >
-          Xóa
-        </Button>
-        <Button onClick={handleClose} variant='outlined' color='info'>
-          Hủy
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <AlertDialog
+      open={open}
+      handleConfirm={handleConfirm}
+      handleCancel={handleCancel}
+      title='Xác nhận xóa khóa học'
+      description={APP_MESSAGE.CONFIRM_ACTION('xóa khóa học')}
+      confirmButtonText='Xóa'
+      confirmButtonColor='error'
+      cancelButtonText='Hủy'
+      sx={{ '& .MuiDialog-paper': { width: '444px' } }}
+    />
   )
 }
 

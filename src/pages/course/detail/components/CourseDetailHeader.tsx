@@ -2,14 +2,24 @@ import { Box, Button, Typography } from '@mui/material'
 import Breadcrumbs from '~/components/breadscrumbs/Breadscrumbs'
 import { CourseStatus } from '~/global/constants'
 import { protectedRoute } from '~/routes/routes'
-import CourseDeleteConfirmationModal from './CourseDeleteConfirmationModal'
-import CourseDeleteRequestModal from './CourseDeleteRequestModal'
+import CourseDeleteConfirmation from './CourseDeleteConfirmationModal'
 import { useState } from 'react'
 
-const CourseDetailHeader = ({ deleteState, courseId }: { deleteState: CourseStatus; courseId: string }) => {
+interface CourseDetailHeaderProps {
+  courseId: string
+  courseStatus: CourseStatus
+  handleDeleteSuccess: () => void
+}
+
+const CourseDetailHeader = ({ courseId, courseStatus, handleDeleteSuccess }: CourseDetailHeaderProps) => {
   const items = [protectedRoute.course, protectedRoute.courseDetail]
-  const [openConfilmModal, setOpenConfilmModal] = useState(false)
-  const [openRequestModal, setOpenRequestModal] = useState(false)
+  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false)
+
+  const handleCloseDeleteConfirmation = () => {
+    setOpenDeleteConfirmation(false)
+    handleDeleteSuccess()
+  }
+
   return (
     <Box display='flex' justifyContent='space-between' alignItems='center'>
       <Box>
@@ -19,27 +29,24 @@ const CourseDetailHeader = ({ deleteState, courseId }: { deleteState: CourseStat
         <Breadcrumbs items={items} />
       </Box>
       <Box display='flex' justifyContent='space-between' gap='1.5rem'>
-        <Button color='secondary'>Yêu cầu mở</Button>
-        <Button color='warning'>Cập nhật</Button>
-        {deleteState === CourseStatus.DRAFT || deleteState === CourseStatus.PENDING ? (
-          <Button color='error' onClick={() => setOpenConfilmModal(true)}>
+        {courseStatus === CourseStatus.DRAFT ? <Button color='secondary'>YÊU CẦU MỞ</Button> : undefined}
+        {courseStatus === CourseStatus.DRAFT ? (
+          <Button color='warning'>Cập nhật</Button>
+        ) : courseStatus === CourseStatus.PUBLISHED ? (
+          <Button color='warning'>Yêu cầu cập nhật</Button>
+        ) : undefined}
+        {courseStatus === CourseStatus.DRAFT ? (
+          <Button color='error' onClick={() => setOpenDeleteConfirmation(true)}>
             Xóa
           </Button>
-        ) : deleteState === CourseStatus.PUBLISHED || deleteState === CourseStatus.IN_PROGRESS ? (
-          <Button color='error' onClick={() => setOpenRequestModal(true)}>
-            Yêu cầu xóa
-          </Button>
+        ) : courseStatus === CourseStatus.PUBLISHED ? (
+          <Button color='error'>Yêu cầu xóa</Button>
         ) : undefined}
       </Box>
-      <CourseDeleteConfirmationModal
+      <CourseDeleteConfirmation
         courseId={courseId}
-        handleClose={() => setOpenConfilmModal(false)}
-        open={openConfilmModal}
-      />
-      <CourseDeleteRequestModal
-        courseId={courseId}
-        handleClose={() => setOpenRequestModal(false)}
-        open={openRequestModal}
+        handleClose={handleCloseDeleteConfirmation}
+        open={openDeleteConfirmation}
       />
     </Box>
   )

@@ -163,7 +163,7 @@ export const useCourseApi = () => {
 
       return {
         data: null,
-        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết khóa học/combo khóa học') } as ErrorResponseDto
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('xóa khóa học') } as ErrorResponseDto
       }
     },
     [callAppProtectedApi]
