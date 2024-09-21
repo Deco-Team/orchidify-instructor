@@ -21,14 +21,23 @@ export default function CourseDetail() {
 
   useEffect(() => {
     if (courseId) {
-      // eslint-disable-next-line prettier/prettier
-      (async () => {
+      ;(async () => {
         const { data: course, error: apiError } = await getCourseById(courseId)
         setData(course)
         setError(apiError)
       })()
     }
   }, [courseId, getCourseById])
+
+  const handleDeleteSuccess = () => {
+    if (courseId) {
+      ;(async () => {
+        const { data: course, error: apiError } = await getCourseById(courseId)
+        setData(course)
+        setError(apiError)
+      })()
+    }
+  }
 
   if (error) {
     notifyError(error.message)
@@ -37,7 +46,11 @@ export default function CourseDetail() {
 
   return data ? (
     <Box sx={{ marginBottom: '40px' }}>
-      <CourseDetailHeader />
+      <CourseDetailHeader
+        courseId={data._id || ''}
+        courseStatus={data.status}
+        handleDeleteSuccess={handleDeleteSuccess}
+      />
       <CourseDetailInformation course={data} />
       <CourseDetailResourceAndLearner course={data} />
     </Box>

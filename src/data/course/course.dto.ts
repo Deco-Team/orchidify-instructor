@@ -12,7 +12,7 @@ export interface CourseDto {
   type: string
   thumbnail: string
   media: BaseMediaDto[]
-  status?: CourseStatus
+  status: CourseStatus
   learnerLimit: number
   learnerQuantity?: number
   gardenId?: string

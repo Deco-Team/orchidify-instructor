@@ -7,6 +7,8 @@ const Login = lazy(() => import('~/pages/login/Login'))
 const Profile = lazy(() => import('~/pages/profile/Profile'))
 const EditProfile = lazy(() => import('~/pages/profile/edit-profile/EditProfile'))
 const CreateCourse = lazy(() => import('~/pages/course/create-course/CreateCourse'))
+const LessonDetail = lazy(() => import('~/pages/course/detail/lessson-detail/LessonDetail'))
+const AssignmentDetail = lazy(() => import('~/pages/course/detail/assignment-detail/AssignmentDetail'))
 
 export const publicRoute = {
   login: {
@@ -30,6 +32,16 @@ export const protectedRoute = {
     name: 'Chi tiết khóa học',
     path: '/courses/:id',
     Component: CourseDetail
+  },
+  lessonDetail: {
+    name: 'Chi tiết bài học',
+    path: '/courses/:courseId/lessons/:lessonId',
+    Component: LessonDetail
+  },
+  assignmentDetail: {
+    name: 'Chi tiết bài tập',
+    path: '/courses/:courseId/assignments/:assignmentId',
+    Component: AssignmentDetail
   },
   profile: {
     name: 'Trang cá nhân',
