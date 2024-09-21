@@ -6,12 +6,12 @@ import { ErrorResponseDto } from '~/data/error.dto'
 import { useCourseApi } from '~/hooks/api/useCourseApi'
 import { protectedRoute } from '~/routes/routes'
 import { notifyError } from '~/utils/toastify'
-import { BaseAssignmentDto } from '~/data/assignment.dto'
 import AssignmentDetailHeader from './components/AssignmentDetailHeader'
 import AssignmentDetailInformation from './components/AssignmentDetailInformation'
+import { AssignmentDto } from '~/data/course/course.dto'
 
 const AssignmentDetail = () => {
-  const [data, setData] = useState<BaseAssignmentDto | null>(null)
+  const [data, setData] = useState<AssignmentDto | null>(null)
   const [error, setError] = useState<ErrorResponseDto | null>(null)
   const params = useParams()
   const navigate = useNavigate()
@@ -22,7 +22,7 @@ const AssignmentDetail = () => {
     if (courseId && assignmentId) {
       ;(async () => {
         const { data: assignment, error: apiError } = await getAssignmentById(courseId, assignmentId)
-        setData(assignment as unknown as BaseAssignmentDto)
+        setData(assignment as unknown as AssignmentDto)
         setError(apiError)
       })()
     }

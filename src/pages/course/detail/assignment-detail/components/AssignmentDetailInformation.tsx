@@ -1,9 +1,9 @@
 import { InsertDriveFileOutlined } from '@mui/icons-material'
 import { Box, Divider, Paper, Typography } from '@mui/material'
 import Carousel from '~/components/slider/Carousel'
-import { BaseAssignmentDto } from '~/data/assignment.dto'
+import { AssignmentDto } from '~/data/course/course.dto'
 
-const AssignmentDetailInformation = ({ assignment }: { assignment: BaseAssignmentDto }) => {
+const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto }) => {
   const { title, description, attachment } = assignment
 
   const handleDownload = (url: string) => {

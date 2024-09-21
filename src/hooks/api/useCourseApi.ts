@@ -4,9 +4,7 @@ import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 import { IdResponseDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
 import { CloudinaryFileUploadedInfo } from '~/components/cloudinary/cloudinary-type'
-import { CourseDto, CourseListItemResponseDto } from '~/data/course/course.dto'
-import { BaseLessonDto } from '~/data/lesson.dto'
-import { BaseAssignmentDto } from '~/data/assignment.dto'
+import { AssignmentDto, CourseDto, CourseListItemResponseDto, LessonDto } from '~/data/course/course.dto'
 
 const ROOT_ENDPOINT = '/courses/instructor'
 
@@ -115,7 +113,7 @@ export const useCourseApi = () => {
   const getLessonById = useCallback(
     async (courseId: string, lessonId: string) => {
       const endpoint = `${ROOT_ENDPOINT}/${courseId}/lessons/${lessonId}`
-      const result = await callAppProtectedApi<BaseLessonDto>(endpoint, 'GET')
+      const result = await callAppProtectedApi<LessonDto>(endpoint, 'GET')
 
       if (result) {
         const { data, error } = result
@@ -134,7 +132,7 @@ export const useCourseApi = () => {
   const getAssignmentById = useCallback(
     async (courseId: string, lessonId: string) => {
       const endpoint = `${ROOT_ENDPOINT}/${courseId}/assignments/${lessonId}`
-      const result = await callAppProtectedApi<BaseAssignmentDto>(endpoint, 'GET')
+      const result = await callAppProtectedApi<AssignmentDto>(endpoint, 'GET')
 
       if (result) {
         const { data, error } = result

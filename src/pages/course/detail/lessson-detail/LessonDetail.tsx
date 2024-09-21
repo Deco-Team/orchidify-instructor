@@ -8,10 +8,10 @@ import { ErrorResponseDto } from '~/data/error.dto'
 import { useCourseApi } from '~/hooks/api/useCourseApi'
 import { protectedRoute } from '~/routes/routes'
 import { notifyError } from '~/utils/toastify'
-import { BaseLessonDto } from '~/data/lesson.dto'
+import { LessonDto } from '~/data/course/course.dto'
 
 const LessonDetail = () => {
-  const [data, setData] = useState<BaseLessonDto | null>(null)
+  const [data, setData] = useState<LessonDto | null>(null)
   const [error, setError] = useState<ErrorResponseDto | null>(null)
   const params = useParams()
   const navigate = useNavigate()
@@ -23,7 +23,7 @@ const LessonDetail = () => {
     if (courseId && lessonId) {
       ;(async () => {
         const { data: lesson, error: apiError } = await getLessonById(courseId, lessonId)
-        setData(lesson as unknown as BaseLessonDto)
+        setData(lesson as unknown as LessonDto)
         setError(apiError)
       })()
     }

@@ -1,9 +1,9 @@
 import { Box, Divider, Paper, Typography } from '@mui/material'
 import Carousel from '~/components/slider/Carousel'
-import { BaseLessonDto } from '~/data/lesson.dto'
+import { LessonDto } from '~/data/course/course.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 
-const LessonDetailInformation = ({ lesson }: { lesson: BaseLessonDto }) => {
+const LessonDetailInformation = ({ lesson }: { lesson: LessonDto }) => {
   const { title, description, media } = lesson
   return (
     <Paper sx={{ width: '100%', marginY: '1.25rem', padding: '1.5rem' }}>
