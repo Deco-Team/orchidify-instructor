@@ -29,19 +29,8 @@ const CourseDetailHeader = ({ courseId, courseStatus, handleDeleteSuccess }: Cou
         <Breadcrumbs items={items} />
       </Box>
       <Box display='flex' justifyContent='space-between' gap='1.5rem'>
-        {courseStatus === CourseStatus.DRAFT ? <Button color='secondary'>YÊU CẦU MỞ</Button> : undefined}
-        {courseStatus === CourseStatus.DRAFT ? (
-          <Button color='warning'>Cập nhật</Button>
-        ) : courseStatus === CourseStatus.PUBLISHED ? (
-          <Button color='warning'>Yêu cầu cập nhật</Button>
-        ) : undefined}
-        {courseStatus === CourseStatus.DRAFT ? (
-          <Button color='error' onClick={() => setOpenDeleteConfirmation(true)}>
-            Xóa
-          </Button>
-        ) : courseStatus === CourseStatus.PUBLISHED ? (
-          <Button color='error'>Yêu cầu xóa</Button>
-        ) : undefined}
+        {courseStatus === CourseStatus.PUBLISHED ? <Button color='warning'>Yêu cầu cập nhật</Button> : undefined}
+        {courseStatus === CourseStatus.PUBLISHED ? <Button color='error'>Yêu cầu xóa</Button> : undefined}
       </Box>
       <CourseDeleteConfirmation
         courseId={courseId}

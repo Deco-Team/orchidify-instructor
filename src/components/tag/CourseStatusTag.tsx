@@ -10,22 +10,6 @@ const CourseStatusTag = ({ type }: CourseStatusTagProps) => {
   let styles: SxProps<Theme> | undefined = undefined
 
   switch (type) {
-    case CourseStatus.DRAFT: {
-      label = 'Bản nháp'
-      styles = {
-        backgroundColor: '#0000000a',
-        '& .MuiChip-label': { color: '#0000007a' }
-      }
-      break
-    }
-    case CourseStatus.PENDING: {
-      label = 'Chờ duyệt'
-      styles = {
-        backgroundColor: '#d4f7ff',
-        '& .MuiChip-label': { color: '#5badd0' }
-      }
-      break
-    }
     case CourseStatus.PUBLISHED: {
       label = 'Đã công khai'
       styles = {

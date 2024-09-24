@@ -118,8 +118,6 @@ export const CoursesColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
     },
     filterVariant: 'multi-select',
     filterSelectOptions: [
-      { label: 'Bản nháp', value: CourseStatus.DRAFT },
-      { label: 'Chờ duyệt', value: CourseStatus.PENDING },
       { label: 'Đang công khai', value: CourseStatus.PUBLISHED },
       { label: 'Đang diễn ra', value: CourseStatus.IN_PROGRESS },
       { label: 'Đã kết thúc', value: CourseStatus.COMPLETED },
