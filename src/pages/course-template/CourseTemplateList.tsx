@@ -96,9 +96,8 @@ export default function CourseTemplateList() {
           onPaginationChange: setPagination,
           onSortingChange: setSorting,
           onColumnFiltersChange: setColumnFilters,
-          enableColumnResizing: true,
-          muiTableBodyRowProps: () => ({
-            onClick: () => navigate(protectedRoute.dashboard.path),
+          muiTableBodyRowProps: ({ row }) => ({
+            onClick: () => navigate(protectedRoute.courseTemplateDetail.path.replace(':id', row.original._id)),
             sx: {
               cursor: 'pointer'
             }

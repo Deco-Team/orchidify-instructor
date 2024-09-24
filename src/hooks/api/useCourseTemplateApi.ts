@@ -1,7 +1,10 @@
 import { useCallback } from 'react'
 import { IdResponseDto, ListResponseDto } from '~/data/common.dto'
 import { useProtectedApi } from './useProtectedApi'
-import { CourseTemplateListItemResponseDto } from '~/data/course-template/course-template.dto'
+import {
+  CourseTemplateDetailResponseDto,
+  CourseTemplateListItemResponseDto
+} from '~/data/course-template/course-template.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 import { CloudinaryFileUploadedInfo } from '~/components/cloudinary/cloudinary-type'
@@ -85,11 +88,30 @@ export const useCourseTemplateApi = () => {
 
       return {
         data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết mẫu khóa học') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  const getCourseTemplateById = useCallback(
+    async (courseTemplateId: string) => {
+      const endpoint = `${ROOT_ENDPOINT}/${courseTemplateId}`
+      const result = await callAppProtectedApi<CourseTemplateDetailResponseDto>(endpoint, 'GET')
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
         error: { message: APP_MESSAGE.ACTION_DID_FAILED('Tạo mẫu khóa học') } as ErrorResponseDto
       }
     },
     [callAppProtectedApi]
   )
 
-  return { getCourseTemplateList, createCourseTemplate }
+  return { getCourseTemplateList, getCourseTemplateById, createCourseTemplate }
 }

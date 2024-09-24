@@ -9,12 +9,12 @@ export const courseTemplateColumns: MRT_ColumnDef<CourseTemplateListItemResponse
   {
     accessorKey: 'title',
     header: 'Mẫu khóa học',
-    grow: 1
+    size: 500
   },
   {
     accessorKey: 'price',
     header: 'Giá',
-    size: 150,
+    maxSize: 120,
     muiTableHeadCellProps: {
       align: 'right'
     },
@@ -30,7 +30,7 @@ export const courseTemplateColumns: MRT_ColumnDef<CourseTemplateListItemResponse
   {
     accessorKey: 'level',
     header: 'Cấp độ',
-    size: 130,
+    size: 120,
     Cell: ({ cell }) => {
       const level = cell.getValue() as CourseLevel
 
@@ -61,7 +61,7 @@ export const courseTemplateColumns: MRT_ColumnDef<CourseTemplateListItemResponse
   {
     accessorKey: 'type',
     header: 'Thể loại',
-    size: 140
+    size: 180
   },
   {
     accessorKey: 'learnerLimit',
