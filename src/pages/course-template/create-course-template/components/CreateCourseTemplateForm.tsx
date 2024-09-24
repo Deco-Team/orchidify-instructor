@@ -1,24 +1,24 @@
 import { Button } from '@mui/material'
-import { StyledForm } from './CreatCourseForm.styled'
+import { StyledForm } from './CreatCourseTemplateForm.styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import LessonFields from './LessonFields'
 import AssignmentFields from './AssignmentFields'
 import CourseFields from './CourseField'
-import { CreateCourseDto, createCourseSchema } from '~/data/course/createCourse.dto'
-import { useCourseApi } from '~/hooks/api/useCourseApi'
 import { notifyError, notifyLoading, notifySuccess } from '~/utils/toastify'
 import { APP_MESSAGE } from '~/global/app-message'
 import { useBeforeUnload, useNavigate } from 'react-router-dom'
 import { useCallback, useState } from 'react'
+import { CreateCourseTemplateDto, createCourseTemplateSchema } from '~/data/course-template/create-course-template.dto'
+import { useCourseTemplateApi } from '~/hooks/api/useCourseTemplateApi'
 
-const CreateCourseForm = () => {
-  const { createCourse } = useCourseApi()
+const CreateCourseTemplateForm = () => {
+  const { createCourseTemplate } = useCourseTemplateApi()
   const navigate = useNavigate()
 
-  const [savedCourse] = useState<CreateCourseDto | null>(JSON.parse(localStorage.savedCourse || 'null'))
+  const [savedCourse] = useState<CreateCourseTemplateDto | null>(JSON.parse(localStorage.savedTemplate || 'null'))
 
-  const defaultFormValues: CreateCourseDto = {
+  const defaultFormValues: CreateCourseTemplateDto = {
     title: savedCourse?.title || '',
     description: savedCourse?.description || '',
     price: savedCourse?.price || 0,
@@ -49,14 +49,15 @@ const CreateCourseForm = () => {
     control,
     getValues,
     formState: { isSubmitting, errors }
-  } = useForm<CreateCourseDto>({
+  } = useForm<CreateCourseTemplateDto>({
     defaultValues: defaultFormValues,
-    resolver: zodResolver(createCourseSchema)
+    resolver: zodResolver(createCourseTemplateSchema)
   })
 
+  //save form data when user leaves the page
   useBeforeUnload(
     useCallback(() => {
-      localStorage.savedCourse = JSON.stringify(getValues())
+      localStorage.savedTemplate = JSON.stringify(getValues())
     }, [getValues])
   )
 
@@ -86,7 +87,7 @@ const CreateCourseForm = () => {
 
     notifyLoading()
 
-    const { error } = await createCourse({
+    const { data, error } = await createCourseTemplate({
       ...formData,
       thumbnail: formData.thumbnail[0].url,
       lessons: updatedLessons
@@ -96,9 +97,12 @@ const CreateCourseForm = () => {
       notifyError(error.message)
       return
     }
-    localStorage.removeItem('savedCourse')
-    notifySuccess(APP_MESSAGE.ACTION_DID_SUCCESSFULLY('Tạo khóa học'))
-    navigate('/courses')
+
+    if (data) {
+      localStorage.removeItem('savedTemplate')
+      notifySuccess(APP_MESSAGE.ACTION_DID_SUCCESSFULLY('Tạo mẫu khóa học'))
+      navigate(`/course-template/${data._id}`)
+    }
   })
 
   return (
@@ -128,4 +132,4 @@ const CreateCourseForm = () => {
   )
 }
 
-export default CreateCourseForm
+export default CreateCourseTemplateForm

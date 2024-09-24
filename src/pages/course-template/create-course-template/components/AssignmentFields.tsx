@@ -1,5 +1,5 @@
 import { Box, Button, Grid, IconButton, Paper, Typography } from '@mui/material'
-import { HeaderWrapper, Line } from './CreatCourseForm.styled'
+import { HeaderWrapper, Line } from './CreatCourseTemplateForm.styled'
 import React from 'react'
 import { Add, Close } from '@mui/icons-material'
 import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
@@ -7,12 +7,12 @@ import { ControlledFileAreaUpload } from '~/components/form/ControlledFileUpload
 import { Control, FieldArrayWithId, FieldErrors } from 'react-hook-form'
 import { FileFormat, FileSize } from '~/global/constants'
 import { CloudinaryFileUploadedInfo } from '~/components/cloudinary/cloudinary-type'
-import { CreateCourseDto } from '~/data/course/createCourse.dto'
+import { CreateCourseTemplateDto } from '~/data/course-template/create-course-template.dto'
 
 interface AssignmentFieldsProps {
-  control: Control<CreateCourseDto>
-  errors: FieldErrors<CreateCourseDto>
-  assignmentFields: FieldArrayWithId<CreateCourseDto, 'assignments', 'id'>[]
+  control: Control<CreateCourseTemplateDto>
+  errors: FieldErrors<CreateCourseTemplateDto>
+  assignmentFields: FieldArrayWithId<CreateCourseTemplateDto, 'assignments', 'id'>[]
   addAssignment: (assignment: { title: string; description: string; attachment: CloudinaryFileUploadedInfo[] }) => void
   removeAssignment: (index: number) => void
 }
