@@ -52,12 +52,8 @@ const CourseDetailInformation = ({ course }: CourseDetailInformationProps) => {
           <Field label='Cấp độ' content={formatCourseLevel(course.level)} />
           <Field label='Thể loại' content={course.type} />
           <Field label='Trạng thái' statusTag={course.status} />
-          {course.status !== CourseStatus.DRAFT ? (
-            <>
-              <Field label='Ngày bắt đầu' content={new Date(course.startDate).toLocaleDateString('vi-VN')} />
-              <Field label='Số học viên' content={`${course.learnerQuantity}/${course.learnerLimit}`} />
-            </>
-          ) : null}
+          <Field label='Ngày bắt đầu' content={new Date(course.startDate).toLocaleDateString('vi-VN')} />
+          <Field label='Số học viên' content={`${course.learnerQuantity}/${course.learnerLimit}`} />
         </Box>
       </Box>
       <Box marginBottom='1.25rem'>
