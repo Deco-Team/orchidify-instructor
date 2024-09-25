@@ -6,9 +6,10 @@ import { assignmentTemplateColumns } from './assignment-template-columns'
 
 interface AssignmentTemplateTableProps {
   assignments: AssignmentDto[]
+  courseTemplateId: string
 }
 
-const AssignmentTemplateTable = ({ assignments }: AssignmentTemplateTableProps) => {
+const AssignmentTemplateTable = ({ assignments, courseTemplateId }: AssignmentTemplateTableProps) => {
   const navigate = useNavigate()
   return (
     <Table
@@ -22,8 +23,13 @@ const AssignmentTemplateTable = ({ assignments }: AssignmentTemplateTableProps) 
         enableColumnFilters: false,
         enableHiding: false,
         manualSorting: false,
-        muiTableBodyRowProps: () => ({
-          onClick: () => navigate(protectedRoute.dashboard.path),
+        muiTableBodyRowProps: ({ row }) => ({
+          onClick: () =>
+            navigate(
+              protectedRoute.courseTemplateAssignmentDetail.path
+                .replace(':courseId', courseTemplateId)
+                .replace(':assignmentId', row.original._id)
+            ),
           sx: {
             cursor: 'pointer'
           }

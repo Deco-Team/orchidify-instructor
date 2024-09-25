@@ -38,7 +38,11 @@ export default function CourseTemplateDetail() {
     <Box sx={{ marginBottom: '40px' }}>
       <CourseDetailHeader courseStatus={data.status} />
       <CourseDetailInformation courseTemplate={data} />
-      <CourseTemplateDetailResourceAndFeedback lessons={data.lessons} assignments={data.assignments} />
+      <CourseTemplateDetailResourceAndFeedback
+        courseTemplateId={courseTemplateId!}
+        lessons={data.lessons}
+        assignments={data.assignments}
+      />
     </Box>
   ) : (
     <Loading />

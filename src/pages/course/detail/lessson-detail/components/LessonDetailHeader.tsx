@@ -3,15 +3,26 @@ import Breadcrumbs from '~/components/breadscrumbs/Breadscrumbs'
 import { protectedRoute } from '~/routes/routes'
 
 interface LessonDetailHeaderProps {
-  courseId: string
+  id: string
+  type?: string
 }
 
-const LessonDetailHeader = ({ courseId }: LessonDetailHeaderProps) => {
-  const items = [
-    protectedRoute.course,
-    { ...protectedRoute.courseDetail, path: protectedRoute.courseDetail.path.replace(':id', courseId) },
-    protectedRoute.lessonDetail
-  ]
+const LessonDetailHeader = ({ id, type = 'course' }: LessonDetailHeaderProps) => {
+  const items =
+    type === 'course'
+      ? [
+          protectedRoute.course,
+          { ...protectedRoute.courseDetail, path: protectedRoute.courseDetail.path.replace(':id', id) },
+          protectedRoute.lessonDetail
+        ]
+      : [
+          protectedRoute.courseTemplateList,
+          {
+            ...protectedRoute.courseTemplateDetail,
+            path: protectedRoute.courseTemplateDetail.path.replace(':id', id)
+          },
+          protectedRoute.lessonDetail
+        ]
 
   return (
     <Box display='flex' justifyContent='space-between' alignItems='center'>

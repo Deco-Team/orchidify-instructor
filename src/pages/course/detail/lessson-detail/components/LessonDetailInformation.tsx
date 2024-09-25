@@ -29,6 +29,26 @@ const LessonDetailInformation = ({ lesson }: { lesson: LessonDto }) => {
         </Typography>
       </Box>
       <Box>
+        {media.some((value) => value.resource_type === 'video') && (
+          <Typography variant='subtitle1' fontWeight={600} marginBottom='0.5rem' marginTop='1.25rem'>
+            Video bài học
+          </Typography>
+        )}
+        {media.map((value, index) => (
+          <div
+            key={index}
+            style={{
+              boxSizing: 'border-box'
+            }}
+          >
+            {value.resource_type === 'video' ? (
+              <video controls height={200}>
+                <source src={value.url} type='video/mp4' />
+                {APP_MESSAGE.LOAD_DATA_FAILED('video')}
+              </video>
+            ) : undefined}
+          </div>
+        ))}
         <Typography variant='subtitle1' fontWeight={600} marginBottom='0.5rem'>
           Tài nguyên bài học
         </Typography>
@@ -52,24 +72,6 @@ const LessonDetailInformation = ({ lesson }: { lesson: LessonDto }) => {
             </div>
           ))}
         </Carousel>
-        <Typography variant='subtitle1' fontWeight={600} marginBottom='0.5rem' marginTop='1.25rem'>
-          Video bài học
-        </Typography>
-        {media.map((value, index) => (
-          <div
-            key={index}
-            style={{
-              boxSizing: 'border-box'
-            }}
-          >
-            {value.resource_type === 'video' ? (
-              <video width='100%' controls>
-                <source src={value.url} type='video/mp4' />
-                {APP_MESSAGE.LOAD_DATA_FAILED('video')}
-              </video>
-            ) : undefined}
-          </div>
-        ))}
       </Box>
     </Paper>
   )
