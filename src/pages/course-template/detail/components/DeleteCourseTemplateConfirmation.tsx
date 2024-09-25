@@ -22,7 +22,7 @@ const DeleteCourseTemplateConfirmation = ({
     const { data, error } = await deleteCourseTemplate(courseTemplateId)
 
     if (data) {
-      notifySuccess(APP_MESSAGE.ACTION_DID_SUCCESSFULLY('xóa mẫu khóa học'))
+      notifySuccess(APP_MESSAGE.ACTION_DID_SUCCESSFULLY('Xóa mẫu khóa học'))
       onSuccess()
     } else {
       notifyError(error.message)

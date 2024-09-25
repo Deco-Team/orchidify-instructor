@@ -12,6 +12,7 @@ import { InstructorDto } from '~/data/profile/instructor.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { useProfileApi } from '~/hooks/api/useProfileApi'
 import { formatCurrency } from '~/utils/format'
+import PageHeader from '~/components/header/PageHeader'
 
 interface FieldProps {
   label: string
@@ -53,9 +54,7 @@ const Profile = () => {
   return data ? (
     <StyledContainer>
       <TitleWrapper>
-        <Typography variant='h4' fontWeight='bold'>
-          Trang cá nhân
-        </Typography>
+        <PageHeader title='Trang cá nhân' />
         <Button component={Link} to={protectedRoute.editProfile.path} color='warning'>
           Cập nhật
         </Button>

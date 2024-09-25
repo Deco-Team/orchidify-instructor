@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material'
+import { Button } from '@mui/material'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 import { useEffect, useState } from 'react'
 import { ErrorResponseDto } from '~/data/error.dto'
@@ -12,6 +12,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useCourseTemplateApi } from '~/hooks/api/useCourseTemplateApi'
 import { CourseTemplateListItemResponseDto } from '~/data/course-template/course-template.dto'
 import { protectedRoute } from '~/routes/routes'
+import PageHeader from '~/components/header/PageHeader'
 
 export default function CourseTemplateList() {
   const { getCourseTemplateList } = useCourseTemplateApi()
@@ -74,9 +75,7 @@ export default function CourseTemplateList() {
   return (
     <>
       <TitleWrapper>
-        <Typography variant='h4' fontWeight='bold'>
-          Mẫu khóa học
-        </Typography>
+        <PageHeader title='Mẫu khóa học' />
         <Button
           color='secondary'
           component={Link}

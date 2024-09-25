@@ -1,5 +1,5 @@
-import { Box, Button, Typography } from '@mui/material'
-import Breadcrumbs from '~/components/breadscrumbs/Breadscrumbs'
+import { Box, Button } from '@mui/material'
+import PageHeader from '~/components/header/PageHeader'
 import { CourseTemplateStatus } from '~/global/constants'
 import { protectedRoute } from '~/routes/routes'
 
@@ -9,16 +9,11 @@ interface CourseDetailHeaderProps {
 }
 
 const CourseDetailHeader = ({ courseStatus, onDeleteButtonClick }: CourseDetailHeaderProps) => {
-  const items = [protectedRoute.courseTemplateList, protectedRoute.courseTemplateDetail]
+  const breadcrumbsItems = [protectedRoute.courseTemplateList, protectedRoute.courseTemplateDetail]
 
   return (
     <Box display='flex' justifyContent='space-between' alignItems='center'>
-      <Box>
-        <Typography variant='h1' sx={{ fontSize: '2rem', paddingBottom: '8px', fontWeight: 700 }}>
-          Chi tiết mẫu khóa học
-        </Typography>
-        <Breadcrumbs items={items} />
-      </Box>
+      <PageHeader title='Chi tiết mẫu khóa học' breadcrumbsItems={breadcrumbsItems} />
       <Box display='flex' justifyContent='space-between' gap='1.5rem'>
         {courseStatus !== CourseTemplateStatus.REQUESTING ? <Button color='secondary'>Yêu cầu mở</Button> : null}
         {courseStatus !== CourseTemplateStatus.REQUESTING ? <Button color='warning'>Cập nhật</Button> : null}
