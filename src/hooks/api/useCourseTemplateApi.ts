@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { IdResponseDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
+import { BaseMediaDto, IdResponseDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
 import { useProtectedApi } from './useProtectedApi'
 import {
   AssignmentDto,
@@ -30,7 +30,30 @@ interface CreateCourseTemplate {
   assignments: {
     title: string
     description: string
-    attachment: CloudinaryFileUploadedInfo[]
+    attachments: CloudinaryFileUploadedInfo[]
+  }[]
+}
+
+interface UpdateCourseTemplate {
+  title: string
+  description: string
+  price: number
+  level: string
+  type: string
+  thumbnail: string
+  media: BaseMediaDto[]
+  learnerLimit: number
+  lessons: {
+    _id?: string
+    title: string
+    description: string
+    media: BaseMediaDto[]
+  }[]
+  assignments: {
+    _id?: string
+    title: string
+    description: string
+    attachments: BaseMediaDto[]
   }[]
 }
 
@@ -115,6 +138,26 @@ export const useCourseTemplateApi = () => {
     [callAppProtectedApi]
   )
 
+  const updateCourseTemplate = useCallback(
+    async (courseTemplateId: string, courseTemplateData: UpdateCourseTemplate) => {
+      console.log(courseTemplateId, courseTemplateData)
+      const endpoint = `${ROOT_ENDPOINT}/${courseTemplateId}`
+      const result = await callAppProtectedApi<SuccessResponseDto>(endpoint, 'PUT', {}, {}, courseTemplateData)
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Cập nhật mẫu khóa học') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
   const deleteCourseTemplate = useCallback(
     async (courseTemplateId: string) => {
       const endpoint = `${ROOT_ENDPOINT}/${courseTemplateId}`
@@ -178,6 +221,7 @@ export const useCourseTemplateApi = () => {
     createCourseTemplate,
     deleteCourseTemplate,
     getLessonById,
-    getAssignmentById
+    getAssignmentById,
+    updateCourseTemplate
   }
 }

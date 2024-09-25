@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Box,
   FormHelperText,
@@ -41,9 +41,14 @@ export const ControlledFileFieldUpload = <TFieldValues extends FieldValues>({
   const theme = useTheme()
   const {
     field: { onChange, ...field },
-    fieldState: { error }
+    fieldState: { error },
+    formState: { defaultValues }
   } = useController(controller)
-  const [selectedFiles, setSelectedFiles] = useState<CloudinaryFileUploadedInfo[]>([])
+  const [selectedFiles, setSelectedFiles] = useState<CloudinaryFileUploadedInfo[]>(
+    (controller.name
+      .split('.')
+      .reduce((acc, cur) => acc && acc[cur], defaultValues) as unknown as CloudinaryFileUploadedInfo[]) || []
+  )
 
   useEffect(() => {
     onChange(selectedFiles)
@@ -135,9 +140,14 @@ export const ControlledFileAreaUpload = <TFieldValues extends FieldValues>({
   const theme = useTheme()
   const {
     field: { onChange },
-    fieldState: { error }
+    fieldState: { error },
+    formState: { defaultValues }
   } = useController(controller)
-  const [selectedFiles, setSelectedFiles] = useState<CloudinaryFileUploadedInfo[]>([])
+  const [selectedFiles, setSelectedFiles] = useState<CloudinaryFileUploadedInfo[]>(
+    (controller.name
+      .split('.')
+      .reduce((acc, cur) => acc && acc[cur], defaultValues) as unknown as CloudinaryFileUploadedInfo[]) || []
+  )
 
   useEffect(() => {
     onChange(selectedFiles)
@@ -161,58 +171,80 @@ export const ControlledFileAreaUpload = <TFieldValues extends FieldValues>({
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
       <InputLabel sx={{ color: '#000000' }}>{label}</InputLabel>
       {selectedFiles.length ? (
-        <Box maxWidth='100%' overflow={'auto'}>
-          <ImageList sx={{ width: 'fit-content', display: 'flex', m: 0, gap: '8px !important' }}>
-            {selectedFiles.map((file, index) => (
-              <ImageListItem key={file.public_id} sx={{ width: '100%', borderRadius: 1, overflow: 'hidden' }}>
-                {file.resource_type === 'video' ? (
-                  <video width='100%' height='250' controls>
-                    <source src={file.url} type='video/mp4' />
-                    {APP_MESSAGE.LOAD_DATA_FAILED('video')}
-                  </video>
-                ) : file.resource_type === 'image' ? (
-                  <img src={file.url} alt={file.display_name} style={{ width: '200px', height: '200px' }} />
-                ) : (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1,
-                      width: '250px',
-                      border: '1px solid #0000001F',
-                      borderRadius: 1,
-                      p: 2
-                    }}
-                  >
-                    <InsertDriveFileOutlined sx={{ width: 24, height: 24 }} />
-                    <Typography
-                      variant='subtitle2'
-                      sx={{ width: '100%', mr: 3, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}
-                    >
-                      {file.original_filename}
-                    </Typography>
-                  </Box>
-                )}
-
-                <ImageListItemBar
+        <Box maxWidth='100%' overflow={'auto'} position={'relative'}>
+          {selectedFiles.map((file, index) =>
+            file.resource_type === 'video' ? (
+              <React.Fragment key={file.public_id}>
+                <video controls style={{ width: '100%', height: '408px' }}>
+                  <source src={file.url} type='video/mp4' />
+                  {APP_MESSAGE.LOAD_DATA_FAILED('video')}
+                </video>
+                <IconButton
+                  sx={{ color: theme.palette.error.main, position: 'absolute', right: 8, top: 8 }}
+                  onClick={() => handleRemoveFile(index)}
+                >
+                  <Delete />
+                </IconButton>
+              </React.Fragment>
+            ) : (
+              file.resource_type === 'raw' && (
+                <Box
+                  key={file.public_id}
                   sx={{
-                    height: '58px',
-                    background:
-                      'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, ' + 'rgba(0,0,0,0.15) 50%, rgba(0,0,0,0) 100%)',
-                    '.MuiImageListItemBar-actionIcon': {
-                      mr: 1
-                    }
+                    display: 'flex',
+                    background: '#f4f4f4',
+                    p: 2,
+                    borderRadius: 2,
+                    border: '2px solid #d7d7d7',
+                    alignItems: 'center',
+                    width: '250px'
                   }}
-                  position='top'
-                  actionIcon={
-                    <IconButton sx={{ color: theme.palette.error.main }} onClick={() => handleRemoveFile(index)}>
-                      <Delete />
-                    </IconButton>
-                  }
-                  actionPosition='right'
-                />
-              </ImageListItem>
-            ))}
+                >
+                  <InsertDriveFileOutlined />
+                  <Typography
+                    variant='subtitle1'
+                    sx={{ width: '100%', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', ml: 1 }}
+                  >
+                    {file.original_filename}
+                  </Typography>
+                  <IconButton
+                    size='small'
+                    sx={{ color: theme.palette.error.main }}
+                    onClick={() => handleRemoveFile(index)}
+                  >
+                    <Delete />
+                  </IconButton>
+                </Box>
+              )
+            )
+          )}
+          <ImageList sx={{ width: 'fit-content', display: 'flex', m: 0, gap: '8px !important' }}>
+            {selectedFiles.map(
+              (file, index) =>
+                file.resource_type === 'image' && (
+                  <ImageListItem key={file.public_id} sx={{ width: '100%', borderRadius: 1, overflow: 'hidden' }}>
+                    <img src={file.url} alt={file.display_name} style={{ width: '200px', height: '200px' }} />
+                    <ImageListItemBar
+                      sx={{
+                        height: '58px',
+                        background:
+                          'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, ' +
+                          'rgba(0,0,0,0.15) 50%, rgba(0,0,0,0) 100%)',
+                        '.MuiImageListItemBar-actionIcon': {
+                          mr: 1
+                        }
+                      }}
+                      position='top'
+                      actionIcon={
+                        <IconButton sx={{ color: theme.palette.error.main }} onClick={() => handleRemoveFile(index)}>
+                          <Delete />
+                        </IconButton>
+                      }
+                      actionPosition='right'
+                    />
+                  </ImageListItem>
+                )
+            )}
           </ImageList>
         </Box>
       ) : null}

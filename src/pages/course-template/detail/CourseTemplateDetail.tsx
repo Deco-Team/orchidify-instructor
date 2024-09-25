@@ -51,7 +51,11 @@ export default function CourseTemplateDetail() {
   return data ? (
     <>
       <Box sx={{ marginBottom: '40px' }}>
-        <CourseDetailHeader courseStatus={data.status} onDeleteButtonClick={handleOpenDeleteConfirmation} />
+        <CourseDetailHeader
+          courseStatus={data.status}
+          onDeleteButtonClick={handleOpenDeleteConfirmation}
+          courseTemplateId={data._id}
+        />
         <CourseDetailInformation courseTemplate={data} />
         <CourseTemplateDetailResourceAndFeedback
           courseTemplateId={data._id}

@@ -1,19 +1,19 @@
 import { Box, Button, Grid, IconButton, Paper, Typography } from '@mui/material'
-import { HeaderWrapper, Line } from './CreatCourseTemplateForm.styled'
+import { HeaderWrapper, Line } from './UpdateCourseTemplateForm.styled'
 import React from 'react'
 import { Add, Close } from '@mui/icons-material'
 import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
 import { ControlledFileAreaUpload } from '~/components/form/ControlledFileUpload'
 import { Control, FieldArrayWithId, FieldErrors } from 'react-hook-form'
 import { FileFormat, FileSize } from '~/global/constants'
-import { CloudinaryFileUploadedInfo } from '~/components/cloudinary/cloudinary-type'
-import { CreateCourseTemplateDto } from '~/data/course-template/create-course-template.dto'
+import { BaseMediaDto } from '~/data/common.dto'
+import { UpdateCourseTemplateDto } from '~/data/course-template/update-course-template.dto'
 
 interface AssignmentFieldsProps {
-  control: Control<CreateCourseTemplateDto>
-  errors: FieldErrors<CreateCourseTemplateDto>
-  assignmentFields: FieldArrayWithId<CreateCourseTemplateDto, 'assignments', 'id'>[]
-  addAssignment: (assignment: { title: string; description: string; attachments: CloudinaryFileUploadedInfo[] }) => void
+  control: Control<UpdateCourseTemplateDto>
+  errors: FieldErrors<UpdateCourseTemplateDto>
+  assignmentFields: FieldArrayWithId<UpdateCourseTemplateDto, 'assignments', 'id'>[]
+  addAssignment: (assignment: { title: string; description: string; attachments: BaseMediaDto[] }) => void
   removeAssignment: (index: number) => void
 }
 
@@ -101,7 +101,7 @@ const AssignmentFields = ({
           endIcon={<Add />}
           sx={{ maxWidth: 'fit-content' }}
         >
-          Thêm bài học
+          Thêm bài tập
         </Button>
       )}
     </Paper>

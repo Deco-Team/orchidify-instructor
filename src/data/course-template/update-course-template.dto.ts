@@ -1,31 +1,33 @@
 import { z } from 'zod'
-import { CloudinaryFileUploadedInfo } from '~/components/cloudinary/cloudinary-type'
 import { APP_MESSAGE } from '~/global/app-message'
 import { formatCurrency } from '~/utils/format'
+import { BaseMediaDto } from '../common.dto'
 
-export type CreateCourseTemplateDto = {
+export type UpdateCourseTemplateDto = {
   title: string
   description: string
   price: number
   level: string
   type: string
-  thumbnail: CloudinaryFileUploadedInfo[]
-  media: CloudinaryFileUploadedInfo[]
+  thumbnail: BaseMediaDto[]
+  media: BaseMediaDto[]
   learnerLimit: number
   lessons: {
+    _id?: string
     title: string
     description: string
-    mediaVideo: CloudinaryFileUploadedInfo[]
-    mediaImages: CloudinaryFileUploadedInfo[]
+    mediaVideo: BaseMediaDto[]
+    mediaImages: BaseMediaDto[]
   }[]
   assignments: {
+    _id?: string
     title: string
     description: string
-    attachments: CloudinaryFileUploadedInfo[]
+    attachments: BaseMediaDto[]
   }[]
 }
 
-export const createCourseTemplateSchema = z.object({
+export const updateCourseTemplateSchema = z.object({
   title: z
     .string()
     .trim()
@@ -57,6 +59,7 @@ export const createCourseTemplateSchema = z.object({
   lessons: z
     .array(
       z.object({
+        _id: z.string().optional(),
         title: z
           .string()
           .trim()
@@ -76,6 +79,7 @@ export const createCourseTemplateSchema = z.object({
   assignments: z
     .array(
       z.object({
+        _id: z.string().optional(),
         title: z
           .string()
           .trim()

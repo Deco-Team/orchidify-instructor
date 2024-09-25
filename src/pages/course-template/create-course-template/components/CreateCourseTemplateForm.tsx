@@ -4,13 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import LessonFields from './LessonFields'
 import AssignmentFields from './AssignmentFields'
-import CourseFields from './CourseField'
 import { notifyError, notifyLoading, notifySuccess } from '~/utils/toastify'
 import { APP_MESSAGE } from '~/global/app-message'
 import { useBeforeUnload, useNavigate } from 'react-router-dom'
 import { useCallback, useState } from 'react'
 import { CreateCourseTemplateDto, createCourseTemplateSchema } from '~/data/course-template/create-course-template.dto'
 import { useCourseTemplateApi } from '~/hooks/api/useCourseTemplateApi'
+import CourseFields from './CourseFields'
 
 const CreateCourseTemplateForm = () => {
   const { createCourseTemplate } = useCourseTemplateApi()
@@ -39,7 +39,7 @@ const CreateCourseTemplateForm = () => {
       {
         title: '',
         description: '',
-        attachment: []
+        attachments: []
       }
     ]
   }
