@@ -1,10 +1,10 @@
 import { InsertDriveFileOutlined } from '@mui/icons-material'
 import { Box, Divider, Paper, Typography } from '@mui/material'
 import Carousel from '~/components/slider/Carousel'
-import { AssignmentDto } from '~/data/course/course.dto'
+import { AssignmentDto } from '~/data/course-template/course-template.dto'
 
 const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto }) => {
-  const { title, description, attachment } = assignment
+  const { index, title, description, attachments } = assignment
 
   const handleDownload = (url: string) => {
     const pdfUrl = url
@@ -27,7 +27,7 @@ const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto
       <Box display='flex' gap='1rem' marginBottom='1.25rem'>
         <Box display='flex' flexDirection='column' justifyContent='space-between' flexGrow='1'>
           <Typography variant='subtitle1' fontWeight={600}>
-            Bài tập: {title}
+            Bài tập #{index + 1}: {title}
           </Typography>
         </Box>
       </Box>
@@ -44,7 +44,7 @@ const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto
           Tài liệu
         </Typography>
         <Carousel>
-          {attachment.map((value, index) => (
+          {attachments.map((value, index) => (
             <div
               key={index}
               style={{

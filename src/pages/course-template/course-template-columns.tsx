@@ -9,7 +9,7 @@ export const courseTemplateColumns: MRT_ColumnDef<CourseTemplateListItemResponse
   {
     accessorKey: 'title',
     header: 'Mẫu khóa học',
-    size: 500
+    size: 300
   },
   {
     accessorKey: 'price',

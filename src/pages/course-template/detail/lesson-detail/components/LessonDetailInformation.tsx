@@ -1,10 +1,11 @@
 import { Box, Divider, Paper, Typography } from '@mui/material'
 import Carousel from '~/components/slider/Carousel'
-import { LessonDto } from '~/data/course/course.dto'
+import { LessonDto } from '~/data/course-template/course-template.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 
 const LessonDetailInformation = ({ lesson }: { lesson: LessonDto }) => {
-  const { title, description, media } = lesson
+  const { index, title, description, media } = lesson
+
   return (
     <Paper sx={{ width: '100%', marginY: '1.25rem', padding: '1.5rem' }}>
       <Box display='flex' alignItems='center' marginBottom='1.25rem'>
@@ -16,7 +17,7 @@ const LessonDetailInformation = ({ lesson }: { lesson: LessonDto }) => {
       <Box display='flex' gap='1rem' marginBottom='1.25rem'>
         <Box display='flex' flexDirection='column' justifyContent='space-between' flexGrow='1'>
           <Typography variant='subtitle1' fontWeight={600}>
-            Bài học: {title}
+            Bài học #{index + 1}: {title}
           </Typography>
         </Box>
       </Box>
