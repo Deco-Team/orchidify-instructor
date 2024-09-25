@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, Avatar as MuiAvatar } from '@mui/material'
+import { Box } from '@mui/material'
 
 export const StyledForm = styled.form`
   display: flex;
@@ -17,12 +17,6 @@ export const HeaderWrapper = styled(Box)`
   gap: 0.5rem;
   flex-grow: 1;
   align-items: center;
-`
-
-export const Avatar = styled(MuiAvatar)`
-  height: 160px;
-  width: 160px;
-  object-fit: cover;
 `
 
 export const Line = styled(Box)`

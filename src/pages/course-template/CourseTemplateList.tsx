@@ -30,7 +30,7 @@ export default function CourseTemplateList() {
   })
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
-    pageSize: 5
+    pageSize: 10
   })
   const [sorting, setSorting] = useState<MRT_SortingState>([])
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
@@ -80,7 +80,7 @@ export default function CourseTemplateList() {
         <Button
           color='secondary'
           component={Link}
-          to={protectedRoute.dashboard.path}
+          to={protectedRoute.createCourseTemplate.path}
           sx={{ marginRight: '24px' }}
           endIcon={<Add />}
         >

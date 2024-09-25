@@ -1,14 +1,14 @@
 import { Grid, Paper, Typography } from '@mui/material'
-import { HeaderWrapper, Line } from './CreatCourseForm.styled'
+import { HeaderWrapper, Line } from './CreatCourseTemplateForm.styled'
 import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
 import ControlledSelect from '~/components/form/ControlledSelect'
 import { ControlledFileAreaUpload, ControlledFileFieldUpload } from '~/components/form/ControlledFileUpload'
 import { FileFormat, FileSize } from '~/global/constants'
 import { Control } from 'react-hook-form'
-import { CreateCourseDto } from '~/data/course/createCourse.dto'
+import { CreateCourseTemplateDto } from '~/data/course-template/create-course-template.dto'
 
 interface CourseFieldsProps {
-  control: Control<CreateCourseDto>
+  control: Control<CreateCourseTemplateDto>
 }
 
 const CourseFields = ({ control }: CourseFieldsProps) => {
