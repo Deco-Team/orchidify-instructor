@@ -29,6 +29,7 @@ export type CourseTemplateDetailResponseDto = {
 
 export interface LessonDto {
   _id: string
+  index: number
   title: string
   description: string
   media: BaseMediaDto[]
@@ -36,7 +37,8 @@ export interface LessonDto {
 
 export interface AssignmentDto {
   _id: string
+  index: number
   title: string
   description: string
-  attachment: BaseMediaDto[]
+  attachments: BaseMediaDto[]
 }
