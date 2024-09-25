@@ -36,7 +36,7 @@ const LessonDetail = () => {
 
   return data ? (
     <Box sx={{ marginBottom: '40px', display: 'flex', flexDirection: 'column' }}>
-      <LessonDetailHeader courseId={courseId!} />
+      <LessonDetailHeader id={courseId!} />
       <LessonDetailInformation lesson={data} />
       <Button size='large' sx={{ width: 'fit-content', alignSelf: 'center' }} color='primary'>
         Tải lên tài nguyên

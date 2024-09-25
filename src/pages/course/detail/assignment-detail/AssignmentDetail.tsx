@@ -35,7 +35,7 @@ const AssignmentDetail = () => {
 
   return data ? (
     <Box sx={{ marginBottom: '40px', display: 'flex', flexDirection: 'column' }}>
-      <AssignmentDetailHeader courseId={courseId!} />
+      <AssignmentDetailHeader id={courseId!} />
       <AssignmentDetailInformation assignment={data} />
       <Button size='large' sx={{ width: 'fit-content', alignSelf: 'center' }} color='primary'>
         Bài làm học viên
