@@ -5,10 +5,10 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { protectedRoute } from '~/routes/routes'
 import { notifyError } from '~/utils/toastify'
-import AssignmentDetailHeader from '~/pages/course/detail/assignment-detail/components/AssignmentDetailHeader'
-import AssignmentDetailInformation from '~/pages/course/detail/assignment-detail/components/AssignmentDetailInformation'
 import { AssignmentDto } from '~/data/course-template/course-template.dto'
 import { useCourseTemplateApi } from '~/hooks/api/useCourseTemplateApi'
+import AssignmentDetailHeader from './components/AssignmentDetailHeader'
+import AssignmentDetailInformation from './components/AssignmentDetailInformation'
 
 const AssignmentDetail = () => {
   const [data, setData] = useState<AssignmentDto | null>(null)
@@ -35,7 +35,7 @@ const AssignmentDetail = () => {
 
   return data ? (
     <Box sx={{ marginBottom: '40px', display: 'flex', flexDirection: 'column' }}>
-      <AssignmentDetailHeader type='template' id={courseId!} />
+      <AssignmentDetailHeader id={courseId!} />
       <AssignmentDetailInformation assignment={data} />
     </Box>
   ) : (

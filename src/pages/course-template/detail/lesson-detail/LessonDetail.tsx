@@ -5,10 +5,10 @@ import Loading from '~/components/loading/Loading'
 import { LessonDto } from '~/data/course-template/course-template.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { useCourseTemplateApi } from '~/hooks/api/useCourseTemplateApi'
-import LessonDetailHeader from '~/pages/course/detail/lessson-detail/components/LessonDetailHeader'
-import LessonDetailInformation from '~/pages/course/detail/lessson-detail/components/LessonDetailInformation'
 import { protectedRoute } from '~/routes/routes'
 import { notifyError } from '~/utils/toastify'
+import LessonDetailHeader from './components/LessonDetailHeader'
+import LessonDetailInformation from './components/LessonDetailInformation'
 
 const LessonDetail = () => {
   const [data, setData] = useState<LessonDto | null>(null)
@@ -35,7 +35,7 @@ const LessonDetail = () => {
 
   return data ? (
     <Box sx={{ marginBottom: '40px', display: 'flex', flexDirection: 'column' }}>
-      <LessonDetailHeader type='template' id={courseTemplatesId!} />
+      <LessonDetailHeader id={courseTemplatesId!} />
       <LessonDetailInformation lesson={data} />
     </Box>
   ) : (
