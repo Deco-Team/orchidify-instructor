@@ -1,14 +1,14 @@
-import { Box, Button } from '@mui/material'
+import { Box } from '@mui/material'
 import { useEffect, useState } from 'react'
 import Loading from '~/components/loading/Loading'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ErrorResponseDto } from '~/data/error.dto'
-import { useCourseApi } from '~/hooks/api/useCourseApi'
 import { protectedRoute } from '~/routes/routes'
 import { notifyError } from '~/utils/toastify'
+import { AssignmentDto } from '~/data/course-template/course-template.dto'
+import { useCourseTemplateApi } from '~/hooks/api/useCourseTemplateApi'
 import AssignmentDetailHeader from './components/AssignmentDetailHeader'
 import AssignmentDetailInformation from './components/AssignmentDetailInformation'
-import { AssignmentDto } from '~/data/course/course.dto'
 
 const AssignmentDetail = () => {
   const [data, setData] = useState<AssignmentDto | null>(null)
@@ -17,7 +17,7 @@ const AssignmentDetail = () => {
   const navigate = useNavigate()
   const courseId = params.courseId
   const assignmentId = params.assignmentId
-  const { getAssignmentById } = useCourseApi()
+  const { getAssignmentById } = useCourseTemplateApi()
   useEffect(() => {
     if (courseId && assignmentId) {
       ;(async () => {
@@ -37,9 +37,6 @@ const AssignmentDetail = () => {
     <Box sx={{ marginBottom: '40px', display: 'flex', flexDirection: 'column' }}>
       <AssignmentDetailHeader id={courseId!} />
       <AssignmentDetailInformation assignment={data} />
-      <Button size='large' sx={{ width: 'fit-content', alignSelf: 'center' }} color='primary'>
-        Bài làm học viên
-      </Button>
     </Box>
   ) : (
     <Loading />

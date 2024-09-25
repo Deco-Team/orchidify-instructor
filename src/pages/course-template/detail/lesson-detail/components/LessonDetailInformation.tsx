@@ -16,7 +16,7 @@ const LessonDetailInformation = ({ lesson }: { lesson: LessonDto }) => {
       <Box display='flex' gap='1rem' marginBottom='1.25rem'>
         <Box display='flex' flexDirection='column' justifyContent='space-between' flexGrow='1'>
           <Typography variant='subtitle1' fontWeight={600}>
-            Bài học #1: {title}
+            Bài học: {title}
           </Typography>
         </Box>
       </Box>

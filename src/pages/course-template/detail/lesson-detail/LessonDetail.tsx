@@ -1,33 +1,32 @@
-import { Box, Button } from '@mui/material'
+import { Box } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Loading from '~/components/loading/Loading'
-import LessonDetailHeader from './components/LessonDetailHeader'
-import LessonDetailInformation from './components/LessonDetailInformation'
-import { useParams, useNavigate } from 'react-router-dom'
+import { LessonDto } from '~/data/course-template/course-template.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
-import { useCourseApi } from '~/hooks/api/useCourseApi'
+import { useCourseTemplateApi } from '~/hooks/api/useCourseTemplateApi'
 import { protectedRoute } from '~/routes/routes'
 import { notifyError } from '~/utils/toastify'
-import { LessonDto } from '~/data/course/course.dto'
+import LessonDetailHeader from './components/LessonDetailHeader'
+import LessonDetailInformation from './components/LessonDetailInformation'
 
 const LessonDetail = () => {
   const [data, setData] = useState<LessonDto | null>(null)
   const [error, setError] = useState<ErrorResponseDto | null>(null)
   const params = useParams()
   const navigate = useNavigate()
-  const courseId = params.courseId
+  const courseTemplatesId = params.courseId
   const lessonId = params.lessonId
-  const { getLessonById } = useCourseApi()
-
+  const { getLessonById } = useCourseTemplateApi()
   useEffect(() => {
-    if (courseId && lessonId) {
+    if (courseTemplatesId && lessonId) {
       ;(async () => {
-        const { data: lesson, error: apiError } = await getLessonById(courseId, lessonId)
+        const { data: lesson, error: apiError } = await getLessonById(courseTemplatesId, lessonId)
         setData(lesson as unknown as LessonDto)
         setError(apiError)
       })()
     }
-  }, [courseId, getLessonById, lessonId])
+  }, [courseTemplatesId, getLessonById, lessonId])
 
   if (error) {
     notifyError(error.message)
@@ -36,11 +35,8 @@ const LessonDetail = () => {
 
   return data ? (
     <Box sx={{ marginBottom: '40px', display: 'flex', flexDirection: 'column' }}>
-      <LessonDetailHeader id={courseId!} />
+      <LessonDetailHeader id={courseTemplatesId!} />
       <LessonDetailInformation lesson={data} />
-      <Button size='large' sx={{ width: 'fit-content', alignSelf: 'center' }} color='primary'>
-        Tải lên tài nguyên
-      </Button>
     </Box>
   ) : (
     <Loading />

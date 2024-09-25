@@ -43,7 +43,7 @@ export const courseTemplateColumns: MRT_ColumnDef<CourseTemplateListItemResponse
               : level === CourseLevel.INTERMEDIATE
                 ? '#ffcf22'
                 : level === CourseLevel.ADVANCED
-                  ? 'f66868'
+                  ? '#f66868'
                   : undefined
           }
         >

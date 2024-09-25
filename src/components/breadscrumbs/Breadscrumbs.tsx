@@ -5,13 +5,13 @@ const LinkRouter = (props: MuiLinkProps & LinkProps) => {
   return <MuiLink {...props} component={Link} />
 }
 
-interface BreadcrumbItem {
+export interface BreadcrumbsItem {
   name: string
   path: string
 }
 
 interface BreadcrumbsProps {
-  items: BreadcrumbItem[]
+  items: BreadcrumbsItem[]
 }
 
 const Breadcrumbs = ({ items }: BreadcrumbsProps) => {

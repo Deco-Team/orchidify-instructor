@@ -2,6 +2,10 @@ import { lazy } from 'react'
 
 const Home = lazy(() => import('~/pages/Home'))
 const CourseTemplateList = lazy(() => import('~/pages/course-template/CourseTemplateList'))
+const CourseTemplateLessonDetail = lazy(() => import('~/pages/course-template/detail/lesson-detail/LessonDetail'))
+const AssignmentTemplateLessonDetail = lazy(
+  () => import('~/pages/course-template/detail/assignment-detail/AssignmentDetail')
+)
 const CourseTemplateDetail = lazy(() => import('~/pages/course-template/detail/CourseTemplateDetail'))
 const Courses = lazy(() => import('~/pages/course/Courses'))
 const CourseDetail = lazy(() => import('~/pages/course/detail/CourseDetail'))
@@ -69,5 +73,15 @@ export const protectedRoute = {
     name: 'Cập nhật trang cá nhân ',
     path: '/profile/edit',
     Component: EditProfile
+  },
+  courseTemplateLessonDetail: {
+    name: 'Chi tiết mẫu bài tập',
+    path: '/course-templates/:courseId/lesson/:lessonId',
+    Component: CourseTemplateLessonDetail
+  },
+  courseTemplateAssignmentDetail: {
+    name: 'Chi tiết mẫu bài tập',
+    path: '/course-templates/:courseId/assignment/:assignmentId',
+    Component: AssignmentTemplateLessonDetail
   }
 }

@@ -6,9 +6,10 @@ import { LessonDto } from '~/data/course-template/course-template.dto'
 
 interface LessonTemplateTableProps {
   lessons: LessonDto[]
+  courseTemplateId: string
 }
 
-const LessonTemplateTable = ({ lessons }: LessonTemplateTableProps) => {
+const LessonTemplateTable = ({ lessons, courseTemplateId }: LessonTemplateTableProps) => {
   const navigate = useNavigate()
   return (
     <Table
@@ -22,8 +23,13 @@ const LessonTemplateTable = ({ lessons }: LessonTemplateTableProps) => {
         enableColumnFilters: false,
         enableHiding: false,
         manualSorting: false,
-        muiTableBodyRowProps: () => ({
-          onClick: () => navigate(protectedRoute.dashboard.path),
+        muiTableBodyRowProps: ({ row }) => ({
+          onClick: () =>
+            navigate(
+              protectedRoute.courseTemplateLessonDetail.path
+                .replace(':courseId', courseTemplateId)
+                .replace(':lessonId', row.original._id)
+            ),
           sx: {
             cursor: 'pointer'
           }
