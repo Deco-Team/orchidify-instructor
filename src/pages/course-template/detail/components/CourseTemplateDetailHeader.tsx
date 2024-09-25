@@ -5,9 +5,10 @@ import { protectedRoute } from '~/routes/routes'
 
 interface CourseDetailHeaderProps {
   courseStatus: CourseTemplateStatus
+  onDeleteButtonClick: () => void
 }
 
-const CourseDetailHeader = ({ courseStatus }: CourseDetailHeaderProps) => {
+const CourseDetailHeader = ({ courseStatus, onDeleteButtonClick }: CourseDetailHeaderProps) => {
   const items = [protectedRoute.courseTemplateList, protectedRoute.courseTemplateDetail]
 
   return (
@@ -20,8 +21,12 @@ const CourseDetailHeader = ({ courseStatus }: CourseDetailHeaderProps) => {
       </Box>
       <Box display='flex' justifyContent='space-between' gap='1.5rem'>
         {courseStatus !== CourseTemplateStatus.REQUESTING ? <Button color='secondary'>Yêu cầu mở</Button> : null}
-        {courseStatus !== CourseTemplateStatus.REQUESTING ? <Button color='warning'>Cập nhật</Button> : undefined}
-        {courseStatus === CourseTemplateStatus.DRAFT ? <Button color='error'>Xóa</Button> : undefined}
+        {courseStatus !== CourseTemplateStatus.REQUESTING ? <Button color='warning'>Cập nhật</Button> : null}
+        {courseStatus === CourseTemplateStatus.DRAFT ? (
+          <Button color='error' onClick={onDeleteButtonClick}>
+            Xóa
+          </Button>
+        ) : null}
       </Box>
     </Box>
   )

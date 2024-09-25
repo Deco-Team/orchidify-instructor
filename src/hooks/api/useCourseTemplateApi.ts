@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { IdResponseDto, ListResponseDto } from '~/data/common.dto'
+import { IdResponseDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
 import { useProtectedApi } from './useProtectedApi'
 import {
   AssignmentDto,
@@ -77,6 +77,25 @@ export const useCourseTemplateApi = () => {
     [callAppProtectedApi]
   )
 
+  const getCourseTemplateById = useCallback(
+    async (courseTemplateId: string) => {
+      const endpoint = `${ROOT_ENDPOINT}/${courseTemplateId}`
+      const result = await callAppProtectedApi<CourseTemplateDetailResponseDto>(endpoint, 'GET')
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Tạo mẫu khóa học') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
   const createCourseTemplate = useCallback(
     async (course: CreateCourseTemplate) => {
       const endpoint = `${ROOT_ENDPOINT}`
@@ -96,10 +115,10 @@ export const useCourseTemplateApi = () => {
     [callAppProtectedApi]
   )
 
-  const getCourseTemplateById = useCallback(
+  const deleteCourseTemplate = useCallback(
     async (courseTemplateId: string) => {
       const endpoint = `${ROOT_ENDPOINT}/${courseTemplateId}`
-      const result = await callAppProtectedApi<CourseTemplateDetailResponseDto>(endpoint, 'GET')
+      const result = await callAppProtectedApi<SuccessResponseDto>(endpoint, 'DELETE')
 
       if (result) {
         const { data, error } = result
@@ -109,7 +128,7 @@ export const useCourseTemplateApi = () => {
 
       return {
         data: null,
-        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Tạo mẫu khóa học') } as ErrorResponseDto
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Xóa mẫu khóa học') } as ErrorResponseDto
       }
     },
     [callAppProtectedApi]
@@ -153,5 +172,12 @@ export const useCourseTemplateApi = () => {
     [callAppProtectedApi]
   )
 
-  return { getCourseTemplateList, getCourseTemplateById, createCourseTemplate, getLessonById, getAssignmentById }
+  return {
+    getCourseTemplateList,
+    getCourseTemplateById,
+    createCourseTemplate,
+    deleteCourseTemplate,
+    getLessonById,
+    getAssignmentById
+  }
 }

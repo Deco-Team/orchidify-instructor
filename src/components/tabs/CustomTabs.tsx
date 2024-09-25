@@ -32,6 +32,7 @@ const CustomTabs = ({ name, items }: CustomTabsProps) => {
       </Box>
       {items.map((item, index) => (
         <div
+          key={`item.tabpanel-${index}`}
           role='tabpanel'
           hidden={currentTab !== index}
           id={`${name}-tabpanel-${item.label}`}
