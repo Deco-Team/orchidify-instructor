@@ -4,18 +4,7 @@ import { MRT_Localization_VI } from 'material-react-table/locales/vi'
 
 interface TableProps<TData extends MRT_RowData> {
   title: string
-  tableOptions: Omit<
-    MRT_TableOptions<TData>,
-    | 'manualPagination'
-    | 'manualSorting'
-    | 'manualFiltering'
-    | 'enableDensityToggle'
-    | 'enableGlobalFilter'
-    | 'enableFilterMatchHighlighting'
-    | 'localization'
-    | 'muiTablePaperProps'
-    | 'renderTopToolbarCustomActions'
-  >
+  tableOptions: MRT_TableOptions<TData>
 }
 
 const Table = <TData extends MRT_RowData>({ title, tableOptions }: TableProps<TData>) => {
@@ -30,8 +19,24 @@ const Table = <TData extends MRT_RowData>({ title, tableOptions }: TableProps<TD
     enableFilterMatchHighlighting: false,
     localization: MRT_Localization_VI,
     muiTablePaperProps: {
-      style: {
+      sx: {
         marginTop: '1.5rem'
+      }
+    },
+    muiTableHeadProps: {
+      sx: {
+        height: '56px'
+      }
+    },
+    muiTableHeadRowProps: {
+      sx: {
+        backgroundColor: '#f6f6f6',
+        border: '1px solid #0000001f'
+      }
+    },
+    muiTableHeadCellProps: {
+      sx: {
+        verticalAlign: 'middle'
       }
     },
     renderTopToolbarCustomActions: () => (

@@ -2,6 +2,7 @@ import { lazy } from 'react'
 
 const Home = lazy(() => import('~/pages/Home'))
 const CourseTemplateList = lazy(() => import('~/pages/course-template/CourseTemplateList'))
+const CourseTemplateDetail = lazy(() => import('~/pages/course-template/detail/CourseTemplateDetail'))
 const Courses = lazy(() => import('~/pages/course/Courses'))
 const CourseDetail = lazy(() => import('~/pages/course/detail/CourseDetail'))
 const Login = lazy(() => import('~/pages/login/Login'))
@@ -28,6 +29,11 @@ export const protectedRoute = {
     name: 'Mẫu khóa học',
     path: '/course-templates',
     Component: CourseTemplateList
+  },
+  courseTemplateDetail: {
+    name: 'Chi tiết mẫu khóa học',
+    path: '/course-templates/:id',
+    Component: CourseTemplateDetail
   },
   createCourseTemplate: {
     name: 'Tạo mẫu khóa học',
