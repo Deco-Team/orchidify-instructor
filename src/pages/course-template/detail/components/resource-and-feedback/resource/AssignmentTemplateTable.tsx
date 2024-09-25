@@ -20,6 +20,7 @@ const AssignmentTemplateTable = ({ assignments }: AssignmentTemplateTableProps) 
         enableBottomToolbar: false,
         enableSorting: true,
         enableColumnFilters: false,
+        enableHiding: false,
         manualSorting: false,
         muiTableBodyRowProps: () => ({
           onClick: () => navigate(protectedRoute.dashboard.path),
