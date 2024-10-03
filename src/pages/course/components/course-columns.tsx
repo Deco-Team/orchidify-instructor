@@ -7,6 +7,11 @@ import { formatCourseLevel, formatCurrency } from '~/utils/format'
 
 export const courseColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
   {
+    accessorKey: 'code',
+    header: 'Mã khóa học',
+    size: 120
+  },
+  {
     accessorKey: 'title',
     header: 'Khóa học',
     size: 300
@@ -61,10 +66,10 @@ export const courseColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
   {
     accessorKey: 'type',
     header: 'Thể loại',
-    size: 180
-    // Cell: ({ cell }) => {
-    //   return (cell.getValue() as []).join(', ')
-    // }
+    size: 180,
+    Cell: ({ cell }) => {
+      return (cell.getValue() as []).join(', ')
+    }
   },
   {
     accessorKey: 'learnerLimit',

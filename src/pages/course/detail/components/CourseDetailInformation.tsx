@@ -56,10 +56,11 @@ const CourseDetailInformation = ({ course }: CourseDetailInformationProps) => {
           />
         </Box>
         <Box display='flex' flexDirection='column' gap={1} flexGrow='1'>
+          <Field label='Mã khóa học' content={course.code} />
           <Field label='Tên khóa học' content={course.title} />
           <Field label='Giá' content={formatCurrency(course.price)} />
           <Field label='Cấp độ' content={formatCourseLevel(course.level)} />
-          <Field label='Thể loại' content={course.type} />
+          <Field label='Thể loại' content={course.type.join(', ')} />
           <Field label='Giới hạn học viên' content={course.learnerLimit.toString()} />
           {course.rate !== undefined ? <Field label='Đánh giá' rate={course.rate} /> : null}
           <Field label='Trạng thái' statusTag={course.status} />

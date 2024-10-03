@@ -7,7 +7,7 @@ export type CourseListItemResponseDto = {
   title: string
   price: number
   level: CourseLevel
-  type: string
+  type: string[]
   status: CourseStatus
   learnerLimit: number
   rate: number
@@ -20,7 +20,7 @@ export type CourseDetailResponseDto = {
   description: string
   price: number
   level: CourseLevel
-  type: string
+  type: string[]
   thumbnail: string
   media: BaseMediaDto[]
   status: CourseStatus
