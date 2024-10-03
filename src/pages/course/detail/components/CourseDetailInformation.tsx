@@ -1,17 +1,18 @@
-import { Box, Divider, Paper, Typography } from '@mui/material'
+import { Box, Divider, Paper, Rating, Typography } from '@mui/material'
 import Carousel from '~/components/slider/Carousel'
 import CourseStatusTag from '~/components/tag/CourseStatusTag'
-import { CourseDto } from '~/data/course/course.dto'
+import { CourseDetailResponseDto } from '~/data/course/course.dto'
 import { CourseStatus } from '~/global/constants'
 import { formatCourseLevel, formatCurrency } from '~/utils/format'
 
 interface FieldProps {
   label: string
   content?: string
+  rate?: number
   statusTag?: CourseStatus
 }
 
-const Field: React.FC<FieldProps> = ({ label, content, statusTag }) => (
+const Field: React.FC<FieldProps> = ({ label, content, statusTag, rate }) => (
   <Box display='flex'>
     <Typography variant='subtitle1' fontWeight={600} width={'180px'}>
       {label}
@@ -22,11 +23,19 @@ const Field: React.FC<FieldProps> = ({ label, content, statusTag }) => (
       </Typography>
     )}
     {statusTag && <CourseStatusTag type={statusTag} />}
+    {rate && (
+      <Box display='flex'>
+        <Rating defaultValue={rate} precision={0.5} readOnly />
+        <Typography variant='body1' marginLeft='0.5rem'>
+          {rate}
+        </Typography>
+      </Box>
+    )}
   </Box>
 )
 
 interface CourseDetailInformationProps {
-  course: CourseDto
+  course: CourseDetailResponseDto
 }
 
 const CourseDetailInformation = ({ course }: CourseDetailInformationProps) => {
@@ -43,17 +52,17 @@ const CourseDetailInformation = ({ course }: CourseDetailInformationProps) => {
           <img
             src={course.thumbnail}
             alt={course.title}
-            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
           />
         </Box>
-        <Box display='flex' flexDirection='column' justifyContent='space-between' flexGrow='1'>
+        <Box display='flex' flexDirection='column' gap={1} flexGrow='1'>
           <Field label='Tên khóa học' content={course.title} />
           <Field label='Giá' content={formatCurrency(course.price)} />
           <Field label='Cấp độ' content={formatCourseLevel(course.level)} />
           <Field label='Thể loại' content={course.type} />
+          <Field label='Giới hạn học viên' content={course.learnerLimit.toString()} />
+          {course.rate !== undefined ? <Field label='Đánh giá' rate={course.rate} /> : null}
           <Field label='Trạng thái' statusTag={course.status} />
-          <Field label='Ngày bắt đầu' content={new Date(course.startDate).toLocaleDateString('vi-VN')} />
-          <Field label='Số học viên' content={`${course.learnerQuantity}/${course.learnerLimit}`} />
         </Box>
       </Box>
       <Box marginBottom='1.25rem'>
@@ -62,6 +71,14 @@ const CourseDetailInformation = ({ course }: CourseDetailInformationProps) => {
         </Typography>
         <Typography variant='subtitle1' fontWeight={400}>
           {course.description}
+        </Typography>
+      </Box>
+      <Box marginBottom='1.25rem'>
+        <Typography variant='subtitle1' fontWeight={600} marginBottom='0.5rem'>
+          Dụng cụ cần thiết
+        </Typography>
+        <Typography variant='subtitle1' fontWeight={400}>
+          {course.gardenRequiredToolkits}
         </Typography>
       </Box>
       <Box>
