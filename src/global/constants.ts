@@ -3,14 +3,14 @@ export enum InstructorStatus {
   INACTIVE = 'INACTIVE'
 }
 
-export enum CourseTemplateStatus {
+export enum CourseStatus {
   DRAFT = 'DRAFT',
   REQUESTING = 'REQUESTING',
   ACTIVE = 'ACTIVE',
   DELETED = 'DELETED'
 }
 
-export enum CourseStatus {
+export enum ClassStatus {
   PUBLISHED = 'PUBLISHED',
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
