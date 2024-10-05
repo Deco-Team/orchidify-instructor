@@ -1,42 +1,34 @@
-import { Box, Button, Typography } from '@mui/material'
-import Breadcrumbs from '~/components/breadscrumbs/Breadscrumbs'
+import { Box, Button } from '@mui/material'
+import { Link } from 'react-router-dom'
+import PageHeader from '~/components/header/PageHeader'
 import { CourseStatus } from '~/global/constants'
 import { protectedRoute } from '~/routes/routes'
-import CourseDeleteConfirmation from './CourseDeleteConfirmationModal'
-import { useState } from 'react'
 
 interface CourseDetailHeaderProps {
-  courseId: string
   courseStatus: CourseStatus
-  handleDeleteSuccess: () => void
+  onDeleteButtonClick: () => void
+  courseId: string
 }
 
-const CourseDetailHeader = ({ courseId, courseStatus, handleDeleteSuccess }: CourseDetailHeaderProps) => {
-  const items = [protectedRoute.course, protectedRoute.courseDetail]
-  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false)
-
-  const handleCloseDeleteConfirmation = () => {
-    setOpenDeleteConfirmation(false)
-    handleDeleteSuccess()
-  }
+const CourseDetailHeader = ({ courseStatus, onDeleteButtonClick, courseId }: CourseDetailHeaderProps) => {
+  const breadcrumbsItems = [protectedRoute.courseList, protectedRoute.courseDetail]
 
   return (
     <Box display='flex' justifyContent='space-between' alignItems='center'>
-      <Box>
-        <Typography variant='h1' sx={{ fontSize: '2rem', paddingBottom: '8px', fontWeight: 700 }}>
-          Chi tiết khóa học
-        </Typography>
-        <Breadcrumbs items={items} />
-      </Box>
+      <PageHeader title='Chi tiết khóa học' breadcrumbsItems={breadcrumbsItems} />
       <Box display='flex' justifyContent='space-between' gap='1.5rem'>
-        {courseStatus === CourseStatus.PUBLISHED ? <Button color='warning'>Yêu cầu cập nhật</Button> : undefined}
-        {courseStatus === CourseStatus.PUBLISHED ? <Button color='error'>Yêu cầu xóa</Button> : undefined}
+        {courseStatus !== CourseStatus.REQUESTING ? <Button color='secondary'>Yêu cầu mở</Button> : null}
+        {courseStatus !== CourseStatus.REQUESTING ? (
+          <Button color='warning' component={Link} to={`/courses/${courseId}/update`}>
+            Cập nhật
+          </Button>
+        ) : null}
+        {courseStatus === CourseStatus.DRAFT ? (
+          <Button color='error' onClick={onDeleteButtonClick}>
+            Xóa
+          </Button>
+        ) : null}
       </Box>
-      <CourseDeleteConfirmation
-        courseId={courseId}
-        handleClose={handleCloseDeleteConfirmation}
-        open={openDeleteConfirmation}
-      />
     </Box>
   )
 }

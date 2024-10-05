@@ -3,14 +3,14 @@ export enum InstructorStatus {
   INACTIVE = 'INACTIVE'
 }
 
-export enum CourseTemplateStatus {
+export enum CourseStatus {
   DRAFT = 'DRAFT',
   REQUESTING = 'REQUESTING',
   ACTIVE = 'ACTIVE',
   DELETED = 'DELETED'
 }
 
-export enum CourseStatus {
+export enum ClassStatus {
   PUBLISHED = 'PUBLISHED',
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
@@ -31,6 +31,25 @@ export enum RequestStatus {
   EXPIRED = 'EXPIRED',
   CANCELED = 'CANCELED'
 }
+
+export const CourseType = [
+  {
+    groupName: 'Lan rừng',
+    groupItems: ['Lan phi điệp', 'Lan hải yến']
+  },
+  {
+    groupName: 'Lan công nghiệp',
+    groupItems: ['Dendrobium', 'Cattleya', 'Lan hồ điệp']
+  },
+  {
+    groupName: 'Quá trình',
+    groupItems: ['Cây con', 'Cây trưởng thành', 'Ra hoa', 'Hoa tàn']
+  },
+  {
+    groupName: 'Phương pháp',
+    groupItems: ['Tạo hình', 'Tách chiết', 'Chiết ghép', 'Cấy mô']
+  }
+]
 
 export const FileSize = {
   '5MB': { text: '5MB', size: 1024 * 1024 * 5 },
