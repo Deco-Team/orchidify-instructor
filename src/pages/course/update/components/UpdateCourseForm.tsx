@@ -12,6 +12,8 @@ import AssignmentFields from './AssignmentFields'
 import { CourseDetailResponseDto } from '~/data/course/course.dto'
 import { useCourseApi } from '~/hooks/api/useCourseApi'
 import { UpdateCourseDto, updateCourseSchema } from '~/data/course/update-course.dto'
+import { convertArrayToString, convertStringToArray } from '~/utils/format'
+import GardenToolkitsFields from './GardenToolkitsFields'
 
 interface UpdateCourseFormProps {
   course: CourseDetailResponseDto | null
@@ -57,7 +59,7 @@ const UpdateCourseForm = ({ course }: UpdateCourseFormProps) => {
         attachments: []
       }
     ],
-    gardenRequiredToolkits: course?.gardenRequiredToolkits || ''
+    gardenRequiredToolkits: convertStringToArray(course?.gardenRequiredToolkits || '') || []
   }
 
   const {
@@ -104,7 +106,8 @@ const UpdateCourseForm = ({ course }: UpdateCourseFormProps) => {
     const { data: responseData, error: apiError } = await updateCourse(course?._id || '', {
       ...formData,
       thumbnail: formData.thumbnail[0].url,
-      lessons: updatedLessons
+      lessons: updatedLessons,
+      gardenRequiredToolkits: convertArrayToString(formData.gardenRequiredToolkits)
     })
 
     if (apiError) {
@@ -117,7 +120,14 @@ const UpdateCourseForm = ({ course }: UpdateCourseFormProps) => {
   })
 
   return (
-    <StyledForm onSubmit={onSubmit}>
+    <StyledForm
+      onSubmit={onSubmit}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault()
+        }
+      }}
+    >
       <CourseFields control={control} />
 
       <LessonFields
@@ -135,6 +145,8 @@ const UpdateCourseForm = ({ course }: UpdateCourseFormProps) => {
         addAssignment={addAssignment}
         removeAssignment={removeAssignment}
       />
+
+      <GardenToolkitsFields controller={{ name: 'gardenRequiredToolkits', control: control }} />  
 
       <Button sx={{ maxWidth: 'fit-content' }} disabled={isSubmitting || Object.keys(errors).length > 0} type='submit'>
         Cập nhật khóa học

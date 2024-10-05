@@ -27,7 +27,7 @@ const LessonFields = ({ control, errors, lessonFields, addLesson, removeLesson }
     <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', padding: 3, gap: 2.5, width: '100%' }}>
       <HeaderWrapper>
         <Typography variant='h5' fontWeight={'bold'}>
-          Bài học
+          Cập nhật bài học
         </Typography>
         <Line />
       </HeaderWrapper>

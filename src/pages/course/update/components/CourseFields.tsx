@@ -2,10 +2,11 @@ import { Grid, Paper, Typography } from '@mui/material'
 import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
 import ControlledSelect from '~/components/form/ControlledSelect'
 import { ControlledFileAreaUpload, ControlledFileFieldUpload } from '~/components/form/ControlledFileUpload'
-import { FileFormat, FileSize } from '~/global/constants'
+import { CourseType, FileFormat, FileSize } from '~/global/constants'
 import { Control } from 'react-hook-form'
 import { HeaderWrapper, Line } from './UpdateCourseForm.styled'
 import { UpdateCourseDto } from '~/data/course/update-course.dto'
+import ControlledSelectGrouping from '~/components/form/ControlledSelectGrouping'
 
 interface CourseFieldsProps {
   control: Control<UpdateCourseDto>
@@ -16,7 +17,7 @@ const CourseFields = ({ control }: CourseFieldsProps) => {
     <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', padding: 3, gap: 2.5, width: '100%' }}>
       <HeaderWrapper>
         <Typography variant='h5' fontWeight={'bold'}>
-          Thông tin khóa học
+          Cập nhật khóa học
         </Typography>
         <Line />
       </HeaderWrapper>
@@ -71,13 +72,16 @@ const CourseFields = ({ control }: CourseFieldsProps) => {
           />
         </Grid>
         <Grid item xs={6}>
-          <ControlledOutlinedInput
+          <ControlledSelectGrouping
             size='small'
             controller={{ name: 'type', control: control }}
             label='Thể loại'
-            placeholder='Nhập thể loại'
-            fullWidth
-            sx={{ gap: 1 }}
+            labelId='type'
+            items={CourseType}
+            displayEmpty
+            placeholder='Chọn thể loại'
+            multiple
+            sx={{ width: '100%' }}
           />
         </Grid>
         <Grid item xs={6}>

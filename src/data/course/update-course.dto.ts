@@ -25,7 +25,7 @@ export type UpdateCourseDto = {
     description: string
     attachments: BaseMediaDto[]
   }[]
-  gardenRequiredToolkits: string
+  gardenRequiredToolkits: string[]
 }
 
 export const updateCourseSchema = z.object({
