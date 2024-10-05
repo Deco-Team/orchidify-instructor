@@ -13,7 +13,7 @@ interface CreateCourse {
   description: string
   price: number
   level: string
-  type: string
+  type: string[]
   thumbnail: string
   media: CloudinaryFileUploadedInfo[]
   learnerLimit: number
@@ -25,8 +25,9 @@ interface CreateCourse {
   assignments: {
     title: string
     description: string
-    attachment: CloudinaryFileUploadedInfo[]
+    attachments: CloudinaryFileUploadedInfo[]
   }[]
+  gardenRequiredToolkits: string
 }
 
 export const useCourseApi = () => {

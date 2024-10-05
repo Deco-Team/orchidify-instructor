@@ -33,3 +33,11 @@ export function formatCourseLevel(level: CourseLevel): string {
       return 'Chưa xác định'
   }
 }
+
+export function convertArrayToString(arr: string[]): string {
+  return arr.join(', ')
+}
+
+export function convertStringToArray(str: string): string[] {
+  return str.split(',').map((item) => item.trim())
+}

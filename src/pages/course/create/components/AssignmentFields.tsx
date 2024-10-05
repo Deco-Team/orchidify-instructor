@@ -13,7 +13,7 @@ interface AssignmentFieldsProps {
   control: Control<CreateCourseDto>
   errors: FieldErrors<CreateCourseDto>
   assignmentFields: FieldArrayWithId<CreateCourseDto, 'assignments', 'id'>[]
-  addAssignment: (assignment: { title: string; description: string; attachment: CloudinaryFileUploadedInfo[] }) => void
+  addAssignment: (assignment: { title: string; description: string; attachments: CloudinaryFileUploadedInfo[] }) => void
   removeAssignment: (index: number) => void
 }
 
@@ -76,7 +76,7 @@ const AssignmentFields = ({
             </Grid>
             <Grid item xs={6}>
               <ControlledFileAreaUpload
-                controller={{ name: `assignments.${index}.attachment`, control: control }}
+                controller={{ name: `assignments.${index}.attachments`, control: control }}
                 label='Tài liệu'
                 clientAllowedFormats={[
                   FileFormat.jpeg,
@@ -97,7 +97,7 @@ const AssignmentFields = ({
       ))}
       {assignmentFields.length < 3 && (
         <Button
-          onClick={() => addAssignment({ title: '', description: '', attachment: [] })}
+          onClick={() => addAssignment({ title: '', description: '', attachments: [] })}
           endIcon={<Add />}
           sx={{ maxWidth: 'fit-content' }}
         >
