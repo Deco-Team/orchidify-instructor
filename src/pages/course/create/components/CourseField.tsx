@@ -3,9 +3,10 @@ import { HeaderWrapper, Line } from './CreateCourseForm.styled'
 import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
 import ControlledSelect from '~/components/form/ControlledSelect'
 import { ControlledFileAreaUpload, ControlledFileFieldUpload } from '~/components/form/ControlledFileUpload'
-import { FileFormat, FileSize } from '~/global/constants'
+import { CourseType, FileFormat, FileSize } from '~/global/constants'
 import { Control } from 'react-hook-form'
 import { CreateCourseDto } from '~/data/course/create-course.dto'
+import ControlledSelectGrouping from '~/components/form/ControlledSelectGrouping'
 
 interface CourseFieldsProps {
   control: Control<CreateCourseDto>
@@ -61,23 +62,26 @@ const CourseFields = ({ control }: CourseFieldsProps) => {
             label='Cấp độ'
             labelId='level'
             items={[
-              { name: 'Chọn cấp độ', value: '' },
               { name: 'Cơ bản', value: 'BASIC' },
               { name: 'Trung bình', value: 'INTERMEDIATE' },
               { name: 'Nâng cao', value: 'ADVANCED ' }
             ]}
             displayEmpty
+            placeholder='Chọn cấp độ'
             sx={{ width: '100%' }}
           />
         </Grid>
         <Grid item xs={6}>
-          <ControlledOutlinedInput
+          <ControlledSelectGrouping
             size='small'
             controller={{ name: 'type', control: control }}
             label='Thể loại'
-            placeholder='Nhập thể loại'
-            fullWidth
-            sx={{ gap: 1 }}
+            labelId='type'
+            items={CourseType}
+            displayEmpty
+            placeholder='Chọn thể loại'
+            multiple
+            sx={{ width: '100%' }}
           />
         </Grid>
         <Grid item xs={6}>
