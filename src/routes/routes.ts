@@ -7,6 +7,7 @@ const EditProfile = lazy(() => import('~/pages/profile/edit-profile/EditProfile'
 const CourseList = lazy(() => import('~/pages/course/CourseList'))
 const CourseDetail = lazy(() => import('~/pages/course/detail/CourseDetail'))
 const CreateCourse = lazy(() => import('~/pages/course/create/CreateCourse'))
+const UpdateCourse = lazy(() => import('~/pages/course/update/UpdateCourse'))
 const CourseLessonDetail = lazy(() => import('~/pages/course/detail/lesson-detail/LessonDetail'))
 const CourseAssignmentDetail = lazy(() => import('~/pages/course/detail/assignment-detail/AssignmentDetail'))
 
@@ -47,6 +48,11 @@ export const protectedRoute = {
     name: 'Tạo khóa học',
     path: '/courses/create',
     Component: CreateCourse
+  },
+  updateCourse: {
+    name: 'Cập nhật khóa học',
+    path: '/courses/:id/update',
+    Component: UpdateCourse
   },
   courseLessonDetail: {
     name: 'Chi tiết bài học',

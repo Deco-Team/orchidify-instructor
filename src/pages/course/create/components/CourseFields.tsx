@@ -64,7 +64,7 @@ const CourseFields = ({ control }: CourseFieldsProps) => {
             items={[
               { name: 'Cơ bản', value: 'BASIC' },
               { name: 'Trung bình', value: 'INTERMEDIATE' },
-              { name: 'Nâng cao', value: 'ADVANCED ' }
+              { name: 'Nâng cao', value: 'ADVANCED' }
             ]}
             displayEmpty
             placeholder='Chọn cấp độ'

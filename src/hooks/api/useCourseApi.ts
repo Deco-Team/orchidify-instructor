@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { IdResponseDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
+import { BaseMediaDto, IdResponseDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
 import { useProtectedApi } from './useProtectedApi'
 import { AssignmentDto, CourseDetailResponseDto, CourseListItemResponseDto, LessonDto } from '~/data/course/course.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
@@ -26,6 +26,30 @@ interface CreateCourse {
     title: string
     description: string
     attachments: CloudinaryFileUploadedInfo[]
+  }[]
+  gardenRequiredToolkits: string
+}
+
+interface UpdateCourse {
+  title: string
+  description: string
+  price: number
+  level: string
+  type: string[]
+  thumbnail: string
+  media: BaseMediaDto[]
+  learnerLimit: number
+  lessons: {
+    _id?: string
+    title: string
+    description: string
+    media: BaseMediaDto[]
+  }[]
+  assignments: {
+    _id?: string
+    title: string
+    description: string
+    attachments: BaseMediaDto[]
   }[]
   gardenRequiredToolkits: string
 }
@@ -111,6 +135,25 @@ export const useCourseApi = () => {
     [callAppProtectedApi]
   )
 
+  const updateCourse = useCallback(
+    async (courseId: string, courseData: UpdateCourse) => {
+      const endpoint = `${ROOT_ENDPOINT}/${courseId}`
+      const result = await callAppProtectedApi<SuccessResponseDto>(endpoint, 'PUT', {}, {}, courseData)
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Cập nhật mẫu khóa học') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
   const deleteCourse = useCallback(
     async (courseId: string) => {
       const endpoint = `${ROOT_ENDPOINT}/${courseId}`
@@ -172,6 +215,7 @@ export const useCourseApi = () => {
     getCourseList,
     getCourseById,
     createCourse,
+    updateCourse,
     deleteCourse,
     getLessonById,
     getAssignmentById

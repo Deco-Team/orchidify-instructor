@@ -24,7 +24,7 @@ export default function CourseDetail() {
   useEffect(() => {
     if (courseId) {
       // eslint-disable-next-line prettier/prettier
-      (async () => {
+      ;(async () => {
         const { data: course, error: apiError } = await getCourseById(courseId)
         setData(course)
         setError(apiError)
@@ -52,7 +52,11 @@ export default function CourseDetail() {
   return data ? (
     <>
       <Box sx={{ marginBottom: '40px' }}>
-        <CourseDetailHeader courseStatus={data.status} onDeleteButtonClick={handleOpenDeleteConfirmation} />
+        <CourseDetailHeader
+          courseStatus={data.status}
+          onDeleteButtonClick={handleOpenDeleteConfirmation}
+          courseId={data._id}
+        />
         <CourseDetailInformation course={data} />
         <CourseDetailResourceAndFeedback courseId={data._id} lessons={data.lessons} assignments={data.assignments} />
       </Box>

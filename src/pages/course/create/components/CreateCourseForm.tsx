@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import LessonFields from './LessonFields'
 import AssignmentFields from './AssignmentFields'
-import CourseFields from './CourseField'
+import CourseFields from './CourseFields'
 import { notifyError, notifyLoading, notifySuccess } from '~/utils/toastify'
 import { APP_MESSAGE } from '~/global/app-message'
 import { useBeforeUnload, useNavigate } from 'react-router-dom'
@@ -111,7 +111,14 @@ const CreateCourseForm = () => {
   })
 
   return (
-    <StyledForm onSubmit={onSubmit}>
+    <StyledForm
+      onSubmit={onSubmit}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault()
+        }
+      }}
+    >
       <CourseFields control={control} />
 
       <LessonFields
