@@ -32,6 +32,23 @@ export enum RequestStatus {
   CANCELED = 'CANCELED'
 }
 
+export enum Weekday {
+  MONDAY = 'Monday',
+  TUESDAY = 'Tuesday',
+  WEDNESDAY = 'Wednesday',
+  THURSDAY = 'Thursday',
+  FRIDAY = 'Friday',
+  SATURDAY = 'Saturday',
+  SUNDAY = 'Sunday'
+}
+
+export enum SlotNumber {
+  ONE = 1,
+  TWO = 2,
+  THREE = 3,
+  FOUR = 4
+}
+
 export const CourseType = [
   {
     groupName: 'Lan rừng',
