@@ -110,7 +110,7 @@ export const useCourseApi = () => {
 
       return {
         data: null,
-        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Tạo khóa học') } as ErrorResponseDto
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết khóa học') } as ErrorResponseDto
       }
     },
     [callAppProtectedApi]
@@ -129,7 +129,7 @@ export const useCourseApi = () => {
 
       return {
         data: null,
-        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết khóa học') } as ErrorResponseDto
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Tạo khóa học') } as ErrorResponseDto
       }
     },
     [callAppProtectedApi]
@@ -148,7 +148,7 @@ export const useCourseApi = () => {
 
       return {
         data: null,
-        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Cập nhật mẫu khóa học') } as ErrorResponseDto
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Cập nhật khóa học') } as ErrorResponseDto
       }
     },
     [callAppProtectedApi]

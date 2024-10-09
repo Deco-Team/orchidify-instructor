@@ -62,12 +62,12 @@ const CourseFields = ({ control }: CourseFieldsProps) => {
             label='Cấp độ'
             labelId='level'
             items={[
-              { name: 'Chọn cấp độ', value: '' },
               { name: 'Cơ bản', value: 'BASIC' },
               { name: 'Trung bình', value: 'INTERMEDIATE' },
               { name: 'Nâng cao', value: 'ADVANCED' }
             ]}
             displayEmpty
+            placeholder='Chọn cấp độ'
             sx={{ width: '100%' }}
           />
         </Grid>
