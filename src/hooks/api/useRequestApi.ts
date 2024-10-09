@@ -52,7 +52,6 @@ export const useRequestApi = () => {
 
   const createPublishClassRequest = useCallback(
     async (request: CreatePublishClassRequest) => {
-      console.log(request)
       const endpoint = `${CLASS_REQUEST_ENDPOINT}/publish-class`
 
       const result = await callAppProtectedApi<IdResponseDto>(endpoint, 'POST', {}, {}, request)

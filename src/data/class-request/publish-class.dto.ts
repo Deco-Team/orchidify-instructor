@@ -11,7 +11,6 @@ export interface PublishClasDto {
 }
 
 export const ONE_MONTH_ADDITIONAL = new Date(new Date().setMonth(new Date().getMonth() + 1))
-console.log(ONE_MONTH_ADDITIONAL)
 export const THREE_MONTH_ADDITIONAL = new Date(new Date().setMonth(new Date().getMonth() + 3))
 
 const stripTime = (date: Date) => new Date(date.getFullYear(), date.getMonth(), date.getDate())

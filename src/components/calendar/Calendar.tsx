@@ -44,10 +44,6 @@ const Calendar: React.FC<GardenCalendarProps> = ({ events = [] /* , onDatesChang
         hour: '2-digit',
         minute: '2-digit'
       }}
-      dayHeaderFormat={{
-        weekday: 'narrow'
-      }}
-      firstDay={0}
       displayEventTime={true}
       displayEventEnd={true}
       allDaySlot={false}

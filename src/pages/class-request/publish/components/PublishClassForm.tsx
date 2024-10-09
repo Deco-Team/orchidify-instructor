@@ -16,6 +16,8 @@ import { SlotNumber, Weekday } from '~/global/constants'
 import { notifyError, notifyLoading, notifySuccess } from '~/utils/toastify'
 import { useRequestApi } from '~/hooks/api/useRequestApi'
 import { APP_MESSAGE } from '~/global/app-message'
+import { protectedRoute } from '~/routes/routes'
+import { useNavigate } from 'react-router-dom'
 
 interface PublishClassFormProps {
   courseId: string | undefined
@@ -27,7 +29,6 @@ interface SelectedSlotEvent {
   end: string | Date
   display: string
   backgroundColor: string
-  textColor?: string
 }
 
 const weekdayMapping = {
@@ -44,13 +45,14 @@ const generateAllDayEvents = (startDate: string, duration: number, weekdays: str
   const events = [] as SelectedSlotEvent[]
   const start = new Date(startDate)
 
-  for (let week = 0; week < duration; week++) {
+  let totalEvents = 0
+
+  for (let week = 0; totalEvents < duration * weekdays.length; week++) {
     weekdays.forEach((weekday) => {
       const eventDate = new Date(start)
       const dayOffset = weekdayMapping[weekday] - start.getDay()
       eventDate.setDate(start.getDate() + 7 * week + dayOffset)
-
-      if (eventDate >= start) {
+      if (eventDate >= start && totalEvents < duration * weekdays.length) {
         const formattedDate = eventDate.toISOString().split('T')[0]
 
         events.push({
@@ -59,8 +61,9 @@ const generateAllDayEvents = (startDate: string, duration: number, weekdays: str
           end: formattedDate,
           display: 'background',
           backgroundColor: '#2ec2b34c'
-          // textColor: '#0ea5e9'
         })
+
+        totalEvents++
       }
     })
   }
@@ -113,8 +116,10 @@ const defaultFormValues = {
 }
 
 const PublishClassForm = ({ courseId }: PublishClassFormProps) => {
+  const navigate = useNavigate()
   const { getAvailableTime, createPublishClassRequest } = useRequestApi()
 
+  const [oldData, setOldData] = useState({ startDate: '', duration: 0, weekdays: [] as Weekday[] })
   const [slotNumbersData, setSlotNumbersData] = useState<{ name: string; value: SlotNumber }[]>([])
   const [events, setEvents] = useState<SelectedSlotEvent[]>([])
 
@@ -151,6 +156,14 @@ const PublishClassForm = ({ courseId }: PublishClassFormProps) => {
   }, [formValues.startDate, formValues.duration, formValues.weekdays.length, formValues.slotNumbers.length])
 
   const getSlotNumbers = async () => {
+    if (
+      oldData.startDate === getValues('startDate') &&
+      oldData.duration === getValues('duration') &&
+      oldData.weekdays === getValues('weekdays')
+    )
+      return
+    setOldData({ startDate: getValues('startDate'), duration: getValues('duration'), weekdays: getValues('weekdays') })
+
     setSlotNumbersData([])
     setValue('slotNumbers', [])
 
@@ -190,7 +203,7 @@ const PublishClassForm = ({ courseId }: PublishClassFormProps) => {
     if (data) {
       localStorage.removeItem('savedCourse')
       notifySuccess(APP_MESSAGE.ACTION_DID_SUCCESSFULLY('Gửi yêu cầu mở'))
-      // navigate(protectedRoute.requestDetail.path.replace(':id', course?._id || ''))
+      navigate(protectedRoute.courseDetail.path.replace(':id', courseId || ''))
     }
   })
 
