@@ -51,7 +51,8 @@ const generateAllDayEvents = (startDate: string, duration: number, weekdays: str
     weekdays.forEach((weekday) => {
       const eventDate = new Date(start)
       const dayOffset = weekdayMapping[weekday] - start.getDay()
-      eventDate.setDate(start.getDate() + 7 * week + dayOffset)
+      const adjustedDayOffset = dayOffset >= 0 ? dayOffset : dayOffset + 7
+      eventDate.setDate(start.getDate() + 7 * week + adjustedDayOffset)
       if (eventDate >= start && totalEvents < duration * weekdays.length) {
         const formattedDate = eventDate.toISOString().split('T')[0]
 
@@ -74,8 +75,8 @@ const generateAllDayEvents = (startDate: string, duration: number, weekdays: str
 const slotTimeRanges = {
   1: { slotStart: '07:00', slotEnd: '09:00' },
   2: { slotStart: '09:30', slotEnd: '11:30' },
-  3: { slotStart: '12:30', slotEnd: '14:30' },
-  4: { slotStart: '15:00', slotEnd: '17:00' }
+  3: { slotStart: '13:00', slotEnd: '15:00' },
+  4: { slotStart: '15:30', slotEnd: '17:30' }
 } as Record<string, { slotStart: string; slotEnd: string }>
 
 const updateEventTimesWithSlots = (events: SelectedSlotEvent[], slotNumbers: SlotNumber[]) => {
@@ -201,7 +202,6 @@ const PublishClassForm = ({ courseId }: PublishClassFormProps) => {
       return
     }
     if (data) {
-      localStorage.removeItem('savedCourse')
       notifySuccess(APP_MESSAGE.ACTION_DID_SUCCESSFULLY('Gửi yêu cầu mở'))
       navigate(protectedRoute.courseDetail.path.replace(':id', courseId || ''))
     }
@@ -301,7 +301,7 @@ const PublishClassForm = ({ courseId }: PublishClassFormProps) => {
       <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 1 }}>
         <Typography variant='caption'>
           <span style={{ textDecoration: 'underline' }}>Chú thích:</span> Tiết 1: 7h - 9h, tiết 2: 9h30 - 11h30, tiết 3:
-          12h30 - 14h30, tiết 4: 15h - 17h
+          13h - 15h, tiết 4: 15h30 - 17h30
         </Typography>
         <Calendar events={events} />
       </Box>

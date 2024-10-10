@@ -49,7 +49,8 @@ const Calendar: React.FC<GardenCalendarProps> = ({ events = [] /* , onDatesChang
       allDaySlot={false}
       nowIndicator
       slotMinTime={'7:00:00'}
-      slotMaxTime={'17:00:00'}
+      slotMaxTime={'17:30:00'}
+      slotEventOverlap={false}
       expandRows={true}
       // datesSet={handleDatesSet}
     />
