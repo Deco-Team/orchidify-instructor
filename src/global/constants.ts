@@ -83,3 +83,7 @@ export const FileFormat = {
   docx: 'docx',
   pdf: 'pdf'
 }
+
+export enum RequestType {
+  PUBLISH_CLASS = 'PUBLISH_CLASS'
+}

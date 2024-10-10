@@ -20,7 +20,7 @@ const Table = <TData extends MRT_RowData>({ title, tableOptions }: TableProps<TD
     localization: MRT_Localization_VI,
     muiTablePaperProps: {
       sx: {
-        marginTop: '1.5rem'
+        marginTop: '1.25rem'
       }
     },
     muiTableHeadProps: {

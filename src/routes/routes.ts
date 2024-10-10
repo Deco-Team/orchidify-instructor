@@ -10,6 +10,7 @@ const CreateCourse = lazy(() => import('~/pages/course/create/CreateCourse'))
 // const UpdateCourse = lazy(() => import('~/pages/course/update/UpdateCourse'))
 const CourseSessionDetail = lazy(() => import('~/pages/course/detail/session-detail/SessionDetail'))
 const PublishClass = lazy(() => import('~/pages/class-request/publish/PublishClass'))
+const ClassRequestList = lazy(() => import('~/pages/class-request/ClassRequestList'))
 
 export const publicRoute = {
   login: {
@@ -63,5 +64,10 @@ export const protectedRoute = {
     name: 'Chi tiết bài học',
     path: '/courses/:courseId/sessions/:sessionId',
     Component: CourseSessionDetail
+  },
+  classRequestList: {
+    name: 'Yêu cầu lớp học',
+    path: '/class-requests',
+    Component: ClassRequestList
   }
 }
