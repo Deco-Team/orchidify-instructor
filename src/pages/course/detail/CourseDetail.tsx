@@ -22,14 +22,12 @@ export default function CourseDetail() {
   const { getCourseById } = useCourseApi()
 
   useEffect(() => {
-    if (courseId) {
-      // eslint-disable-next-line prettier/prettier
-      ;(async () => {
-        const { data: course, error: apiError } = await getCourseById(courseId)
-        setData(course)
-        setError(apiError)
-      })()
-    }
+    // eslint-disable-next-line prettier/prettier
+    (async () => {
+      const { data: course, error: apiError } = await getCourseById(courseId!)
+      setData(course)
+      setError(apiError)
+    })()
   }, [courseId, getCourseById])
 
   if (error) {
@@ -58,7 +56,7 @@ export default function CourseDetail() {
           courseId={data._id}
         />
         <CourseDetailInformation course={data} />
-        <CourseDetailResourceAndFeedback courseId={data._id} lessons={data.lessons} assignments={data.assignments} />
+        <CourseDetailResourceAndFeedback courseId={data._id} sessions={data.sessions} />
       </Box>
       <DeleteCourseConfirmation
         courseId={data._id}

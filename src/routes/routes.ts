@@ -7,9 +7,8 @@ const EditProfile = lazy(() => import('~/pages/profile/edit-profile/EditProfile'
 const CourseList = lazy(() => import('~/pages/course/CourseList'))
 const CourseDetail = lazy(() => import('~/pages/course/detail/CourseDetail'))
 const CreateCourse = lazy(() => import('~/pages/course/create/CreateCourse'))
-const UpdateCourse = lazy(() => import('~/pages/course/update/UpdateCourse'))
-const CourseLessonDetail = lazy(() => import('~/pages/course/detail/lesson-detail/LessonDetail'))
-const CourseAssignmentDetail = lazy(() => import('~/pages/course/detail/assignment-detail/AssignmentDetail'))
+// const UpdateCourse = lazy(() => import('~/pages/course/update/UpdateCourse'))
+const CourseSessionDetail = lazy(() => import('~/pages/course/detail/session-detail/SessionDetail'))
 const PublishClass = lazy(() => import('~/pages/class-request/publish/PublishClass'))
 
 export const publicRoute = {
@@ -50,24 +49,19 @@ export const protectedRoute = {
     path: '/courses/create',
     Component: CreateCourse
   },
-  updateCourse: {
-    name: 'Cập nhật khóa học',
-    path: '/courses/:id/update',
-    Component: UpdateCourse
-  },
+  // updateCourse: {
+  //   name: 'Cập nhật khóa học',
+  //   path: '/courses/:id/update',
+  //   Component: UpdateCourse
+  // },
   publishClass: {
     name: 'Yêu cầu mở lớp học',
     path: '/courses/:courseId/publish-class',
     Component: PublishClass
   },
-  courseLessonDetail: {
+  courseSessionDetail: {
     name: 'Chi tiết bài học',
-    path: '/courses/:courseId/lesson/:lessonId',
-    Component: CourseLessonDetail 
-  },
-  courseAssignmentDetail: {
-    name: 'Chi tiết bài tập',
-    path: '/courses/:courseId/assignment/:assignmentId',
-    Component: CourseAssignmentDetail
+    path: '/courses/:courseId/sessions/:sessionId',
+    Component: CourseSessionDetail
   }
 }
