@@ -7,7 +7,7 @@ const SessionDetailInformation = ({ session }: { session: SessionDto }) => {
   const { sessionNumber, title, description, media } = session
 
   return (
-    <Paper sx={{ width: '100%', marginY: '1.25rem', padding: '1.5rem' }}>
+    <Paper sx={{ width: '100%', marginTop: '1.25rem', padding: '1.5rem' }}>
       <Box display='flex' alignItems='center' marginBottom='1.25rem'>
         <Typography variant='h2' sx={{ fontSize: '1.5rem', fontWeight: 700, paddingRight: '0.75rem' }}>
           Thông tin bài học

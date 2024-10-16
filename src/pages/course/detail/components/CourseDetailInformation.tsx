@@ -63,7 +63,7 @@ const CourseDetailInformation = ({ course }: CourseDetailInformationProps) => {
           <Field label='Thể loại' content={course.type.join(', ')} />
           <Field label='Giới hạn học viên' content={course.learnerLimit.toString()} />
           {course.rate !== undefined ? <Field label='Đánh giá' rate={course.rate} /> : null}
-          <Field label='Trạng thái' statusTag={course.status} />
+          {course.status !== CourseStatus.ACTIVE ? <Field label='Trạng thái' statusTag={course.status} /> : null}
         </Box>
       </Box>
       <Box marginBottom='1.25rem'>
