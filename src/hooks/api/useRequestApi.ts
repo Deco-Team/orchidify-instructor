@@ -2,9 +2,9 @@ import { useCallback } from 'react'
 import { useProtectedApi } from './useProtectedApi'
 import { APP_MESSAGE } from '~/global/app-message'
 import { ErrorResponseDto } from '~/data/error.dto'
-import { AvailableTimeResponse } from '~/data/class-request/request.dto'
+import { AvailableTimeResponse, ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
 import { Weekday } from '~/global/constants'
-import { IdResponseDto } from '~/data/common.dto'
+import { IdResponseDto, ListResponseDto } from '~/data/common.dto'
 
 const TIMESHEET_ENDPOINT = '/garden-timesheets/instructor'
 const CLASS_REQUEST_ENDPOINT = '/class-requests/instructor'
@@ -70,8 +70,49 @@ export const useRequestApi = () => {
     [callAppProtectedApi]
   )
 
+  const getClassRequestList = useCallback(
+    async (
+      page = 1,
+      pageSize = 10,
+      sorting: { field: string; desc: boolean }[] = [],
+      filters: { field: string; value: unknown }[] = []
+    ) => {
+      const endpoint = `${CLASS_REQUEST_ENDPOINT}`
+      const sortingFormat = sorting.map((sort) => `${sort.field}.${sort.desc ? 'desc' : 'asc'}`).join('_')
+      let filtersFormat = {}
+      filters.forEach((filter) => {
+        filtersFormat = Object.assign({ [filter.field]: filter.value }, filtersFormat)
+      })
+      const result = await callAppProtectedApi<ListResponseDto<ClassRequestListItemResponseDto>>(
+        endpoint,
+        'GET',
+        {},
+        {
+          page,
+          limit: pageSize,
+          sort: sortingFormat,
+          ...filtersFormat
+        },
+        {}
+      )
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('danh sách yêu cầu') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
   return {
     getAvailableTime,
-    createPublishClassRequest
+    createPublishClassRequest,
+    getClassRequestList
   }
 }
