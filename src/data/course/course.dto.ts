@@ -51,3 +51,8 @@ export interface AssignmentDto {
   description: string
   attachments: BaseMediaDto[]
 }
+
+export interface CourseTypesResponstDto {
+  groupName: string
+  groupItems: string[]
+}

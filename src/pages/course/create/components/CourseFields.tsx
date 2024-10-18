@@ -3,16 +3,18 @@ import { HeaderWrapper, Line } from './CreateCourseForm.styled'
 import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
 import ControlledSelect from '~/components/form/ControlledSelect'
 import { ControlledFileAreaUpload, ControlledFileFieldUpload } from '~/components/form/ControlledFileUpload'
-import { CourseType, FileFormat, FileSize } from '~/global/constants'
+import { FileFormat, FileSize } from '~/global/constants'
 import { Control } from 'react-hook-form'
 import { CreateCourseDto } from '~/data/course/create-course.dto'
 import ControlledSelectGrouping from '~/components/form/ControlledSelectGrouping'
+import { CourseTypesResponstDto } from '~/data/course/course.dto'
 
 interface CourseFieldsProps {
   control: Control<CreateCourseDto>
+  courseTypes: CourseTypesResponstDto[] | null
 }
 
-const CourseFields = ({ control }: CourseFieldsProps) => {
+const CourseFields = ({ control, courseTypes }: CourseFieldsProps) => {
   return (
     <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', padding: 3, gap: 2.5, width: '100%' }}>
       <HeaderWrapper>
@@ -33,6 +35,29 @@ const CourseFields = ({ control }: CourseFieldsProps) => {
           />
         </Grid>
         <Grid item xs={6}>
+          <ControlledFileFieldUpload
+            controller={{ name: 'thumbnail', control: control }}
+            label='Thumbnail'
+            clientAllowedFormats={[FileFormat.jpeg, FileFormat.jpg, FileFormat.png]}
+            minFile={1}
+            maxFiles={1}
+            maxFileSize={FileSize['5MB']}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <ControlledOutlinedInput
+            size='small'
+            controller={{ name: 'description', control: control }}
+            label='Mô tả khóa học'
+            placeholder='Nhập mô tả'
+            multiline
+            minRows={4}
+            fullWidth
+            sx={{ gap: 1 }}
+          />
+        </Grid>
+        <Grid item xs={6}>
           <ControlledOutlinedInput
             size='small'
             controller={{ name: 'price', control: control }}
@@ -43,14 +68,13 @@ const CourseFields = ({ control }: CourseFieldsProps) => {
             sx={{ gap: 1 }}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           <ControlledOutlinedInput
             size='small'
-            controller={{ name: 'description', control: control }}
-            label='Mô tả khóa học'
-            placeholder='Nhập mô tả'
-            multiline
-            minRows={4}
+            controller={{ name: 'learnerLimit', control: control }}
+            label='Giới hạn học viên'
+            placeholder='Nhập giới hạn học viên'
+            type='number'
             fullWidth
             sx={{ gap: 1 }}
           />
@@ -77,32 +101,27 @@ const CourseFields = ({ control }: CourseFieldsProps) => {
             controller={{ name: 'type', control: control }}
             label='Thể loại'
             labelId='type'
-            items={CourseType}
+            items={courseTypes || []}
             displayEmpty
             placeholder='Chọn thể loại'
             multiple
+            maxItems={3}
             sx={{ width: '100%' }}
           />
         </Grid>
         <Grid item xs={6}>
           <ControlledOutlinedInput
             size='small'
-            controller={{ name: 'learnerLimit', control: control }}
-            label='Giới hạn học viên'
-            placeholder='Nhập giới hạn học viên'
+            controller={{ name: 'duration', control: control }}
+            label='Thời lượng'
+            description='Thời lượng tối thiểu là 1 tuần và tối đa là 12 tuần'
             type='number'
+            inputProps={{
+              min: 0,
+              max: 12
+            }}
             fullWidth
             sx={{ gap: 1 }}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <ControlledFileFieldUpload
-            controller={{ name: 'thumbnail', control: control }}
-            label='Thumbnail'
-            clientAllowedFormats={[FileFormat.jpeg, FileFormat.jpg, FileFormat.png]}
-            minFile={1}
-            maxFiles={1}
-            maxFileSize={FileSize['5MB']}
           />
         </Grid>
         <Grid item xs={12}>
