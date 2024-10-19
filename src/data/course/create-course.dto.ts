@@ -40,23 +40,22 @@ export const createCourseSchema = z.object({
     .min(1, APP_MESSAGE.REQUIRED_FIELD('Mô tả'))
     .max(500, APP_MESSAGE.FIELD_TOO_LONG('Mô tả', 500)),
   price: z.coerce
-    .number()
-    .min(1, APP_MESSAGE.REQUIRED_FIELD('Giá'))
+    .number({ message: APP_MESSAGE.INVALID_VALUE(['số nguyên']) })
+    .int({ message: APP_MESSAGE.INVALID_VALUE(['số nguyên']) })
     .min(1000, APP_MESSAGE.VALUE_OUT_OF_RANGE(formatCurrency(1000), formatCurrency(10000000)))
     .max(10000000, APP_MESSAGE.VALUE_OUT_OF_RANGE(formatCurrency(1000), formatCurrency(10000000))),
   level: z.string().trim().min(1, APP_MESSAGE.REQUIRED_FIELD('Cấp độ')),
   type: z.array(z.string().trim()).nonempty(APP_MESSAGE.REQUIRED_FIELD('Thể loại')),
   duration: z.coerce
-    .number()
-    .int()
-    .min(1, APP_MESSAGE.REQUIRED_FIELD('Thời lượng'))
+    .number({ message: APP_MESSAGE.INVALID_VALUE(['số nguyên']) })
+    .int({ message: APP_MESSAGE.INVALID_VALUE(['số nguyên']) })
+    .min(1, APP_MESSAGE.VALUE_OUT_OF_RANGE(1, 12))
     .max(12, APP_MESSAGE.VALUE_OUT_OF_RANGE(1, 12)),
   thumbnail: z.array(z.object({}).passthrough()).nonempty(APP_MESSAGE.REQUIRED_FIELD('Thumbnail')),
   media: z.array(z.object({}).passthrough()).nonempty(APP_MESSAGE.REQUIRED_FIELD('Hình ảnh khóa học')),
   learnerLimit: z.coerce
-    .number()
-    .int()
-    .min(1, APP_MESSAGE.REQUIRED_FIELD('Giới hạn học viên'))
+    .number({ message: APP_MESSAGE.INVALID_VALUE(['số nguyên']) })
+    .int({ message: APP_MESSAGE.INVALID_VALUE(['số nguyên']) })
     .min(10, APP_MESSAGE.VALUE_OUT_OF_RANGE(10, 30))
     .max(30, APP_MESSAGE.VALUE_OUT_OF_RANGE(10, 30)),
   sessions: z.array(
@@ -89,7 +88,7 @@ export const createCourseSchema = z.object({
             attachments: z.array(z.object({}).passthrough()).nonempty(APP_MESSAGE.REQUIRED_FIELD('Tài liệu'))
           })
         )
-        .optional() // Mark assignments as optional
+        .optional()
     })
   ),
   gardenRequiredToolkits: z.array(z.string().trim()).nonempty(APP_MESSAGE.REQUIRED_FIELD('Dụng cụ cần thiết'))

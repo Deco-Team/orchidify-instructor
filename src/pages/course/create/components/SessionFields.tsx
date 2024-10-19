@@ -130,7 +130,7 @@ const SessionFields = ({
                       />
                     </Grid>
                   </Grid>
-                  {(sessionValues[index]?.assignments?.length ?? 0) > 0 && (
+                  {sessionValues[index]?.assignments && (
                     <>
                       <Line />
                       <Box display={'flex'} justifyContent={'space-between'}>
@@ -139,9 +139,10 @@ const SessionFields = ({
                         </Typography>
                         <IconButton
                           onClick={() => {
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            const { assignments, ...session } = sessionValues[index]
                             updateSession(index, {
-                              ...sessionValues[index],
-                              assignments: []
+                              ...session
                             })
                             clearErrors(`sessions.${index}.assignments`)
                           }}
@@ -194,7 +195,7 @@ const SessionFields = ({
                       </Grid>
                     </>
                   )}
-                  {(sessionValues[index]?.assignments?.length ?? 0) === 0 && (
+                  {!sessionValues[index]?.assignments && (
                     <Button
                       onClick={() =>
                         updateSession(index, {

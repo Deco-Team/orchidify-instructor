@@ -1,4 +1,5 @@
 import {
+  Divider,
   FormHelperText,
   Grid,
   IconButton,
@@ -12,7 +13,7 @@ import {
 import { useController, UseControllerProps } from 'react-hook-form'
 import { CreateCourseDto } from '~/data/course/create-course.dto'
 import { HeaderWrapper, Line } from './CreateCourseForm.styled'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Close } from '@mui/icons-material'
 
 interface GardenToolkitsFieldsProps {
@@ -51,23 +52,25 @@ const GardenToolkitsFields = ({ controller }: GardenToolkitsFieldsProps) => {
         <Grid item xs={6}>
           <List disablePadding>
             {toolkits.map((toolkit, index) => (
-              <ListItem
-                key={index}
-                secondaryAction={
-                  <IconButton
-                    edge='end'
-                    aria-label='delete'
-                    onClick={() => {
-                      setToolkits(toolkits.filter((_, i) => i !== index))
-                      field.onChange(toolkits.filter((_, i) => i !== index))
-                    }}
-                  >
-                    <Close />
-                  </IconButton>
-                }
-              >
-                <ListItemText primary={toolkit} />
-              </ListItem>
+              <React.Fragment key={index}>
+                <ListItem
+                  secondaryAction={
+                    <IconButton
+                      edge='end'
+                      aria-label='delete'
+                      onClick={() => {
+                        setToolkits(toolkits.filter((_, i) => i !== index))
+                        field.onChange(toolkits.filter((_, i) => i !== index))
+                      }}
+                    >
+                      <Close />
+                    </IconButton>
+                  }
+                >
+                  <ListItemText primary={toolkit} />
+                </ListItem>
+                {index < toolkits.length - 1 && <Divider />}
+              </React.Fragment>
             ))}
           </List>
           <OutlinedInput

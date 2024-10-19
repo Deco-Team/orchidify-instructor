@@ -42,7 +42,8 @@ const CreateCourseForm = () => {
     watch,
     setError,
     clearErrors,
-    formState: { isSubmitting, errors }
+    trigger,
+    formState: { isSubmitting, errors, isSubmitted }
   } = useForm<CreateCourseDto>({
     defaultValues: defaultFormValues,
     resolver: zodResolver(createCourseSchema)
@@ -64,21 +65,21 @@ const CreateCourseForm = () => {
 
   useEffect(() => {
     if (numberOfSessions > sessionFields.length) {
-      for (let i = sessionFields.length; i < numberOfSessions; i++) {
+      for (let i = sessionFields.length; i < numberOfSessions && i < 24; i++) {
         addSession({
           title: '',
           description: '',
           mediaVideo: [],
-          mediaImages: [],
-          assignments: []
+          mediaImages: []
         })
       }
+      if (isSubmitted) trigger('sessions')
     } else if (numberOfSessions < sessionFields.length) {
       for (let i = sessionFields.length; i > numberOfSessions; i--) {
         removeSession(i - 1)
       }
     }
-  }, [formValues.duration, numberOfSessions, sessionFields.length, addSession, removeSession])
+  }, [formValues.duration, numberOfSessions, sessionFields.length, addSession, removeSession, isSubmitted, trigger])
 
   useEffect(() => {
     ;(async () => {

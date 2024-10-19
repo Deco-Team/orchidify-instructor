@@ -63,7 +63,7 @@ const CourseFields = ({ control, courseTypes }: CourseFieldsProps) => {
             controller={{ name: 'price', control: control }}
             label='Giá'
             placeholder='Nhập giá'
-            type='number'
+            inputMode='numeric'
             fullWidth
             sx={{ gap: 1 }}
           />
@@ -74,7 +74,7 @@ const CourseFields = ({ control, courseTypes }: CourseFieldsProps) => {
             controller={{ name: 'learnerLimit', control: control }}
             label='Giới hạn học viên'
             placeholder='Nhập giới hạn học viên'
-            type='number'
+            inputMode='numeric'
             fullWidth
             sx={{ gap: 1 }}
           />
@@ -115,11 +115,7 @@ const CourseFields = ({ control, courseTypes }: CourseFieldsProps) => {
             controller={{ name: 'duration', control: control }}
             label='Thời lượng'
             description='Thời lượng tối thiểu là 1 tuần và tối đa là 12 tuần'
-            type='number'
-            inputProps={{
-              min: 0,
-              max: 12
-            }}
+            inputMode='numeric'
             fullWidth
             sx={{ gap: 1 }}
           />
