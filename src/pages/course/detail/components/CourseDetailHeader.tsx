@@ -22,7 +22,7 @@ const CourseDetailHeader = ({ courseStatus, onDeleteButtonClick, courseId }: Cou
             Yêu cầu mở
           </Button>
         ) : null}
-        {courseStatus !== CourseStatus.REQUESTING ? (
+        {courseStatus === CourseStatus.DRAFT ? (
           <Button color='warning' component={Link} to={`/courses/${courseId}/update`}>
             Cập nhật
           </Button>
