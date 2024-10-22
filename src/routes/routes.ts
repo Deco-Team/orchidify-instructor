@@ -7,7 +7,7 @@ const EditProfile = lazy(() => import('~/pages/profile/edit-profile/EditProfile'
 const CourseList = lazy(() => import('~/pages/course/CourseList'))
 const CourseDetail = lazy(() => import('~/pages/course/detail/CourseDetail'))
 const CreateCourse = lazy(() => import('~/pages/course/create/CreateCourse'))
-// const UpdateCourse = lazy(() => import('~/pages/course/update/UpdateCourse'))
+const UpdateCourse = lazy(() => import('~/pages/course/update/UpdateCourse'))
 const CourseSessionDetail = lazy(() => import('~/pages/course/detail/session-detail/SessionDetail'))
 const PublishClass = lazy(() => import('~/pages/class-request/publish/PublishClass'))
 const ClassRequestList = lazy(() => import('~/pages/class-request/ClassRequestList'))
@@ -50,11 +50,11 @@ export const protectedRoute = {
     path: '/courses/create',
     Component: CreateCourse
   },
-  // updateCourse: {
-  //   name: 'Cập nhật khóa học',
-  //   path: '/courses/:id/update',
-  //   Component: UpdateCourse
-  // },
+  updateCourse: {
+    name: 'Cập nhật khóa học',
+    path: '/courses/:id/update',
+    Component: UpdateCourse
+  },
   publishClass: {
     name: 'Yêu cầu mở lớp học',
     path: '/courses/:courseId/publish-class',
