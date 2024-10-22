@@ -62,6 +62,7 @@ const CourseDetailInformation = ({ course }: CourseDetailInformationProps) => {
           <Field label='Cấp độ' content={formatCourseLevel(course.level)} />
           <Field label='Thể loại' content={course.type.join(', ')} />
           <Field label='Giới hạn học viên' content={course.learnerLimit.toString()} />
+          <Field label='Thời lượng' content={course.duration.toString() + ' tuần'} />
           {course.rate !== undefined ? <Field label='Đánh giá' rate={course.rate} /> : null}
           {course.status !== CourseStatus.ACTIVE ? <Field label='Trạng thái' statusTag={course.status} /> : null}
         </Box>

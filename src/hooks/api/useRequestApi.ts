@@ -3,7 +3,7 @@ import { useProtectedApi } from './useProtectedApi'
 import { APP_MESSAGE } from '~/global/app-message'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { AvailableTimeResponse, ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
-import { Weekday } from '~/global/constants'
+import { SlotNumber, Weekday } from '~/global/constants'
 import { IdResponseDto, ListResponseDto } from '~/data/common.dto'
 
 const TIMESHEET_ENDPOINT = '/garden-timesheets/instructor'
@@ -13,9 +13,8 @@ interface CreatePublishClassRequest {
   description: string
   courseId: string
   startDate: Date
-  duration: number
-  weekdays: string[]
-  slotNumbers: number[]
+  weekdays: Weekday[]
+  slotNumbers: SlotNumber[]
 }
 
 export const useRequestApi = () => {

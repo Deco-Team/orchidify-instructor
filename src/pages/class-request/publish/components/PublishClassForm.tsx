@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Paper, Typography } from '@mui/material'
+import { Box, Button, FormHelperText, Grid, InputLabel, OutlinedInput, Paper, Typography } from '@mui/material'
 import { HeaderWrapper, Line, StyledForm } from './PublishClassForm.styled'
 import {
   ONE_MONTH_ADDITIONAL,
@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form'
 import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
 import ControlledSelect from '~/components/form/ControlledSelect'
 import Calendar from '~/components/calendar/Calendar'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SlotNumber, Weekday } from '~/global/constants'
 import { notifyError, notifyLoading, notifySuccess } from '~/utils/toastify'
@@ -18,9 +18,12 @@ import { useRequestApi } from '~/hooks/api/useRequestApi'
 import { APP_MESSAGE } from '~/global/app-message'
 import { protectedRoute } from '~/routes/routes'
 import { useNavigate } from 'react-router-dom'
+import { convertStringToArray } from '~/utils/format'
+import FullCalendar from '@fullcalendar/react'
 
 interface PublishClassFormProps {
-  courseId: string | undefined
+  courseId: string
+  duration: number
 }
 
 interface SelectedSlotEvent {
@@ -41,9 +44,10 @@ const weekdayMapping = {
   Sunday: 0
 } as Record<string, number>
 
-const generateAllDayEvents = (startDate: string, duration: number, weekdays: string[]): SelectedSlotEvent[] => {
+const generateAllDayEvents = (startDate: string, duration: number, weekdaysString: string): SelectedSlotEvent[] => {
   const events = [] as SelectedSlotEvent[]
   const start = new Date(startDate)
+  const weekdays = convertStringToArray(weekdaysString) as Weekday[]
 
   let totalEvents = 0
 
@@ -79,29 +83,27 @@ const slotTimeRanges = {
   4: { slotStart: '15:30', slotEnd: '17:30' }
 } as Record<string, { slotStart: string; slotEnd: string }>
 
-const updateEventTimesWithSlots = (events: SelectedSlotEvent[], slotNumbers: SlotNumber[]) => {
+const updateEventTimesWithSlots = (events: SelectedSlotEvent[], slotNumber: SlotNumber) => {
   const updatedEvents: SelectedSlotEvent[] = []
 
-  slotNumbers.forEach((slotNumber) => {
-    const { slotStart, slotEnd } = slotTimeRanges[slotNumber]
+  const { slotStart, slotEnd } = slotTimeRanges[slotNumber]
 
-    events.forEach((event) => {
-      const startDate = new Date(event.start)
-      const endDate = new Date(event.start)
+  events.forEach((event) => {
+    const startDate = new Date(event.start)
+    const endDate = new Date(event.start)
 
-      const [startHour, startMinute] = slotStart.split(':').map(Number)
-      const [endHour, endMinute] = slotEnd.split(':').map(Number)
+    const [startHour, startMinute] = slotStart.split(':').map(Number)
+    const [endHour, endMinute] = slotEnd.split(':').map(Number)
 
-      startDate.setHours(startHour, startMinute, 0)
-      endDate.setHours(endHour, endMinute, 0)
+    startDate.setHours(startHour, startMinute, 0)
+    endDate.setHours(endHour, endMinute, 0)
 
-      updatedEvents.push({
-        ...event,
-        id: `${event.id}-slot-${slotNumber}`,
-        start: startDate,
-        end: endDate,
-        display: 'block'
-      })
+    updatedEvents.push({
+      ...event,
+      id: `${event.id}-slot-${slotNumber}`,
+      start: startDate,
+      end: endDate,
+      display: 'block'
     })
   })
 
@@ -111,23 +113,23 @@ const updateEventTimesWithSlots = (events: SelectedSlotEvent[], slotNumbers: Slo
 const defaultFormValues = {
   description: '',
   startDate: '',
-  duration: 0,
-  weekdays: [],
-  slotNumbers: []
+  weekdaysString: '',
+  slotNumber: 0
 }
-
-const PublishClassForm = ({ courseId }: PublishClassFormProps) => {
+const PublishClassForm = ({ courseId, duration }: PublishClassFormProps) => {
   const navigate = useNavigate()
   const { getAvailableTime, createPublishClassRequest } = useRequestApi()
 
-  const [oldData, setOldData] = useState({ startDate: '', duration: 0, weekdays: [] as Weekday[] })
+  const calendarRef = useRef<FullCalendar | null>(null)
+
+  const [oldData, setOldData] = useState({ startDate: '', weekdaysString: '' })
   const [slotNumbersData, setSlotNumbersData] = useState<{ name: string; value: SlotNumber }[]>([])
   const [events, setEvents] = useState<SelectedSlotEvent[]>([])
 
   const {
     handleSubmit,
     control,
-    getValues,
+    // getValues,
     setError,
     setValue,
     watch,
@@ -139,45 +141,45 @@ const PublishClassForm = ({ courseId }: PublishClassFormProps) => {
   })
 
   const formValues = watch()
+  const { startDate, weekdaysString, slotNumber } = formValues
 
   useEffect(() => {
-    const { startDate, duration, weekdays, slotNumbers } = formValues
+    // setSlotNumbersData([])
+    setValue('slotNumber', SlotNumber.NONE)
+  }, [startDate, weekdaysString, setValue])
 
-    if (startDate && duration > 0 && weekdays.length > 0) {
-      const allDayEvents = generateAllDayEvents(startDate, duration, weekdays)
-      let updatedEvents = allDayEvents
+  useEffect(() => {
+    if (startDate && duration && weekdaysString) {
+      const allDayEvents = generateAllDayEvents(startDate, duration, weekdaysString)
 
-      if (slotNumbers.length > 0) {
-        updatedEvents = updateEventTimesWithSlots(allDayEvents, slotNumbers)
-      }
+      const updatedEvents = slotNumber > 0 ? updateEventTimesWithSlots(allDayEvents, slotNumber) : allDayEvents
+
+      updatedEvents.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
 
       setEvents(updatedEvents)
+
+      if (updatedEvents.length > 0) {
+        calendarRef.current?.getApi().gotoDate(new Date(updatedEvents[0].start))
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formValues.startDate, formValues.duration, formValues.weekdays.length, formValues.slotNumbers.length])
+  }, [startDate, duration, weekdaysString, slotNumber])
 
   const getSlotNumbers = async () => {
-    if (
-      oldData.startDate === getValues('startDate') &&
-      oldData.duration === getValues('duration') &&
-      oldData.weekdays === getValues('weekdays')
-    )
-      return
-    setOldData({ startDate: getValues('startDate'), duration: getValues('duration'), weekdays: getValues('weekdays') })
+    if (oldData.startDate === startDate && oldData.weekdaysString === weekdaysString) return
 
-    setSlotNumbersData([])
-    setValue('slotNumbers', [])
+    setOldData({ startDate, weekdaysString })
 
-    if (!getValues('startDate') || getValues('duration') <= 0 || getValues('weekdays').length === 0) return
-    else if (errors.startDate || errors.duration || errors.weekdays) {
-      setError('slotNumbers', { message: APP_MESSAGE.LOAD_DATA_FAILED('dữ liệu tiết học') })
+    if (errors.startDate || errors.weekdaysString || !startDate || !weekdaysString) {
+      setSlotNumbersData([])
+      setValue('slotNumber', SlotNumber.NONE)
+      setError('slotNumber', { message: APP_MESSAGE.LOAD_DATA_FAILED('dữ liệu tiết học') })
       return
     }
 
-    const { data: slotNumbers, error: error } = await getAvailableTime(
-      getValues('startDate'),
-      getValues('duration'),
-      getValues('weekdays')
+    const { data: slotNumbers, error } = await getAvailableTime(
+      startDate,
+      duration || 0,
+      convertStringToArray(weekdaysString) as Weekday[]
     )
     setSlotNumbersData(
       slotNumbers?.slotNumbers.map((slotNumber) => ({ name: `${slotNumber}`, value: slotNumber })) || []
@@ -190,12 +192,12 @@ const PublishClassForm = ({ courseId }: PublishClassFormProps) => {
 
   const onSubmit = handleSubmit(async (formData) => {
     notifyLoading()
-
     const { data, error } = await createPublishClassRequest({
       ...formData,
       startDate: new Date(formData.startDate),
       courseId: courseId || '',
-      slotNumbers: formData.slotNumbers.map((slotNumber) => slotNumber)
+      slotNumbers: [formData.slotNumber],
+      weekdays: convertStringToArray(formData.weekdaysString) as Weekday[]
     })
     if (error) {
       notifyError(error.message)
@@ -214,6 +216,7 @@ const PublishClassForm = ({ courseId }: PublishClassFormProps) => {
           <Typography variant='h5' fontWeight={'bold'}>
             Yêu cầu mở
           </Typography>
+          {duration}
           <Line />
         </HeaderWrapper>
         <Grid container columnSpacing={4} rowSpacing={'20px'}>
@@ -246,52 +249,43 @@ const PublishClassForm = ({ courseId }: PublishClassFormProps) => {
             />
           </Grid>
           <Grid item xs={6}>
-            <ControlledOutlinedInput
-              size='small'
-              controller={{ name: 'duration', control: control }}
-              label='Thời lượng'
-              description='Thời lượng tối thiểu là 1 tuần và tối đa là 12 tuần'
-              type='number'
-              inputProps={{
-                min: 0,
-                max: 12
-              }}
-              fullWidth
-              sx={{ gap: 1 }}
-            />
+            <Box sx={{ gap: 1, display: 'flex', flexDirection: 'column' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <InputLabel sx={{ color: '#000000' }}>Thời lượng</InputLabel>
+                <FormHelperText>Thời lượng tối thiểu là 1 tuần và tối đa là 12 tuần</FormHelperText>
+              </Box>
+              <Box>
+                <OutlinedInput size='small' value={duration} fullWidth disabled />
+              </Box>
+            </Box>
           </Grid>
+
           <Grid item xs={6}>
             <ControlledSelect
               size='small'
-              controller={{ name: 'weekdays', control: control }}
+              controller={{ name: 'weekdaysString', control: control }}
               label='Ngày học trong tuần'
-              labelId='weekdays'
+              labelId='weekdaysString'
               items={[
-                { name: 'T2', value: Weekday.MONDAY },
-                { name: 'T3', value: Weekday.TUESDAY },
-                { name: 'T4', value: Weekday.WEDNESDAY },
-                { name: 'T5', value: Weekday.THURSDAY },
-                { name: 'T6', value: Weekday.FRIDAY },
-                { name: 'T7', value: Weekday.SATURDAY },
-                { name: 'CN', value: Weekday.SUNDAY }
+                { name: 'T2, T5', value: [Weekday.MONDAY, Weekday.THURSDAY].toString() },
+                { name: 'T3, T6', value: [Weekday.TUESDAY, Weekday.FRIDAY].toString() },
+                { name: 'T4, T7', value: [Weekday.WEDNESDAY, Weekday.SATURDAY].toString() }
               ]}
               displayEmpty
               placeholder='Chọn ngày học'
-              multiple
               sx={{ width: '100%' }}
             />
           </Grid>
           <Grid item xs={6}>
             <ControlledSelect
               size='small'
-              controller={{ name: 'slotNumbers', control: control }}
+              controller={{ name: 'slotNumber', control: control }}
               label='Tiết học'
-              labelId='slotNumbers'
+              labelId='slotNumber'
               items={slotNumbersData}
               displayEmpty
               onOpen={getSlotNumbers}
               placeholder='Chọn tiết học'
-              multiple
               renderChips={false}
               sx={{ width: '100%' }}
             />
@@ -300,10 +294,10 @@ const PublishClassForm = ({ courseId }: PublishClassFormProps) => {
       </Paper>
       <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 1 }}>
         <Typography variant='caption'>
-          <span style={{ textDecoration: 'underline' }}>Chú thích:</span> Tiết 1: 7h - 9h, tiết 2: 9h30 - 11h30, tiết 3:
+          <span style={{ textDecoration: 'underline' }}>Chú thích</span>: Tiết 1: 7h - 9h, tiết 2: 9h30 - 11h30, tiết 3:
           13h - 15h, tiết 4: 15h30 - 17h30
         </Typography>
-        <Calendar events={events} />
+        <Calendar events={events} calendarRef={calendarRef} />
       </Box>
       <Button sx={{ maxWidth: 'fit-content' }} disabled={isSubmitting || Object.keys(errors).length > 0} type='submit'>
         Gửi yêu cầu mở
