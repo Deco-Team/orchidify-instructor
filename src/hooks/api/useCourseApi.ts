@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { BaseMediaDto, IdResponseDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
 import { useProtectedApi } from './useProtectedApi'
-import { AssignmentDto, CourseDetailResponseDto, CourseListItemResponseDto, LessonDto } from '~/data/course/course.dto'
+import { AssignmentDto, CourseDetailResponseDto, CourseListItemResponseDto, SessionDto } from '~/data/course/course.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 import { CloudinaryFileUploadedInfo } from '~/components/cloudinary/cloudinary-type'
@@ -173,10 +173,10 @@ export const useCourseApi = () => {
     [callAppProtectedApi]
   )
 
-  const getLessonById = useCallback(
-    async (coursesId: string, lessonId: string) => {
-      const endpoint = `${ROOT_ENDPOINT}/${coursesId}/lessons/${lessonId}`
-      const result = await callAppProtectedApi<LessonDto>(endpoint, 'GET')
+  const getSessionById = useCallback(
+    async (coursesId: string, sessionId: string) => {
+      const endpoint = `${ROOT_ENDPOINT}/${coursesId}/sessions/${sessionId}`
+      const result = await callAppProtectedApi<SessionDto>(endpoint, 'GET')
 
       if (result) {
         const { data, error } = result
@@ -186,7 +186,7 @@ export const useCourseApi = () => {
 
       return {
         data: null,
-        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết bài học') } as ErrorResponseDto
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết buổi học') } as ErrorResponseDto
       }
     },
     [callAppProtectedApi]
@@ -217,7 +217,7 @@ export const useCourseApi = () => {
     createCourse,
     updateCourse,
     deleteCourse,
-    getLessonById,
+    getSessionById,
     getAssignmentById
   }
 }
