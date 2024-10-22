@@ -135,7 +135,7 @@ const SessionFields = ({
                       <Line />
                       <Box display={'flex'} justifyContent={'space-between'}>
                         <Typography variant='h6' fontWeight={500}>
-                          Bài tập #{index + 1}
+                          Bài tập
                         </Typography>
                         <IconButton
                           onClick={() => {
