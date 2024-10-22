@@ -17,7 +17,14 @@ import React, { useState } from 'react'
 import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
 import { ControlledFileAreaUpload } from '~/components/form/ControlledFileUpload'
 import { FileFormat, FileSize } from '~/global/constants'
-import { Control, FieldArrayWithId, FieldErrors, UseFieldArrayUpdate, UseFormClearErrors } from 'react-hook-form'
+import {
+  Control,
+  FieldArrayWithId,
+  FieldErrors,
+  UseFieldArrayUpdate,
+  UseFormClearErrors,
+  UseFormTrigger
+} from 'react-hook-form'
 import { CreateCourseDto } from '~/data/course/create-course.dto'
 import { Line } from './CreateCourseForm.styled'
 
@@ -28,6 +35,8 @@ interface SessionFieldsProps {
   sessionValues: CreateCourseDto['sessions']
   updateSession: UseFieldArrayUpdate<CreateCourseDto, 'sessions'>
   clearErrors: UseFormClearErrors<CreateCourseDto>
+  isSubmitted: boolean
+  trigger: UseFormTrigger<CreateCourseDto>
 }
 
 const SessionFields = ({
@@ -36,7 +45,9 @@ const SessionFields = ({
   sessionFields,
   sessionValues,
   updateSession,
-  clearErrors
+  clearErrors,
+  isSubmitted,
+  trigger
 }: SessionFieldsProps) => {
   const [openItem, setOpenItem] = useState<number | null>(0)
 
@@ -73,7 +84,13 @@ const SessionFields = ({
                   secondary={
                     (errors.sessions?.[index]?.title && `*${errors.sessions[index].title?.message}`) ||
                     (errors.sessions?.[index]?.description && `*${errors.sessions[index].description?.message}`) ||
-                    (errors.sessions?.[index]?.mediaImages && `*${errors.sessions[index].mediaImages?.message}`)
+                    (errors.sessions?.[index]?.mediaImages && `*${errors.sessions[index].mediaImages?.message}`) ||
+                    (errors.sessions?.[index]?.assignments?.[0]?.title &&
+                      `*${errors.sessions[index].assignments?.[0]?.title?.message}`) ||
+                    (errors.sessions?.[index]?.assignments?.[0]?.description &&
+                      `*${errors.sessions[index].assignments?.[0]?.description?.message}`) ||
+                    (errors.sessions?.[index]?.assignments?.[0]?.attachments &&
+                      `*${errors.sessions[index].assignments?.[0]?.attachments?.message}`)
                   }
                   secondaryTypographyProps={{ color: 'error', variant: 'body2' }}
                 />
@@ -197,12 +214,13 @@ const SessionFields = ({
                   )}
                   {!sessionValues[index]?.assignments && (
                     <Button
-                      onClick={() =>
+                      onClick={() => {
                         updateSession(index, {
                           ...sessionValues[index],
                           assignments: [{ title: '', description: '', attachments: [] }]
                         })
-                      }
+                        if (isSubmitted) trigger()
+                      }}
                       startIcon={<Add />}
                       sx={{ maxWidth: 'fit-content' }}
                     >

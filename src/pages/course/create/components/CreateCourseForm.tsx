@@ -155,6 +155,8 @@ const CreateCourseForm = () => {
           sessionValues={formValues.sessions}
           updateSession={updateSession}
           clearErrors={clearErrors}
+          isSubmitted={isSubmitted}
+          trigger={trigger}
         />
       )}
 
