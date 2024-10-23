@@ -44,20 +44,21 @@ interface UpdateCourse {
   price: number
   level: string
   type: string[]
+  duration: number
   thumbnail: string
   media: BaseMediaDto[]
   learnerLimit: number
-  lessons: {
+  sessions: {
     _id?: string
     title: string
     description: string
     media: BaseMediaDto[]
-  }[]
-  assignments: {
-    _id?: string
-    title: string
-    description: string
-    attachments: BaseMediaDto[]
+    assignments?: {
+      _id?: string
+      title: string
+      description: string
+      attachments: BaseMediaDto[]
+    }[]
   }[]
   gardenRequiredToolkits: string
 }

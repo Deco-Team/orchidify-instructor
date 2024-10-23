@@ -25,18 +25,18 @@ import {
   UseFormClearErrors,
   UseFormTrigger
 } from 'react-hook-form'
-import { CreateCourseDto } from '~/data/course/create-course.dto'
-import { Line } from './CreateCourseForm.styled'
+import { Line } from './UpdateCourseForm.styled'
+import { UpdateCourseDto } from '~/data/course/update-course.dto'
 
 interface SessionFieldsProps {
-  control: Control<CreateCourseDto>
-  errors: FieldErrors<CreateCourseDto>
-  sessionFields: FieldArrayWithId<CreateCourseDto, 'sessions', 'id'>[]
-  sessionValues: CreateCourseDto['sessions']
-  updateSession: UseFieldArrayUpdate<CreateCourseDto, 'sessions'>
-  clearErrors: UseFormClearErrors<CreateCourseDto>
+  control: Control<UpdateCourseDto>
+  errors: FieldErrors<UpdateCourseDto>
+  sessionFields: FieldArrayWithId<UpdateCourseDto, 'sessions', 'id'>[]
+  sessionValues: UpdateCourseDto['sessions']
+  updateSession: UseFieldArrayUpdate<UpdateCourseDto, 'sessions'>
+  clearErrors: UseFormClearErrors<UpdateCourseDto>
   isSubmitted: boolean
-  trigger: UseFormTrigger<CreateCourseDto>
+  trigger: UseFormTrigger<UpdateCourseDto>
 }
 
 const SessionFields = ({
@@ -102,6 +102,7 @@ const SessionFields = ({
                   <Typography variant='h6' fontWeight={500}>
                     Bài học #{index + 1}
                   </Typography>
+
                   <Grid container columnSpacing={4} rowSpacing={'20px'}>
                     <Grid item xs={6}>
                       <ControlledOutlinedInput
