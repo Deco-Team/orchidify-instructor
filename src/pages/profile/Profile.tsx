@@ -80,7 +80,7 @@ const Profile = () => {
           <Line />
         </HeaderWrapper>
         <Field label='Tên giảng viên' content={data.name} />
-        <Field label='Ngày sinh' content={new Date(data.dateOfBirth || '').toLocaleDateString()} />
+        <Field label='Ngày sinh' content={new Date(data.dateOfBirth || '').toLocaleDateString('vi-vn')} />
         <Field label='Email' content={data.email} />
         <Field label='Số điện thoại' content={data.phone} />
         <Field label='Trạng thái' statusTag={data.status} />

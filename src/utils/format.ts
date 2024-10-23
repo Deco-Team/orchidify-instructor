@@ -1,4 +1,4 @@
-import { RequestType, CourseLevel } from '~/global/constants'
+import { RequestType, CourseLevel, Weekday } from '~/global/constants'
 
 export const formatNumber = (num: number): string => {
   const numStr = num.toString()
@@ -38,15 +38,40 @@ export function formatRequestType(type: RequestType): string {
   switch (type) {
     case RequestType.PUBLISH_CLASS:
       return 'Mở lớp học'
+    // case RequestType.CANCEL_CLASS:
+    //   return 'Hủy lớp học'
     default:
       return 'Chưa xác định'
   }
 }
 
-export function convertArrayToString(arr: string[]): string {
+export function convertArrayToString(arr: string[] | number[]): string {
   return arr.join(', ')
 }
 
 export function convertStringToArray(str: string): string[] {
   return str.split(',').map((item) => item.trim())
+}
+
+export function formatWeekdays(weekdays: Weekday[]): string[] {
+  return weekdays.map((weekday) => {
+    switch (weekday) {
+      case Weekday.MONDAY:
+        return 'T2'
+      case Weekday.TUESDAY:
+        return 'T3'
+      case Weekday.WEDNESDAY:
+        return 'T4'
+      case Weekday.THURSDAY:
+        return 'T5'
+      case Weekday.FRIDAY:
+        return 'T6'
+      case Weekday.SATURDAY:
+        return 'T7'
+      case Weekday.SUNDAY:
+        return 'CN'
+      default:
+        return 'Chưa xác định'
+    }
+  })
 }
