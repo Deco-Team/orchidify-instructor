@@ -33,6 +33,7 @@ const CourseDetailInformation = ({ request }: CourseDetailInformationProps) => {
           <Field label='Cấp độ' content={formatCourseLevel(request.metadata.level)} />
           <Field label='Thể loại' content={request.metadata.type.join(', ')} />
           <Field label='Giới hạn học viên' content={request.metadata.learnerLimit.toString()} />
+          <Field label='Thời lượng' content={request.metadata.duration + ' tuần'} />
           {request.metadata.rate !== undefined ? <Field label='Đánh giá' rate={request.metadata.rate} /> : null}
         </ContentWrapper>
       </HeaderWrapper>

@@ -63,7 +63,8 @@ const ControlledSelect = <TFieldValues extends FieldValues>({
             : undefined
         }
       >
-        {!multiple && <MenuItem value=''>{placeholder}</MenuItem>}
+        {!multiple && typeof field.value === 'string' && <MenuItem value=''>{placeholder}</MenuItem>}
+        {!multiple && typeof field.value === 'number' && <MenuItem value={0}>{placeholder}</MenuItem>}
         {items.map((item) => (
           <MenuItem key={item.name} value={item.value}>
             {item.name}

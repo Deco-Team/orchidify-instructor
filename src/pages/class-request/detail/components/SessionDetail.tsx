@@ -78,7 +78,7 @@ const SessionDetail = ({ request }: SessionDetailProps) => {
                           value.resource_type === 'video' ? (
                             <video
                               controls
-                              style={{ width: '100%', height: '408px', borderRadius: 4, backgroundColor: '#CECECE' }}
+                              style={{ width: '100%', height: '408px', borderRadius: 4, backgroundColor: '#00000025' }}
                             >
                               <source src={value.url} type='video/mp4' />
                               {APP_MESSAGE.LOAD_DATA_FAILED('video')}

@@ -7,11 +7,11 @@ import FullCalendar from '@fullcalendar/react'
 
 interface GardenCalendarProps {
   events: Array<object>
-
+  calendarRef?: React.RefObject<FullCalendar>
   // onDatesChange: (viewType: string, startDate: Date, endDate: Date) => void
 }
 
-const Calendar: React.FC<GardenCalendarProps> = ({ events = [] /* , onDatesChange */ }) => {
+const Calendar: React.FC<GardenCalendarProps> = ({ events = [], calendarRef /* , onDatesChange */ }) => {
   // const handleDatesSet = (arg: DatesSetArg) => {
   //   const viewType = arg.view.type
   //   const startDate = arg.start
@@ -21,6 +21,7 @@ const Calendar: React.FC<GardenCalendarProps> = ({ events = [] /* , onDatesChang
 
   return (
     <FullCalendar
+      ref={calendarRef}
       plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
       headerToolbar={{
         left: 'prev,next today',
@@ -49,7 +50,8 @@ const Calendar: React.FC<GardenCalendarProps> = ({ events = [] /* , onDatesChang
       allDaySlot={false}
       nowIndicator
       slotMinTime={'7:00:00'}
-      slotMaxTime={'17:00:00'}
+      slotMaxTime={'17:30:00'}
+      slotEventOverlap={false}
       expandRows={true}
       // datesSet={handleDatesSet}
     />

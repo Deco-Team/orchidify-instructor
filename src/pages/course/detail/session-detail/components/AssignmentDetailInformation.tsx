@@ -1,6 +1,5 @@
 import { InsertDriveFileOutlined } from '@mui/icons-material'
 import { Box, Divider, Paper, Typography } from '@mui/material'
-import Carousel from '~/components/slider/Carousel'
 import { AssignmentDto } from '~/data/course/course.dto'
 
 const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto }) => {
@@ -33,49 +32,47 @@ const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto
         <Typography variant='subtitle1' fontWeight={600} marginBottom='0.5rem'>
           Tài liệu
         </Typography>
-        <Carousel>
-          {attachments.map((value, index) => (
-            <div
-              key={index}
-              style={{
-                boxSizing: 'border-box'
-              }}
-            >
-              <div style={{ width: '200px', height: '100%', padding: '0 2px' }}>
-                {value.resource_type === 'image' && value.format !== 'pdf' ? (
-                  <img
-                    src={value.url}
-                    alt={`Lesson resource ${value.public_id}`}
-                    style={{
-                      width: '200px',
-                      height: '200px',
-                      objectFit: 'cover',
-                      borderRadius: '4px'
-                    }}
-                  />
-                ) : (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      gap: 2,
-                      background: '#f4f4f4',
-                      width: 'fit-content',
-                      p: 2.5,
-                      borderRadius: 2,
-                      border: '2px solid #d7d7d7',
-                      alignItems: 'center',
-                      cursor: 'pointer'
-                    }}
-                    onClick={() => window.open(value.url, '_blank')}
-                  >
-                    <InsertDriveFileOutlined />
-                    <Typography variant='subtitle1'>{value.public_id}</Typography>
-                  </Box>
-                )}
-              </div>
+        {attachments.map((value, index) => (
+          <div
+            key={index}
+            style={{
+              boxSizing: 'border-box'
+            }}
+          >
+            <div style={{ width: '100%', height: '100%', padding: '0 2px' }}>
+              {value.resource_type === 'image' && value.format !== 'pdf' ? (
+                <img
+                  src={value.url}
+                  alt={`Lesson resource ${value.public_id}`}
+                  style={{
+                    width: '200px',
+                    height: '200px',
+                    objectFit: 'cover',
+                    borderRadius: '4px'
+                  }}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: 2,
+                    background: '#f4f4f4',
+                    width: 'fit-content',
+                    p: 2.5,
+                    borderRadius: 2,
+                    border: '2px solid #d7d7d7',
+                    alignItems: 'center',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => window.open(value.url, '_blank')}
+                >
+                  <InsertDriveFileOutlined />
+                  <Typography variant='subtitle1'>{value.public_id}</Typography>
+                </Box>
+              )}
             </div>
-          ))}
-        </Carousel>
+          </div>
+        ))}
       </Box>
     </Paper>
   )
