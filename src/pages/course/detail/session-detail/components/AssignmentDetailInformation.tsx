@@ -6,16 +6,6 @@ import { AssignmentDto } from '~/data/course/course.dto'
 const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto }) => {
   const { title, description, attachments } = assignment
 
-  const handleDownload = (url: string) => {
-    const pdfUrl = url
-    const link = document.createElement('a')
-    link.href = pdfUrl
-    link.download = 'document.pdf' // specify the filename
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
-
   return (
     <Paper sx={{ width: '100%', marginTop: '1.25rem', padding: '1.5rem' }}>
       <Box display='flex' alignItems='center' marginBottom='1.25rem'>
@@ -51,12 +41,17 @@ const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto
                 boxSizing: 'border-box'
               }}
             >
-              <div style={{ width: '200px', height: '200px', padding: '0 2px' }}>
-                {value.resource_type === 'image' ? (
+              <div style={{ width: '200px', height: '100%', padding: '0 2px' }}>
+                {value.resource_type === 'image' && value.format !== 'pdf' ? (
                   <img
                     src={value.url}
                     alt={`Lesson resource ${value.public_id}`}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                    style={{
+                      width: '200px',
+                      height: '200px',
+                      objectFit: 'cover',
+                      borderRadius: '4px'
+                    }}
                   />
                 ) : (
                   <Box
@@ -71,7 +66,7 @@ const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto
                       alignItems: 'center',
                       cursor: 'pointer'
                     }}
-                    onClick={() => handleDownload(value.url)}
+                    onClick={() => window.open(value.url, '_blank')}
                   >
                     <InsertDriveFileOutlined />
                     <Typography variant='subtitle1'>{value.public_id}</Typography>

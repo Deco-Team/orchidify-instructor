@@ -1,4 +1,4 @@
-import { RequestType, CourseLevel, CourseStatus, RequestStatus, SlotNumber, Weekday } from '~/global/constants'
+import { RequestType, CourseLevel, RequestStatus, SlotNumber, Weekday, CourseStatus } from '~/global/constants'
 import { BaseMediaDto } from '../common.dto'
 import { SessionDto } from '../course/course.dto'
 
@@ -13,8 +13,8 @@ export type ClassRequestListItemResponseDto = {
   status: RequestStatus
   metadata: BaseClassRequestMetadataDto
   createdBy: string
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
   rejectReason?: string
   courseId?: string
   classId?: string
@@ -25,7 +25,7 @@ export type BaseClassRequestMetadataDto = {
   code: string
   title: string
   description: string
-  startDate: string
+  startDate: Date
   duration: number
   price: number
   level: CourseLevel
@@ -35,15 +35,15 @@ export type BaseClassRequestMetadataDto = {
   status: CourseStatus
   learnerLimit: number
   learnerQuantity: number
-  weekdays: Array<Weekday>
-  slotNumbers: Array<SlotNumber>
+  weekdays: Weekday[]
+  slotNumbers: SlotNumber[]
   sessions: SessionDto[]
   gardenRequiredToolkits: string
-  histories: Array<unknown>
+  histories: unknown[]
   instructorId: string
-  createdAt: string
-  updatedAt: string
-  courseId?: string
+  createdAt: Date
+  updatedAt: Date
+  courseId: string
   cancelReason?: string
   gardenId?: string
   rate?: number
