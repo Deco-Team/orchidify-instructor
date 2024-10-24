@@ -1,5 +1,4 @@
-import { Box, Divider, Paper, Typography } from '@mui/material'
-import Carousel from '~/components/slider/Carousel'
+import { Box, Divider, ImageList, ImageListItem, Paper, Typography } from '@mui/material'
 import { SessionDto } from '~/data/course/course.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 
@@ -29,50 +28,60 @@ const SessionDetailInformation = ({ session }: { session: SessionDto }) => {
           {description}
         </Typography>
       </Box>
-      <Box>
+      <Box sx={{ display: 'flex', gap: 4 }}>
         {media.some((value) => value.resource_type === 'video') && (
-          <Typography variant='subtitle1' fontWeight={600} marginBottom='0.5rem' marginTop='1.25rem'>
-            Video bài học
-          </Typography>
-        )}
-        {media.map((value, index) => (
-          <div
-            key={index}
-            style={{
-              boxSizing: 'border-box'
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1,
+              width: '50%'
             }}
           >
-            {value.resource_type === 'video' ? (
-              <video controls height={200}>
-                <source src={value.url} type='video/mp4' />
-                {APP_MESSAGE.LOAD_DATA_FAILED('video')}
-              </video>
-            ) : undefined}
-          </div>
-        ))}
-        <Typography variant='subtitle1' fontWeight={600} marginBottom='0.5rem'>
-          Tài nguyên bài học
-        </Typography>
-        <Carousel>
-          {media.map((value, index) => (
-            <div
-              key={index}
-              style={{
-                boxSizing: 'border-box'
-              }}
-            >
-              <div style={{ width: '200px', height: '200px', padding: '0 2px' }}>
-                {value.resource_type === 'image' ? (
-                  <img
-                    src={value.url}
-                    alt={`Lesson resource ${value.public_id}`}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
-                  />
-                ) : undefined}
-              </div>
-            </div>
-          ))}
-        </Carousel>
+            <Typography variant='subtitle1' fontWeight={600}>
+              Video bài học
+            </Typography>
+            {media.map((value) =>
+              value.resource_type === 'video' ? (
+                <video
+                  controls
+                  style={{ width: '100%', height: '408px', borderRadius: 4, backgroundColor: '#00000025' }}
+                >
+                  <source src={value.url} type='video/mp4' />
+                  {APP_MESSAGE.LOAD_DATA_FAILED('video')}
+                </video>
+              ) : undefined
+            )}
+          </Box>
+        )}
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1,
+            width: media.some((value) => value.resource_type === 'video') ? '50%' : '100%'
+          }}
+        >
+          <Typography variant='subtitle1' fontWeight={600}>
+            Tài nguyên bài học
+          </Typography>
+          <Box maxWidth='100%' overflow={'auto'} position={'relative'}>
+            <ImageList sx={{ width: 'fit-content', display: 'flex', m: 0, gap: '8px !important' }}>
+              {media.map((value, index) =>
+                value.resource_type === 'image' ? (
+                  <ImageListItem key={index} sx={{ width: '100%', borderRadius: 1, overflow: 'hidden' }}>
+                    <img
+                      src={value.url}
+                      alt={`Lesson resource ${value.public_id}`}
+                      style={{ width: '200px', height: '200px', borderRadius: '4px' }}
+                    />
+                  </ImageListItem>
+                ) : undefined
+              )}
+            </ImageList>
+          </Box>
+        </Box>
       </Box>
     </Paper>
   )
