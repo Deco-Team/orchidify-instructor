@@ -1,10 +1,17 @@
 import { useCallback } from 'react'
 import { BaseMediaDto, IdResponseDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
 import { useProtectedApi } from './useProtectedApi'
-import { AssignmentDto, CourseDetailResponseDto, CourseListItemResponseDto, SessionDto } from '~/data/course/course.dto'
+import {
+  AssignmentDto,
+  CourseDetailResponseDto,
+  CourseListItemResponseDto,
+  CourseTypesResponstDto,
+  SessionDto
+} from '~/data/course/course.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 import { CloudinaryFileUploadedInfo } from '~/components/cloudinary/cloudinary-type'
+import { callApi } from '~/utils/apiCaller'
 
 const ROOT_ENDPOINT = '/courses/instructor'
 
@@ -14,18 +21,19 @@ interface CreateCourse {
   price: number
   level: string
   type: string[]
+  duration: number
   thumbnail: string
   media: CloudinaryFileUploadedInfo[]
   learnerLimit: number
-  lessons: {
+  sessions: {
     title: string
     description: string
     media: CloudinaryFileUploadedInfo[]
-  }[]
-  assignments: {
-    title: string
-    description: string
-    attachments: CloudinaryFileUploadedInfo[]
+    assignments?: {
+      title: string
+      description: string
+      attachments: CloudinaryFileUploadedInfo[]
+    }[]
   }[]
   gardenRequiredToolkits: string
 }
@@ -36,20 +44,21 @@ interface UpdateCourse {
   price: number
   level: string
   type: string[]
+  duration: number
   thumbnail: string
   media: BaseMediaDto[]
   learnerLimit: number
-  lessons: {
+  sessions: {
     _id?: string
     title: string
     description: string
     media: BaseMediaDto[]
-  }[]
-  assignments: {
-    _id?: string
-    title: string
-    description: string
-    attachments: BaseMediaDto[]
+    assignments?: {
+      _id?: string
+      title: string
+      description: string
+      attachments: BaseMediaDto[]
+    }[]
   }[]
   gardenRequiredToolkits: string
 }
@@ -211,6 +220,21 @@ export const useCourseApi = () => {
     [callAppProtectedApi]
   )
 
+  const getCourseTypes = useCallback(async () => {
+    const endpoint = '/settings/course-types'
+    const result = await callApi(endpoint, 'GET')
+
+    if (result) {
+      const { response, error } = result
+      if (response) return { data: response.data.data.docs as CourseTypesResponstDto[], error: null }
+      if (error?.response) return { data: null, error: error.response.data as ErrorResponseDto }
+    }
+    return {
+      data: null,
+      error: { message: APP_MESSAGE.LOAD_DATA_FAILED('danh sách thể loại khóa học') } as ErrorResponseDto
+    }
+  }, [])
+
   return {
     getCourseList,
     getCourseById,
@@ -218,6 +242,7 @@ export const useCourseApi = () => {
     updateCourse,
     deleteCourse,
     getSessionById,
-    getAssignmentById
+    getAssignmentById,
+    getCourseTypes
   }
 }

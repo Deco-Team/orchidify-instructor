@@ -7,6 +7,8 @@ import { ErrorResponseDto } from '~/data/error.dto'
 import { useRequestApi } from '~/hooks/api/useRequestApi'
 import { notifyError } from '~/utils/toastify'
 import { classRequestColumn } from './class-request-column'
+import { protectedRoute } from '~/routes/routes'
+import { useNavigate } from 'react-router-dom'
 
 const ClassRequestTable = () => {
   const { getClassRequestList } = useRequestApi()
@@ -30,7 +32,7 @@ const ClassRequestTable = () => {
   const [sorting, setSorting] = useState<MRT_SortingState>([])
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
   const [error, setError] = useState<ErrorResponseDto | null>(null)
-  //   const navigate = useNavigate()
+  const navigate = useNavigate()
 
   useEffect(() => {
     ;(async () => {
@@ -77,12 +79,12 @@ const ClassRequestTable = () => {
         onPaginationChange: setPagination,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
-        // muiTableBodyRowProps: ({ row }) => ({
-        //     onClick: () => navigate(protectedRoute.requestDetail.path.replace(':id', row.original._id)),
-        //   sx: {
-        //     cursor: 'pointer'
-        //   }
-        // }),
+        muiTableBodyRowProps: ({ row }) => ({
+          onClick: () => navigate(protectedRoute.classRequestDetail.path.replace(':id', row.original._id)),
+          sx: {
+            cursor: 'pointer'
+          }
+        }),
         muiPaginationProps: {
           rowsPerPageOptions: [5, 10, 20]
         },

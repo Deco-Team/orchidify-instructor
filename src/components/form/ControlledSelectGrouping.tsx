@@ -1,4 +1,14 @@
-import { Box, Chip, FormHelperText, InputLabel, ListSubheader, MenuItem, Select, SelectProps } from '@mui/material'
+import {
+  Box,
+  Chip,
+  FormHelperText,
+  InputLabel,
+  ListSubheader,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  SelectProps
+} from '@mui/material'
 import { FieldValues, useController, UseControllerProps } from 'react-hook-form'
 
 interface ControlledSelectProps<TFieldValues extends FieldValues> {
@@ -7,6 +17,7 @@ interface ControlledSelectProps<TFieldValues extends FieldValues> {
   labelId: string
   items: { groupName?: string; groupItems: string[] }[]
   placeholder?: string
+  maxItems?: number
 }
 
 const ControlledSelectGrouping = <TFieldValues extends FieldValues>({
@@ -15,6 +26,7 @@ const ControlledSelectGrouping = <TFieldValues extends FieldValues>({
   labelId,
   placeholder,
   items,
+  maxItems,
   ...props
 }: ControlledSelectProps<TFieldValues> & SelectProps) => {
   const {
@@ -22,7 +34,16 @@ const ControlledSelectGrouping = <TFieldValues extends FieldValues>({
     fieldState: { error }
   } = useController(controller)
 
+  const handleChange = (event: SelectChangeEvent<unknown>) => {
+    const value = event.target.value as string[]
+    if (maxItems && value.length > maxItems) {
+      return
+    }
+    field.onChange(value)
+  }
+
   const renderGroupedItems = () => {
+    const selectedValues = field.value as string[] // current selected values
     return items.reduce((acc, group) => {
       acc.push(
         <ListSubheader key={group.groupName} sx={{ color: '#000000', fontWeight: '500' }}>
@@ -30,8 +51,9 @@ const ControlledSelectGrouping = <TFieldValues extends FieldValues>({
         </ListSubheader>
       )
       group.groupItems.forEach((item) => {
+        const isDisabled = !!(maxItems && selectedValues.length >= maxItems && !selectedValues.includes(item))
         acc.push(
-          <MenuItem key={item} value={item}>
+          <MenuItem key={item} value={item} disabled={isDisabled}>
             {item}
           </MenuItem>
         )
@@ -50,6 +72,7 @@ const ControlledSelectGrouping = <TFieldValues extends FieldValues>({
         {...field}
         error={!!error}
         labelId={labelId}
+        onChange={handleChange}
         renderValue={(selected) =>
           (selected as string[]).length === 0 ? (
             placeholder

@@ -13,5 +13,7 @@ export const APP_MESSAGE = {
   ACTION_DID_FAILED: (action: string = '') => `${action} không thành công. Vui lòng thử lại sau.`,
   INCORRECT_NUMBER_OF_FILES: (min: number, max: number) => `Số lượng file phải nằm trong khoảng từ ${min} đến ${max}.`,
   VALUE_OUT_OF_RANGE: (min: string | number, max: string | number) =>
-    `Giá trị phải nằm trong khoảng từ ${min} đến ${max}`
+    `Giá trị phải nằm trong khoảng từ ${min} đến ${max}`,
+  INVALID_VALUE: (valueList: string[]) =>
+    `Chỉ chấp nhận${valueList.length > 1 ? ' các' : ''} giá trị ${valueList.join(', ')}`
 }

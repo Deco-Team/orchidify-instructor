@@ -2,24 +2,25 @@ import { Button } from '@mui/material'
 import { StyledForm } from './CreateCourseForm.styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
-import LessonFields from './LessonFields'
-import AssignmentFields from './AssignmentFields'
 import CourseFields from './CourseFields'
 import { notifyError, notifyLoading, notifySuccess } from '~/utils/toastify'
 import { APP_MESSAGE } from '~/global/app-message'
 import { useBeforeUnload, useNavigate } from 'react-router-dom'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { CreateCourseDto, createCourseSchema } from '~/data/course/create-course.dto'
 import { useCourseApi } from '~/hooks/api/useCourseApi'
 import { protectedRoute } from '~/routes/routes'
 import { convertArrayToString } from '~/utils/format'
 import GardenToolkitsFields from './GardenToolkitsFields'
+import SessionFields from './SessionFields'
+import { CourseTypesResponstDto } from '~/data/course/course.dto'
 
 const CreateCourseForm = () => {
-  const { createCourse } = useCourseApi()
+  const { createCourse, getCourseTypes } = useCourseApi()
   const navigate = useNavigate()
 
   const [savedCourse] = useState<CreateCourseDto>(JSON.parse(localStorage.savedCourse || '{}'))
+  const [courseTypes, setCourseTypes] = useState<CourseTypesResponstDto[] | null>(null)
 
   const defaultFormValues: CreateCourseDto = {
     title: savedCourse?.title || '',
@@ -27,66 +28,91 @@ const CreateCourseForm = () => {
     price: savedCourse?.price || 0,
     level: savedCourse?.level || '',
     type: savedCourse?.type || [],
+    duration: savedCourse?.duration || 0,
     thumbnail: savedCourse?.thumbnail || [],
     media: savedCourse?.media || [],
     learnerLimit: savedCourse?.learnerLimit || 0,
-    lessons: savedCourse?.lessons || [
-      {
-        title: '',
-        description: '',
-        mediaVideo: [],
-        mediaImages: []
-      }
-    ],
-    assignments: savedCourse?.assignments || [
-      {
-        title: '',
-        description: '',
-        attachments: []
-      }
-    ],
+    sessions: savedCourse?.sessions || [],
     gardenRequiredToolkits: savedCourse?.gardenRequiredToolkits || []
   }
 
   const {
     handleSubmit,
     control,
-    getValues,
-    formState: { isSubmitting, errors }
+    watch,
+    setError,
+    clearErrors,
+    trigger,
+    formState: { isSubmitting, errors, isSubmitted }
   } = useForm<CreateCourseDto>({
     defaultValues: defaultFormValues,
     resolver: zodResolver(createCourseSchema)
   })
 
-  //save form data when user leaves the page
+  const {
+    fields: sessionFields,
+    append: addSession,
+    remove: removeSession,
+    update: updateSession
+  } = useFieldArray({
+    control,
+    name: 'sessions'
+  })
+
+  const formValues = watch()
+
+  const numberOfSessions = formValues.duration * 2 // Calculate based on duration
+
+  useEffect(() => {
+    if (numberOfSessions > sessionFields.length) {
+      for (let i = sessionFields.length; i < numberOfSessions && i < 24; i++) {
+        addSession({
+          title: '',
+          description: '',
+          mediaVideo: [],
+          mediaImages: []
+        })
+      }
+      if (isSubmitted) trigger('sessions')
+    } else if (numberOfSessions < sessionFields.length) {
+      for (let i = sessionFields.length; i > numberOfSessions; i--) {
+        removeSession(i - 1)
+      }
+    }
+  }, [formValues.duration, numberOfSessions, sessionFields.length, addSession, removeSession, isSubmitted, trigger])
+
+  useEffect(() => {
+    ;(async () => {
+      const { data, error } = await getCourseTypes()
+      if (data) {
+        setCourseTypes(data)
+      }
+      if (error) {
+        notifyError(error.message)
+      }
+    })()
+  }, [getCourseTypes])
+
+  // Save form data when user leaves the page
   useBeforeUnload(
     useCallback(() => {
-      localStorage.savedCourse = JSON.stringify(getValues())
-    }, [getValues])
+      localStorage.savedCourse = JSON.stringify(formValues)
+    }, [formValues])
   )
 
-  const {
-    fields: lessonFields,
-    append: addLesson,
-    remove: removeLesson
-  } = useFieldArray({
-    control,
-    name: 'lessons'
-  })
-
-  const {
-    fields: assignmentFields,
-    append: addAssignment,
-    remove: removeAssignment
-  } = useFieldArray({
-    control,
-    name: 'assignments'
-  })
-
   const onSubmit = handleSubmit(async (formData) => {
-    const updatedLessons = formData.lessons.map((lesson) => ({
-      ...lesson,
-      media: [...lesson.mediaImages, ...lesson.mediaVideo]
+    //check if there is no assignments in every session
+    if (formData.sessions.every((session) => !session.assignments || session.assignments.length === 0)) {
+      setError('sessions', {
+        type: 'required',
+        message: APP_MESSAGE.REQUIRED_FIELD('Bài tập cho khóa học')
+      })
+      return
+    }
+
+    const updatedSessions = formData.sessions.map((session) => ({
+      ...session,
+      media: [...session.mediaImages, ...session.mediaVideo]
     }))
 
     notifyLoading()
@@ -94,7 +120,7 @@ const CreateCourseForm = () => {
     const { data, error } = await createCourse({
       ...formData,
       thumbnail: formData.thumbnail[0].url,
-      lessons: updatedLessons,
+      sessions: updatedSessions,
       gardenRequiredToolkits: convertArrayToString(formData.gardenRequiredToolkits)
     })
 
@@ -119,23 +145,20 @@ const CreateCourseForm = () => {
         }
       }}
     >
-      <CourseFields control={control} />
+      <CourseFields control={control} courseTypes={courseTypes} />
 
-      <LessonFields
-        control={control}
-        errors={errors}
-        lessonFields={lessonFields}
-        addLesson={addLesson}
-        removeLesson={removeLesson}
-      />
-
-      <AssignmentFields
-        control={control}
-        errors={errors}
-        assignmentFields={assignmentFields}
-        addAssignment={addAssignment}
-        removeAssignment={removeAssignment}
-      />
+      {formValues.duration > 0 && (
+        <SessionFields
+          control={control}
+          errors={errors}
+          sessionFields={sessionFields}
+          sessionValues={formValues.sessions}
+          updateSession={updateSession}
+          clearErrors={clearErrors}
+          isSubmitted={isSubmitted}
+          trigger={trigger}
+        />
+      )}
 
       <GardenToolkitsFields controller={{ name: 'gardenRequiredToolkits', control: control }} />
 

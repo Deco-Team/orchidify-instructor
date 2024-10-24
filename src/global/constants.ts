@@ -50,25 +50,6 @@ export enum SlotNumber {
   FOUR = 4
 }
 
-export const CourseType = [
-  {
-    groupName: 'Lan rừng',
-    groupItems: ['Lan phi điệp', 'Lan hải yến']
-  },
-  {
-    groupName: 'Lan công nghiệp',
-    groupItems: ['Dendrobium', 'Cattleya', 'Lan hồ điệp']
-  },
-  {
-    groupName: 'Quá trình',
-    groupItems: ['Cây con', 'Cây trưởng thành', 'Ra hoa', 'Hoa tàn']
-  },
-  {
-    groupName: 'Phương pháp',
-    groupItems: ['Tạo hình', 'Tách chiết', 'Chiết ghép', 'Cấy mô']
-  }
-]
-
 export const FileSize = {
   '5MB': { text: '5MB', size: 1024 * 1024 * 5 },
   '20MB': { text: '20MB', size: 1024 * 1024 * 20 },
