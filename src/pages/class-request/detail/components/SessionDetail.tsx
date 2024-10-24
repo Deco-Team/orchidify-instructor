@@ -3,8 +3,6 @@ import {
   Box,
   Collapse,
   Divider,
-  ImageList,
-  ImageListItem,
   List,
   ListItemButton,
   ListItemText,
@@ -16,6 +14,7 @@ import React, { useState } from 'react'
 import { ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
 import { ContentWrapper, Line, MediaWrapper } from '../ClassRequestDetail.styled'
 import { APP_MESSAGE } from '~/global/app-message'
+import Carousel from '~/components/slider/Carousel'
 
 interface SessionDetailProps {
   request: ClassRequestListItemResponseDto
@@ -99,21 +98,36 @@ const SessionDetail = ({ request }: SessionDetailProps) => {
                       <Typography variant='subtitle1' fontWeight={600}>
                         Tài nguyên bài học
                       </Typography>
-                      <Box maxWidth='100%' overflow={'auto'} position={'relative'}>
-                        <ImageList sx={{ width: 'fit-content', display: 'flex', m: 0, gap: '8px !important' }}>
-                          {session.media.map((value, index) =>
-                            value.resource_type === 'image' ? (
-                              <ImageListItem key={index} sx={{ width: '100%', borderRadius: 1, overflow: 'hidden' }}>
+                      <Carousel
+                        slidesToShow={3}
+                        responsive={[
+                          {
+                            breakpoint: 1440,
+                            settings: {
+                              slidesToShow: 2
+                            }
+                          }
+                        ]}
+                      >
+                        {session.media.map((value, index) => (
+                          <div
+                            key={index}
+                            style={{
+                              boxSizing: 'border-box'
+                            }}
+                          >
+                            <div style={{ width: '200px', height: '200px', padding: '0 2px' }}>
+                              {value.resource_type === 'image' ? (
                                 <img
                                   src={value.url}
                                   alt={`Lesson resource ${value.public_id}`}
-                                  style={{ width: '200px', height: '200px', borderRadius: '4px' }}
+                                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
                                 />
-                              </ImageListItem>
-                            ) : undefined
-                          )}
-                        </ImageList>
-                      </Box>
+                              ) : undefined}
+                            </div>
+                          </div>
+                        ))}
+                      </Carousel>
                     </Box>
                   </Box>
                   {session.assignments.length > 0 && (

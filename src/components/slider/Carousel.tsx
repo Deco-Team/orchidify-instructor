@@ -1,13 +1,8 @@
-import { ReactNode } from 'react'
-import Slider from 'react-slick'
+import Slider, { Settings } from 'react-slick'
 import { Children } from 'react'
 import styled from '@emotion/styled'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-
-interface SliderProps {
-  children: ReactNode
-}
 
 const CustomSlider = styled(Slider)`
   .slick-track {
@@ -23,17 +18,18 @@ const CustomSlider = styled(Slider)`
   }
 `
 
-const Carousel = ({ children }: SliderProps) => {
+const Carousel = ({ children, slidesToShow, ...sliderSettings }: Settings) => {
   const childrenArray = Children.toArray(children)
 
   const settings = {
-    dots: childrenArray.length > 5,
+    dots: childrenArray.length > (slidesToShow ?? 5),
     infinite: false,
     speed: 500,
-    slidesToShow: Math.min(5, childrenArray.length),
+    slidesToShow: Math.min(slidesToShow ?? 5, childrenArray.length),
     swipeToSlide: true,
     slidesToScroll: 1,
-    arrows: false
+    arrows: false,
+    ...sliderSettings
   }
 
   return <CustomSlider {...settings}>{childrenArray}</CustomSlider>

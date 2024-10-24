@@ -2,6 +2,7 @@ import { Box, Divider, Paper, Typography } from '@mui/material'
 import Carousel from '~/components/slider/Carousel'
 import { SessionDto } from '~/data/course/course.dto'
 import { APP_MESSAGE } from '~/global/app-message'
+import { MediaWrapper } from '../SessionDetail.styled'
 
 const SessionDetailInformation = ({ session }: { session: SessionDto }) => {
   const { sessionNumber, title, description, media } = session
@@ -30,24 +31,23 @@ const SessionDetailInformation = ({ session }: { session: SessionDto }) => {
         </Typography>
       </Box>
       <Box sx={{ display: 'flex', gap: 4 }}>
-        {media.some((value) => value.resource_type === 'video') && (
-          <Box display='flex' flexDirection='column' gap='0.5rem' width='50%'>
+        {session.media.some((value) => value.resource_type === 'video') && (
+          <MediaWrapper>
             <Typography variant='subtitle1' fontWeight={600}>
               Video bài học
             </Typography>
-            {media
-              .filter((value) => value.resource_type === 'video')
-              .map((value) => (
+            {session.media.map((value) =>
+              value.resource_type === 'video' ? (
                 <video
-                  key={value.public_id}
                   controls
                   style={{ width: '100%', height: '408px', borderRadius: 4, backgroundColor: '#00000025' }}
                 >
                   <source src={value.url} type='video/mp4' />
                   {APP_MESSAGE.LOAD_DATA_FAILED('video')}
                 </video>
-              ))}
-          </Box>
+              ) : undefined
+            )}
+          </MediaWrapper>
         )}
 
         <Box
@@ -72,24 +72,24 @@ const SessionDetailInformation = ({ session }: { session: SessionDto }) => {
               }
             ]}
           >
-            {media
-              .filter((value) => value.resource_type === 'image')
-              .map((value) => (
-                <div
-                  key={value.public_id}
-                  style={{
-                    boxSizing: 'border-box'
-                  }}
-                >
-                  <div style={{ width: '200px', height: '200px', padding: '0 2px' }}>
+            {media.map((value, index) => (
+              <div
+                key={index}
+                style={{
+                  boxSizing: 'border-box'
+                }}
+              >
+                <div style={{ width: '200px', height: '200px', padding: '0 2px' }}>
+                  {value.resource_type === 'image' ? (
                     <img
                       src={value.url}
                       alt={`Lesson resource ${value.public_id}`}
                       style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
                     />
-                  </div>
+                  ) : undefined}
                 </div>
-              ))}
+              </div>
+            ))}
           </Carousel>
         </Box>
       </Box>
