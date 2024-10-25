@@ -31,7 +31,7 @@ function App() {
                 }
               />
             ))}
-            {Object.entries(protectedRoute).map(([, { path, Component }]) => (
+            {Object.entries(protectedRoute).map(([, { path, Component, name }]) => (
               <Route
                 key={path}
                 path={path}
@@ -42,6 +42,7 @@ function App() {
                         <Component />
                       </Suspense>
                     }
+                    name={name}
                   />
                 }
               />

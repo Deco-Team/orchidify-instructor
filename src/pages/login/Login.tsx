@@ -5,9 +5,14 @@ import loginImage from '~/assets/login.jpg'
 import LoginForm from './components/LoginForm'
 import { Heading, StyledBox, StyledContainer, StyledPaper, SubHeading } from './Login.styled'
 import { protectedRoute } from '~/routes/routes'
+import { useEffect } from 'react'
 
 export default function Login() {
   const { userTokenPayload } = useAuth()
+
+  useEffect(() => {
+    document.title = 'Đăng nhập'
+  }, [])
 
   if (userTokenPayload) {
     return <Navigate to={protectedRoute.dashboard.path} replace={true} />

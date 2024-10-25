@@ -5,10 +5,11 @@ import { protectedRoute } from '~/routes/routes'
 import { ClassLearnerDto } from '~/data/class/class.dto'
 
 interface LearnerTableProps {
+  classId: string
   learners: ClassLearnerDto[]
 }
 
-const LearnerTable = ({ learners }: LearnerTableProps) => {
+const LearnerTable = ({ classId, learners }: LearnerTableProps) => {
   const navigate = useNavigate()
   return (
     <Table
@@ -22,10 +23,12 @@ const LearnerTable = ({ learners }: LearnerTableProps) => {
         enableColumnFilters: false,
         enableHiding: false,
         enableColumnActions: false,
-        muiTableBodyRowProps: () => ({
+        muiTableBodyRowProps: ({ row }) => ({
           onClick: () =>
             navigate(
-              /* protectedRoute.learnerDetail.path.replace(':id', row.original._id) */ protectedRoute.dashboard.path
+              protectedRoute.classLearnerDetail.path
+                .replace(':classId', classId)
+                .replace(':learnerId', row.original._id)
             ),
           sx: {
             cursor: 'pointer'

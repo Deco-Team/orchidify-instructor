@@ -18,7 +18,7 @@ const SessionLearnerFeedbackList = ({ classId, sessions, learners }: CourseDetai
         name='classDetail'
         items={[
           { label: 'BUỔI HỌC', content: <SessionTable classId={classId} sessions={sessions} /> },
-          { label: 'HỌC VIÊN', content: <LearnerTable learners={learners} /> }
+          { label: 'HỌC VIÊN', content: <LearnerTable classId={classId} learners={learners} /> }
         ]}
       />{' '}
     </Paper>
