@@ -2,6 +2,7 @@ import { Box, Divider, Paper, Typography } from '@mui/material'
 import Carousel from '~/components/slider/Carousel'
 import { SessionDto } from '~/data/course/course.dto'
 import { APP_MESSAGE } from '~/global/app-message'
+import { MediaWrapper } from '../SessionDetail.styled'
 
 const SessionDetailInformation = ({ session }: { session: SessionDto }) => {
   const { sessionNumber, title, description, media } = session
@@ -31,7 +32,7 @@ const SessionDetailInformation = ({ session }: { session: SessionDto }) => {
       </Box>
       <Box sx={{ display: 'flex', gap: 4 }}>
         {media.some((value) => value.resource_type === 'video') && (
-          <Box display='flex' flexDirection='column' gap='0.5rem' width='50%'>
+          <MediaWrapper>
             <Typography variant='subtitle1' fontWeight={600}>
               Video bài học
             </Typography>
@@ -41,13 +42,13 @@ const SessionDetailInformation = ({ session }: { session: SessionDto }) => {
                 <video
                   key={value.public_id}
                   controls
-                  style={{ width: '100', borderRadius: 4, backgroundColor: '#00000025' }}
+                  style={{ width: '100%', borderRadius: 4, backgroundColor: '#00000025' }}
                 >
                   <source src={value.url} type='video/mp4' />
                   {APP_MESSAGE.LOAD_DATA_FAILED('video')}
                 </video>
               ))}
-          </Box>
+          </MediaWrapper>
         )}
 
         <Box
