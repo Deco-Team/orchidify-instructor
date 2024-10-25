@@ -3,6 +3,11 @@ export enum InstructorStatus {
   INACTIVE = 'INACTIVE'
 }
 
+export enum LearnerStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE'
+}
+
 export enum CourseStatus {
   DRAFT = 'DRAFT',
   REQUESTING = 'REQUESTING',
@@ -14,8 +19,7 @@ export enum ClassStatus {
   PUBLISHED = 'PUBLISHED',
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
-  CANCELED = 'CANCELED',
-  DELETED = 'DELETED'
+  CANCELED = 'CANCELED'
 }
 
 export enum CourseLevel {
