@@ -13,13 +13,7 @@ export default function CourseList() {
     <>
       <TitleWrapper>
         <PageHeader title='Khóa học' />
-        <Button
-          color='secondary'
-          component={Link}
-          to={protectedRoute.createCourse.path}
-          sx={{ marginRight: '24px' }}
-          endIcon={<Add />}
-        >
+        <Button color='secondary' component={Link} to={protectedRoute.createCourse.path} endIcon={<Add />}>
           Thêm khóa học
         </Button>
       </TitleWrapper>

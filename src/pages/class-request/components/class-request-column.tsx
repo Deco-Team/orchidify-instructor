@@ -12,7 +12,6 @@ export const classRequestColumn: MRT_ColumnDef<ClassRequestListItemResponseDto>[
     size: 170,
     Cell: ({ cell }) => {
       const type = cell.getValue() as RequestType
-      console.log('type', type)
 
       return <Typography variant='subtitle2'>{formatRequestType(type)}</Typography>
     },
