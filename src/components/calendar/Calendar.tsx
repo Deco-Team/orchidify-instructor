@@ -12,7 +12,7 @@ interface GardenCalendarProps {
   calendarRef?: React.RefObject<FullCalendar>
   showNonCurrentDates?: boolean
   displayEventTime?: boolean
-  onDatesChange?: (viewType: string, startDate: string) => Promise<void>
+  onDatesChange?: (viewType: string, startDate: string) => void
   eventClick?: boolean
   onEventClick?: (slotId: string) => void
 }

@@ -1,6 +1,7 @@
+import FullCalendar from '@fullcalendar/react'
 import { Box, CircularProgress } from '@mui/material'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useRef, useState, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Calendar from '~/components/calendar/Calendar'
 import PageHeader from '~/components/header/PageHeader'
 import { CalendarType } from '~/global/constants'
@@ -11,6 +12,8 @@ import { notifyError } from '~/utils/toastify'
 const TeachingTimesheet = () => {
   const navigate = useNavigate()
   const { getTeachingTimesheet } = useTimesheetApi()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const calendarRef = useRef<FullCalendar | null>(null)
 
   const [displayEventTime, setDisplayEventTime] = useState(true)
   const [eventData, setEventData] = useState<
@@ -29,7 +32,7 @@ const TeachingTimesheet = () => {
     }
   }
 
-  const handleDatesChange = async (viewType: string, startDate: string) => {
+  const fetchTimesheetData = async (viewType: string, startDate: string) => {
     const apiViewType = mapViewTypeToApi(viewType)
     setDisplayEventTime(apiViewType === CalendarType.WEEK)
 
@@ -57,6 +60,20 @@ const TeachingTimesheet = () => {
     setIsLoading(false)
   }
 
+  useEffect(() => {
+    const viewType = searchParams.get('viewType') || 'dayGridMonth'
+    const startDate = searchParams.get('startDate') || new Date().toISOString().split('T')[0]
+
+    fetchTimesheetData(viewType, startDate)
+    calendarRef.current?.getApi().changeView(viewType, startDate)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams])
+
+  const handleDatesChange = (viewType: string, startDate: string) => {
+    setSearchParams({ viewType, startDate })
+    fetchTimesheetData(viewType, startDate)
+  }
+
   const handleEventClick = (slotId: string) => {
     navigate(protectedRoute.slotDetail.path.replace(':slotId', slotId))
   }
@@ -66,6 +83,7 @@ const TeachingTimesheet = () => {
       <PageHeader title='Lịch dạy' />
       <Box sx={{ position: 'relative' }}>
         <Calendar
+          calendarRef={calendarRef}
           events={eventData}
           showNonCurrentDates={false}
           displayEventTime={displayEventTime}
@@ -78,7 +96,7 @@ const TeachingTimesheet = () => {
           <Box
             sx={{
               display: 'flex',
-              backgroundColor: '#ffffff7f',
+              backgroundColor: '#ffffffb2',
               width: '100%',
               height: '100%',
               position: 'absolute',
