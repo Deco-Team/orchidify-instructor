@@ -187,8 +187,7 @@ export const ControlledFileAreaUpload = <TFieldValues extends FieldValues>({
                 </IconButton>
               </React.Fragment>
             ) : (
-              file.resource_type === 'raw' ||
-              (file.resource_type === 'image' && file.format === 'pdf' && (
+              (file.resource_type === 'raw' || (file.resource_type === 'image' && file.format === 'pdf')) && (
                 <Box
                   key={file.public_id}
                   sx={{
@@ -216,7 +215,7 @@ export const ControlledFileAreaUpload = <TFieldValues extends FieldValues>({
                     <Delete />
                   </IconButton>
                 </Box>
-              ))
+              )
             )
           )}
           <ImageList sx={{ width: 'fit-content', display: 'flex', m: 0, gap: '8px !important' }}>

@@ -23,6 +23,7 @@ const LearnerTable = ({ classId, learners }: LearnerTableProps) => {
         enableColumnFilters: false,
         enableHiding: false,
         enableColumnActions: false,
+        manualSorting: false,
         muiTableBodyRowProps: ({ row }) => ({
           onClick: () =>
             navigate(

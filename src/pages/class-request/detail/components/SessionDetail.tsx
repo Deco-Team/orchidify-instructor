@@ -79,7 +79,7 @@ const SessionDetail = ({ request }: SessionDetailProps) => {
                             <video
                               key={value.public_id}
                               controls
-                              style={{ width: '100%', borderRadius: 4, backgroundColor: '#00000025' }}
+                              style={{ width: '100%', height: '408px', borderRadius: 4, backgroundColor: '#00000025' }}
                             >
                               <source src={value.url} type='video/mp4' />
                               {APP_MESSAGE.LOAD_DATA_FAILED('video')}
@@ -119,11 +119,11 @@ const SessionDetail = ({ request }: SessionDetailProps) => {
                                 boxSizing: 'border-box'
                               }}
                             >
-                              <div style={{ width: '200px', height: '200px', padding: '0 2px' }}>
+                              <div style={{ width: '100%', height: '100%', padding: '0 2px' }}>
                                 <img
                                   src={value.url}
                                   alt={`Lesson resource ${value.public_id}`}
-                                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                                  style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '4px' }}
                                 />
                               </div>
                             </div>
@@ -176,9 +176,9 @@ const SessionDetail = ({ request }: SessionDetailProps) => {
                                     <Box
                                       sx={{
                                         display: 'flex',
-                                        gap: 2,
+                                        gap: 1,
                                         background: '#f4f4f4',
-                                        width: 'fit-content',
+                                        width: '250px',
                                         p: 2.5,
                                         borderRadius: 2,
                                         border: '2px solid #d7d7d7',
@@ -188,7 +188,17 @@ const SessionDetail = ({ request }: SessionDetailProps) => {
                                       onClick={() => window.open(value.url, '_blank')}
                                     >
                                       <InsertDriveFileOutlined />
-                                      <Typography variant='subtitle1'>{value.public_id}</Typography>
+                                      <Typography
+                                        variant='subtitle1'
+                                        sx={{
+                                          width: '100%',
+                                          textOverflow: 'ellipsis',
+                                          whiteSpace: 'nowrap',
+                                          overflow: 'hidden'
+                                        }}
+                                      >
+                                        {value.public_id}
+                                      </Typography>
                                     </Box>
                                   )}
                                 </div>

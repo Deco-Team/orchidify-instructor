@@ -10,6 +10,7 @@ export type CloudinaryFileUploadedInfo = {
   height: number
   id: string
   original_filename: string
+  original_extension: string
   path: string
   placeholder: boolean
   public_id: string
