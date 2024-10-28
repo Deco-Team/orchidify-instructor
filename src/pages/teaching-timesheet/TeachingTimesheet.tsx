@@ -70,7 +70,7 @@ const TeachingTimesheet = () => {
   }, [searchParams])
 
   const handleDatesChange = (viewType: string, startDate: string) => {
-    setSearchParams({ viewType, startDate })
+    setSearchParams({ viewType, startDate }, { replace: true })
     fetchTimesheetData(viewType, startDate)
   }
 
