@@ -8,8 +8,8 @@ interface PageHeaderProps {
 
 const PageHeader = ({ title, breadcrumbsItems = [] }: PageHeaderProps) => {
   return (
-    <Box>
-      <Typography variant='h1' sx={{ fontSize: '2rem', paddingBottom: '8px', fontWeight: 700 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      <Typography variant='h1' sx={{ fontSize: '2rem', fontWeight: 700 }}>
         {title}
       </Typography>
       {breadcrumbsItems.length ? <Breadcrumbs items={breadcrumbsItems} /> : null}

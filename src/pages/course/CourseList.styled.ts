@@ -5,6 +5,7 @@ export const TitleWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1.25rem;
 `
 export const ContentWrapper = styled.div<{ theme: Theme }>`
   display: flex;
