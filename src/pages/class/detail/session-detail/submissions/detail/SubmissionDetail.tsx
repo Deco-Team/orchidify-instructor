@@ -1,54 +1,35 @@
-import { InsertDriveFileOutlined } from '@mui/icons-material'
-import { Box, Button, Divider, Paper, Typography } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import { useParams } from 'react-router-dom'
-import PageHeader from '~/components/header/PageHeader'
 import Loading from '~/components/loading/Loading'
-import SubmissionStatusTag from '~/components/tag/SubmissionStatusTag'
 import { SubmissionDto } from '~/data/class/class.dto'
 import { LearnerStatus, SubmissionStatus } from '~/global/constants'
-import { protectedRoute } from '~/routes/routes'
-
-interface FieldProps {
-  label: string
-  content?: string
-  status?: SubmissionStatus
-}
-
-const Field: React.FC<FieldProps> = ({ label, content, status }) => (
-  <Box display='flex'>
-    <Typography variant='subtitle1' fontWeight={600} width={'180px'}>
-      {label}
-    </Typography>
-    {content && (
-      <Typography variant='subtitle1' fontWeight={400}>
-        {content}
-      </Typography>
-    )}
-    {status && <SubmissionStatusTag type={status} />}
-  </Box>
-)
+import SubmissionDetailInformation from './components/SubmissionDetailInformation'
+import SubmissionDetailHeader from './components/SubmissionDetailHeader'
+import GradeAssignmentDialog from './components/GradeAssignmentDialog'
+import { useState } from 'react'
 
 const SubmissionDetail = () => {
   const params = useParams()
   const classId = params.classId
   const sessionId = params.sessionId
+  const [openGradeAssignmentDialog, setOpenGradeAssignmentDialog] = useState(false)
 
-  const breadcrumbsItems = [
-    protectedRoute.classList,
-    {
-      ...protectedRoute.classDetail,
-      path: protectedRoute.classDetail.path.replace(':id', classId!)
-    },
-    {
-      ...protectedRoute.classSessionDetail,
-      path: protectedRoute.classSessionDetail.path.replace(':classId', classId!).replace(':sessionId', sessionId!)
-    },
-    {
-      ...protectedRoute.classSubmissionList,
-      path: protectedRoute.classSubmissionList.path.replace(':classId', classId!).replace(':sessionId', sessionId!)
-    },
-    protectedRoute.classSubmissionDetail
-  ]
+  const handleOpenGradeAssignmentDialog = () => {
+    setOpenGradeAssignmentDialog(true)
+  }
+
+  const handleCloseGradeAssignmentDialog = () => {
+    setOpenGradeAssignmentDialog(false)
+  }
+
+  const handleReloadData = async () => {
+    console.log('handleReloadData')
+    // setData(submission)
+
+    // if (apiError) {
+    //   notifyInfo(apiError.message)
+    // }
+  }
 
   const submissions: SubmissionDto[] = [
     {
@@ -156,114 +137,20 @@ const SubmissionDetail = () => {
 
   return data ? (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-      <PageHeader title='Chi tiết bài làm' breadcrumbsItems={breadcrumbsItems} />
-      <Paper sx={{ display: 'flex', flexDirection: 'column', p: 3, gap: 2.5 }} elevation={2}>
-        <Box display='flex' alignItems='center'>
-          <Typography variant='h2' sx={{ fontSize: '1.5rem', fontWeight: 700, paddingRight: '0.75rem' }}>
-            Chi tiết bài làm
-          </Typography>
-          <Divider sx={{ flexGrow: 1 }} />
-        </Box>
-        <Box display='flex' gap='1rem'>
-          <Box width='250px' height='250px'>
-            <img
-              src={'https://res.cloudinary.com/orchidify/image/upload/v1729687639/qtl8ze5om09vbafkybmv.jpg'}
-              alt={'classDetail.title'}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
-            />
-          </Box>
-          <Box display='flex' flexDirection='column' gap={1} flexGrow='1'>
-            <Field label='Tên học viên' content={data.learner.name} />
-            {data.status !== SubmissionStatus.NOT_YET && (
-              <>
-                <Field
-                  label='Thời gian nộp'
-                  content={data.createdAt ? new Date(data.createdAt).toLocaleString('vi-VN') : 'N/A'}
-                />
+      <SubmissionDetailHeader classId={classId!} sessionId={sessionId!} />
+      <SubmissionDetailInformation submission={data} />
+      {data.status === SubmissionStatus.SUBMITTED && (
+        <Button sx={{ maxWidth: 'fit-content', mx: 'auto' }} onClick={handleOpenGradeAssignmentDialog}>
+          Chấm điểm
+        </Button>
+      )}
 
-                <Field
-                  label='Cập nhật cuối'
-                  content={data.updatedAt ? new Date(data.updatedAt).toLocaleString('vi-VN') : 'N/A'}
-                />
-              </>
-            )}
-            <Field label='Trạng thái' status={data.status} />
-          </Box>
-        </Box>
-        {data.status !== SubmissionStatus.NOT_YET && (
-          <>
-            <Field label='Giảng viên' content={data.examiner ? data.examiner.name : ''} />
-            <Field label='Điểm' content={data.point !== undefined ? data.point.toString() : ''} />
-            <Box>
-              <Typography variant='subtitle1' fontWeight={600} marginBottom='0.5rem'>
-                Nhận xét
-              </Typography>
-              <Typography variant='subtitle1' fontWeight={400} minHeight={28}>
-                {data.feedback}
-              </Typography>
-            </Box>
-
-            <Box>
-              <Typography variant='subtitle1' fontWeight={600} marginBottom='0.5rem'>
-                Bài làm
-              </Typography>
-              <div
-                style={{
-                  boxSizing: 'border-box'
-                }}
-              >
-                <div style={{ width: '100%', height: '100%', padding: '0 2px' }}>
-                  {data.attachment && data.attachment.resource_type === 'image' && data.attachment.format !== 'pdf' ? (
-                    <img
-                      src={data.attachment.url}
-                      alt={`Lesson resource ${data.attachment.public_id}`}
-                      style={{
-                        width: '200px',
-                        height: '200px',
-                        objectFit: 'cover',
-                        borderRadius: '4px',
-                        cursor: 'pointer'
-                      }}
-                      onClick={() => data.attachment && window.open(data.attachment.url, '_blank')}
-                    />
-                  ) : (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        gap: 1,
-                        background: '#f4f4f4',
-                        width: '250px',
-                        p: 2.5,
-                        borderRadius: 2,
-                        border: '2px solid #d7d7d7',
-                        alignItems: 'center',
-                        cursor: 'pointer'
-                      }}
-                      onClick={() => data.attachment && window.open(data.attachment.url, '_blank')}
-                    >
-                      <InsertDriveFileOutlined />
-                      {data.attachment && (
-                        <Typography
-                          variant='subtitle1'
-                          sx={{
-                            width: '100%',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden'
-                          }}
-                        >
-                          {data.attachment.public_id}
-                        </Typography>
-                      )}
-                    </Box>
-                  )}
-                </div>
-              </div>
-            </Box>
-          </>
-        )}
-      </Paper>
-      <Button sx={{ maxWidth: 'fit-content', mx: 'auto' }}>Chấm điểm </Button>
+      <GradeAssignmentDialog
+        submissionId={data._id}
+        open={openGradeAssignmentDialog}
+        handleClose={handleCloseGradeAssignmentDialog}
+        onSuccess={handleReloadData}
+      />
     </Box>
   ) : (
     <Loading />

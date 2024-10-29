@@ -22,7 +22,6 @@ const ClassRequestDetail = () => {
   useEffect(() => {
     ;(async () => {
       const { data: classRequest, error: apiError } = await getClassRequestById(classRequestId!)
-      console.log(classRequest)
 
       setData(classRequest)
 
