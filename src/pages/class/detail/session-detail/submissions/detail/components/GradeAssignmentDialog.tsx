@@ -7,8 +7,11 @@ import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useClassApi } from '~/hooks/api/useClassApi'
+import { notifyError, notifySuccess } from '~/utils/toastify'
 
 interface GradeAssignmentDialogProps {
+  classId: string
   submissionId: string
   open: boolean
   handleClose: () => void
@@ -42,7 +45,9 @@ const gradeAssignmentSchema = z.object({
     .max(500, APP_MESSAGE.FIELD_TOO_LONG('Nhận xét', 500))
 })
 
-const GradeAssignmentDialog = ({ submissionId, open, handleClose, onSuccess }: GradeAssignmentDialogProps) => {
+const GradeAssignmentDialog = ({ classId, submissionId, open, handleClose, onSuccess }: GradeAssignmentDialogProps) => {
+  const { gradeSubmission } = useClassApi()
+
   const {
     handleSubmit,
     control,
@@ -53,10 +58,15 @@ const GradeAssignmentDialog = ({ submissionId, open, handleClose, onSuccess }: G
   })
 
   const handleConfirm = handleSubmit(async (formData) => {
-    console.log(submissionId, formData)
+    const { data, error } = await gradeSubmission(classId, submissionId, formData)
 
-    onSuccess()
-    handleClose()
+    if (data) {
+      notifySuccess(APP_MESSAGE.ACTION_DID_SUCCESSFULLY('Chấm điểm'))
+      onSuccess()
+      handleClose()
+    } else {
+      notifyError(error.message)
+    }
   })
 
   const handleCancel = () => {

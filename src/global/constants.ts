@@ -24,7 +24,7 @@ export enum ClassStatus {
 
 export enum SubmissionStatus {
   SUBMITTED = 'SUBMITTED',
-  NOT_YET = 'NOT_YET',
+  NOT_SUBMITTED = 'NOT_SUBMITTED',
   GRADED = 'GRADED'
 }
 

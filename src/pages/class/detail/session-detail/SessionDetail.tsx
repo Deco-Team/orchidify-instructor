@@ -42,14 +42,21 @@ const SessionDetail = () => {
       {/*
         Only allow 1 assignment per session 
       */}
-      {data.assignments.length > 0 ? <AssignmentDetailInformation assignment={data.assignments[0]} /> : null}
-      <Button
-        sx={{ maxWidth: 'fit-content', mx: 'auto', marginTop: '1.25rem' }}
-        component={Link}
-        to={protectedRoute.classSubmissionList.path.replace(':classId', classId!).replace(':sessionId', sessionId!)}
-      >
-        Bài làm học viên
-      </Button>
+      {data.assignments.length > 0 ? (
+        <>
+          <AssignmentDetailInformation assignment={data.assignments[0]} />
+          <Button
+            sx={{ maxWidth: 'fit-content', mx: 'auto', marginTop: '1.25rem' }}
+            component={Link}
+            to={protectedRoute.classSubmissionList.path
+              .replace(':classId', classId!)
+              .replace(':sessionId', sessionId!)
+              .replace(':assignmentId', data.assignments[0]._id)}
+          >
+            Bài làm học viên
+          </Button>
+        </>
+      ) : null}
     </Box>
   ) : (
     <Loading />

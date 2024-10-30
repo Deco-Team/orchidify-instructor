@@ -26,7 +26,7 @@ const SubmissionStatusTag = ({ type }: SubmissionStatusTagProps) => {
       }
       break
     }
-    case SubmissionStatus.NOT_YET: {
+    case SubmissionStatus.NOT_SUBMITTED: {
       label = 'Chưa nộp'
       styles = {
         backgroundColor: '#0000000a',

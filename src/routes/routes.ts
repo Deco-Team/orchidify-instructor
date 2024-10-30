@@ -106,12 +106,12 @@ export const protectedRoute = {
   },
   classSubmissionList: {
     name: 'Danh sách bài làm',
-    path: '/classes/:classId/sessions/:sessionId/submissions',
+    path: '/classes/:classId/sessions/:sessionId/assignments/:assignmentId/submissions',
     Component: ClassSubmissionList
   },
   classSubmissionDetail: {
     name: 'Chi tiết bài làm',
-    path: '/classes/:classId/sessions/:sessionId/submissions/:submissionId',
+    path: '/classes/:classId/sessions/:sessionId/assignments/:assignmentId/submissions/:submissionId',
     Component: ClassSubmissionDetail
   }
 }

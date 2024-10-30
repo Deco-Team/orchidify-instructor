@@ -1,14 +1,15 @@
 import { Avatar, Box, Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 import SubmissionStatusTag from '~/components/tag/SubmissionStatusTag'
-import { SubmissionDto } from '~/data/class/class.dto'
+import { AssignmentSubmissionItemResponseDto } from '~/data/class/class.dto'
 import { LearnerDetailResponseDto } from '~/data/learner/learner.dto'
 import { SubmissionStatus } from '~/global/constants'
 
-export const submissionColumns: MRT_ColumnDef<SubmissionDto>[] = [
+export const submissionColumns: MRT_ColumnDef<AssignmentSubmissionItemResponseDto>[] = [
   {
-    accessorKey: 'learner',
+    // accessorKey: 'learner',
     header: 'Tên học viên',
+    accessorFn: (row) => row.learner.avatar + row.learner.name,
     size: 300,
     Cell: ({ row }) => {
       const learner = row.original.learner as LearnerDetailResponseDto
@@ -33,31 +34,40 @@ export const submissionColumns: MRT_ColumnDef<SubmissionDto>[] = [
     size: 300
   },
   {
-    accessorKey: 'createdAt',
+    // accessorKey: 'submission.createdAt',
     header: 'Thời gian nộp',
     size: 150,
-    Cell: ({ cell }) => {
-      const date = cell.getValue() as string | undefined
-      return date ? (
-        <>
-          <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
-            {new Date(date).toLocaleTimeString('vi-VN')}
-          </Typography>
-          <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
-            {new Date(date).toLocaleDateString('vi-VN')}
-          </Typography>
-        </>
-      ) : null
+    accessorFn: (row) => (row.submission?.createdAt ? new Date(row.submission.createdAt).toLocaleString('vi-VN') : ''),
+    Cell: ({ row }) => {
+      const date = row.original.submission?.createdAt
+      return (
+        date && (
+          <>
+            <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
+              {new Date(date).toLocaleTimeString('vi-VN')}
+            </Typography>
+            <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
+              {new Date(date).toLocaleDateString('vi-VN')}
+            </Typography>
+          </>
+        )
+      )
     },
     enableColumnFilter: false
   },
   {
-    accessorKey: 'point',
+    // accessorKey: 'submission.point',
     header: 'Điểm',
     size: 100,
     filterVariant: 'range',
+    accessorFn: (row) => row.submission?.point ?? '',
+    Cell: ({ row }) => (
+      <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
+        {row.original.submission?.point ?? ''}
+      </Typography>
+    ),
     filterFn: (row, _id, filterValue) => {
-      const point = row.original.point
+      const point = row.original.submission?.point
       const [min, max] = filterValue
       if (min || max) {
         if (point === undefined) {
@@ -75,18 +85,19 @@ export const submissionColumns: MRT_ColumnDef<SubmissionDto>[] = [
     }
   },
   {
-    accessorKey: 'status',
+    // accessorKey: 'submission.status',
     header: 'Trạng thái',
     size: 120,
+    accessorFn: (row) => row.submission?.status ?? SubmissionStatus.NOT_SUBMITTED,
     Cell: ({ row }) => {
-      const type = row.original.status
+      const type = row.original.submission?.status ?? SubmissionStatus.NOT_SUBMITTED
       return <SubmissionStatusTag type={type} />
     },
     filterVariant: 'multi-select',
     filterSelectOptions: [
       { label: 'Đã nộp', value: SubmissionStatus.SUBMITTED },
       { label: 'Đã chấm', value: SubmissionStatus.GRADED },
-      { label: 'Chưa nộp', value: SubmissionStatus.NOT_YET }
+      { label: 'Chưa nộp', value: SubmissionStatus.NOT_SUBMITTED }
     ]
   }
 ]

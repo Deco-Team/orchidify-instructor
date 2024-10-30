@@ -4,9 +4,10 @@ import { protectedRoute } from '~/routes/routes'
 interface SubmissionDetailHeaderProps {
   classId: string
   sessionId: string
+  assignmentId: string
 }
 
-const SubmissionDetailHeader = ({ classId, sessionId }: SubmissionDetailHeaderProps) => {
+const SubmissionDetailHeader = ({ classId, sessionId, assignmentId }: SubmissionDetailHeaderProps) => {
   const breadcrumbsItems = [
     protectedRoute.classList,
     {
@@ -19,7 +20,10 @@ const SubmissionDetailHeader = ({ classId, sessionId }: SubmissionDetailHeaderPr
     },
     {
       ...protectedRoute.classSubmissionList,
-      path: protectedRoute.classSubmissionList.path.replace(':classId', classId).replace(':sessionId', sessionId)
+      path: protectedRoute.classSubmissionList.path
+        .replace(':classId', classId)
+        .replace(':sessionId', sessionId)
+        .replace(':assignmentId', assignmentId)
     },
     protectedRoute.classSubmissionDetail
   ]

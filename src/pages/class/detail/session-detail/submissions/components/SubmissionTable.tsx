@@ -1,16 +1,13 @@
 import Table from '~/components/table/Table'
 import { useNavigate } from 'react-router-dom'
-import { protectedRoute } from '~/routes/routes'
-import { SubmissionDto } from '~/data/class/class.dto'
+import { AssignmentSubmissionItemResponseDto } from '~/data/class/class.dto'
 import { submissionColumns } from './submission-columns'
 
 interface SubmissionTableProps {
-  submissions: SubmissionDto[]
-  classId: string
-  sessionId: string
+  submissions: AssignmentSubmissionItemResponseDto[]
 }
 
-const SubmissionTable = ({ submissions, classId, sessionId }: SubmissionTableProps) => {
+const SubmissionTable = ({ submissions }: SubmissionTableProps) => {
   const navigate = useNavigate()
   return (
     <Table
@@ -27,15 +24,9 @@ const SubmissionTable = ({ submissions, classId, sessionId }: SubmissionTablePro
         manualSorting: false,
         manualFiltering: false,
         muiTableBodyRowProps: ({ row }) => ({
-          onClick: () =>
-            navigate(
-              protectedRoute.classSubmissionDetail.path
-                .replace(':classId', classId)
-                .replace(':sessionId', sessionId)
-                .replace(':submissionId', row.original._id)
-            ),
+          onClick: () => row.original.submission && navigate(row.original.submission?._id ?? ''),
           sx: {
-            cursor: 'pointer'
+            cursor: row.original.submission ? 'pointer' : 'default'
           }
         })
       }}
