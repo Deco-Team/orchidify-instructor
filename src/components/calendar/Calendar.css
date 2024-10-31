@@ -99,11 +99,24 @@
 }
 
 .fc-v-event .fc-event-time {
-  color: #0ea5e9;
+  color: var(--fc-event-border-color);
   font-weight: 500;
 }
 
 .fc-daygrid-event {
   margin-left: 5px !important;
   margin-right: 5px !important;
+}
+
+.fc-event-title {
+  font-weight: 500;
+}
+
+.fc-v-event .fc-event-title {
+  font-weight: 500;
+  color: var(--fc-event-border-color);
+}
+
+.fc-event {
+  cursor: pointer;
 }

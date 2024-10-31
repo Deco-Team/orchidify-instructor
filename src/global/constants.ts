@@ -79,3 +79,8 @@ export const FileFormat = {
 export enum RequestType {
   PUBLISH_CLASS = 'PUBLISH_CLASS'
 }
+
+export enum CalendarType {
+  MONTH = 'MONTH',
+  WEEK = 'WEEK'
+}

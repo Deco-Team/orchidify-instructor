@@ -16,6 +16,8 @@ const ViewClassList = lazy(() => import('~/pages/class/ViewClassList'))
 const ViewClassDetail = lazy(() => import('~/pages/class/detail/ViewClassDetail'))
 const ClassSessionDetail = lazy(() => import('~/pages/class/detail/session-detail/SessionDetail'))
 const ClassLearnerDetail = lazy(() => import('~/pages/class/detail/learner-detail/LearnerDetail'))
+const TeachingTimesheet = lazy(() => import('~/pages/teaching-timesheet/TeachingTimesheet'))
+const SlotDetail = lazy(() => import('~/pages/teaching-timesheet/slot-detail/SlotDetail'))
 const ClassSubmissionList = lazy(() => import('~/pages/class/detail/session-detail/submissions/SubmissionList'))
 const ClassSubmissionDetail = lazy(
   () => import('~/pages/class/detail/session-detail/submissions/detail/SubmissionDetail')
@@ -103,6 +105,16 @@ export const protectedRoute = {
     name: 'Thông tin học viên',
     path: '/classes/:classId/learners/:learnerId',
     Component: ClassLearnerDetail
+  },
+  teachingTimesheet: {
+    name: 'Lịch dạy',
+    path: '/teaching-timesheet',
+    Component: TeachingTimesheet
+  },
+  slotDetail: {
+    name: 'Chi tiết tiết học',
+    path: '/teaching-timesheet/slots/:slotId',
+    Component: SlotDetail
   },
   classSubmissionList: {
     name: 'Danh sách bài làm',

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
 import { useRequestApi } from '~/hooks/api/useRequestApi'
-import { notifyInfo } from '~/utils/toastify'
+import { notifyError } from '~/utils/toastify'
 import RequestDetailHeader from './components/RequestDetailHeader'
 import Loading from '~/components/loading/Loading'
 import CancelRequestConfirmation from './components/CancelRequestConfirmation'
@@ -11,25 +11,29 @@ import { StyledContainer } from './ClassRequestDetail.styled'
 import ClassDetailInformation from './components/ClassDetailInformation'
 import CourseDetailInformation from './components/CourseDetailInformation'
 import SessionDetail from './components/SessionDetail'
+import { protectedRoute } from '~/routes/routes'
 
 const ClassRequestDetail = () => {
   const params = useParams()
   const classRequestId = params.id
   const { getClassRequestById } = useRequestApi()
+  const navigate = useNavigate()
   const [data, setData] = useState<ClassRequestListItemResponseDto | null>(null)
   const [openCancelConfirmation, setOpenCancelConfirmation] = useState(false)
 
   useEffect(() => {
-    ;(async () => {
-      const { data: classRequest, error: apiError } = await getClassRequestById(classRequestId!)
+    if (classRequestId) {
+      ;(async () => {
+        const { data: classRequest, error: apiError } = await getClassRequestById(classRequestId!)
+        setData(classRequest)
 
-      setData(classRequest)
-
-      if (apiError) {
-        notifyInfo(apiError.message)
-      }
-    })()
-  }, [classRequestId, getClassRequestById])
+        if (apiError) {
+          notifyError(apiError.message)
+          navigate(protectedRoute.classRequestList.path, { replace: true })
+        }
+      })()
+    }
+  }, [classRequestId, getClassRequestById, navigate])
 
   const handleOpenCancelConfirmation = () => {
     setOpenCancelConfirmation(true)
@@ -45,7 +49,7 @@ const ClassRequestDetail = () => {
     setData(classRequest)
 
     if (apiError) {
-      notifyInfo(apiError.message)
+      notifyError(apiError.message)
     }
   }
 
