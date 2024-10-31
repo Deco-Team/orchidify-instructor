@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
+  Avatar,
   Box,
   FormHelperText,
   IconButton,
@@ -278,6 +279,112 @@ export const ControlledFileAreaUpload = <TFieldValues extends FieldValues>({
         </Box>
       ) : null}
       {error ? <FormHelperText error>{error.message}</FormHelperText> : null}
+    </Box>
+  )
+}
+
+//For upload avatar image
+export const ControlledAvatarImageUpload = <TFieldValues extends FieldValues>({
+  controller,
+  clientAllowedFormats,
+  maxFileSize,
+  onUploadSuccess
+}: ControlledFileInputProps<TFieldValues>) => {
+  const theme = useTheme()
+  const {
+    field: { onChange, ...field },
+    fieldState: { error },
+    formState: { defaultValues }
+  } = useController(controller)
+  const [selectedFiles, setSelectedFiles] = useState<CloudinaryFileUploadedInfo[]>(
+    (controller.name
+      .split('.')
+      .reduce((acc, cur) => acc && acc[cur], defaultValues) as unknown as CloudinaryFileUploadedInfo[]) || []
+  )
+
+  useEffect(() => {
+    onChange(selectedFiles)
+    if (onUploadSuccess) onUploadSuccess(selectedFiles)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedFiles])
+
+  const handleUploadSuccess = (info: CloudinaryFileUploadedInfo) => {
+    setSelectedFiles([info])
+  }
+
+  const handleRemoveFile = (index: number) => {
+    setSelectedFiles((prev) => [...prev.slice(0, index), ...prev.slice(index + 1)])
+  }
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      <Box display='flex' flexDirection={'column'} gap={2} alignItems={'center'}>
+        <Box position={'relative'}>
+          <Avatar
+            src={selectedFiles.length > 0 ? selectedFiles[0].url : ''}
+            alt='avatar'
+            variant='circular'
+            sx={{ width: 160, height: 160, objectFit: 'cover' }}
+          />
+          {selectedFiles.length > 0 && (
+            <IconButton
+              size='large'
+              sx={{
+                color: theme.palette.error.main,
+                width: '160px',
+                height: '160px',
+                position: 'absolute',
+                top: 0,
+                left: '50%',
+                transform: 'translate(-50%, 0)',
+                opacity: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                transition: 'opacity 0.3s',
+                '&:hover': {
+                  opacity: 1,
+                  backgroundColor: 'rgba(0, 0, 0, 0.7)'
+                }
+              }}
+              onClick={() => handleRemoveFile(0)}
+            >
+              <Delete fontSize='large' />
+            </IconButton>
+          )}
+          {error ? (
+            <FormHelperText
+              error
+              sx={{
+                maxWidth: '160px'
+              }}
+            >
+              {error.message}
+            </FormHelperText>
+          ) : null}
+        </Box>
+
+        <CloudinaryUploadWidget
+          buttonStyle={{ width: 'fit-content' }}
+          onSuccess={handleUploadSuccess}
+          minFile={1}
+          maxFiles={1 - selectedFiles.length}
+          clientAllowedFormats={clientAllowedFormats}
+          maxFileSize={maxFileSize}
+          multiple={false}
+          disabled={1 - selectedFiles.length === 0}
+        />
+        <OutlinedInput
+          {...field}
+          size='small'
+          value={selectedFiles.map((file: CloudinaryFileUploadedInfo) => file.original_filename).join(', ')}
+          disabled={!error}
+          readOnly={!!error}
+          error={!!error}
+          sx={{
+            flexGrow: 1,
+            display: 'none'
+          }}
+        />
+      </Box>
     </Box>
   )
 }
