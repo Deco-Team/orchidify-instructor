@@ -61,14 +61,14 @@ const Profile = () => {
       </TitleWrapper>
 
       <Paper sx={{ display: 'flex', p: 3, gap: 2 }} elevation={2}>
-        <Avatar src={data.avatar} alt='avatar' />
+        <Avatar src={data.avatar ?? ''} alt='avatar' />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           <Typography variant='h6'>{data.name}</Typography>
           <Typography variant='subtitle2' color={'#3c3c4399'}>
             Giảng viên
           </Typography>
           <Typography variant='body1' fontWeight={400}>
-            {data.bio ? data.bio : 'Chưa cập nhật'}
+            {data.bio ?? 'Chưa cập nhật'}
           </Typography>
         </Box>
       </Paper>
@@ -110,16 +110,11 @@ const Profile = () => {
         <Field
           label='Tên ngân hàng'
           content={
-            data.paymentInfo.bankName
-              ? data.paymentInfo.bankShortName + ' - ' + data.paymentInfo.bankName
-              : 'Chưa cập nhật'
+            data.paymentInfo ? data.paymentInfo.bankShortName + ' - ' + data.paymentInfo.bankName : 'Chưa cập nhật'
           }
         />
-        <Field label='Tên TK' content={data.paymentInfo.accountName ? data.paymentInfo.accountName : 'Chưa cập nhật'} />
-        <Field
-          label='STK'
-          content={data.paymentInfo.accountNumber ? data.paymentInfo.accountNumber : 'Chưa cập nhật'}
-        />
+        <Field label='Tên TK' content={data.paymentInfo ? data.paymentInfo.accountName : 'Chưa cập nhật'} />
+        <Field label='STK' content={data.paymentInfo ? data.paymentInfo.accountNumber : 'Chưa cập nhật'} />
         <Field label='Số dư hệ thống' content={formatCurrency(data.balance)} />
       </Paper>
     </StyledContainer>

@@ -28,8 +28,8 @@ const EditProfile = () => {
 
   useEffect(() => {
     ;(async () => {
-      const [reponse, { data: instructor, error: apiError }] = await Promise.all([vietQR.getBanks(), getProfile()])
-      setBankData(reponse.data)
+      const [response, { data: instructor, error: apiError }] = await Promise.all([vietQR.getBanks(), getProfile()])
+      setBankData(response.data)
       setInstructorData(instructor)
       setErrorInstructor(apiError)
     })()

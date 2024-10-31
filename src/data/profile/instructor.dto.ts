@@ -6,11 +6,11 @@ export interface InstructorDto {
   name: string
   phone: string
   dateOfBirth: Date
-  bio: string
-  avatar: string
+  bio?: string
+  avatar?: string | null
   status: InstructorStatus
   balance: number
-  paymentInfo: PaymentInfoDto
+  paymentInfo?: PaymentInfoDto
 }
 
 interface PaymentInfoDto {

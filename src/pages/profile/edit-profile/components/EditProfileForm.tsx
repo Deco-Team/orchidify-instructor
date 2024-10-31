@@ -1,29 +1,18 @@
-import {
-  Autocomplete,
-  Box,
-  Button,
-  createFilterOptions,
-  FormHelperText,
-  Grid,
-  Paper,
-  TextField,
-  Typography
-} from '@mui/material'
-import { Avatar, FieldWrapper, HeaderWrapper, Line, StyledForm } from './EditProfileForm.styled'
+import { Box, Button, Grid, Paper, Typography } from '@mui/material'
+import { HeaderWrapper, Line, StyledForm } from './EditProfileForm.styled'
 import { InstructorDto } from '~/data/profile/instructor.dto'
 import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
-import { useState } from 'react'
 import { APP_MESSAGE } from '~/global/app-message'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import useCloudinaryApi from '~/hooks/api/useCloudinaryApi'
 import { notifyError, notifyLoading, notifySuccess } from '~/utils/toastify'
 import { useProfileApi } from '~/hooks/api/useProfileApi'
 import { useNavigate } from 'react-router-dom'
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
-const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg']
+import { ControlledAvatarImageUpload } from '~/components/form/ControlledFileUpload'
+import { FileFormat, FileSize } from '~/global/constants'
+import { CloudinaryFileUploadedInfo } from '~/components/cloudinary/cloudinary-type'
+import ControlledAutocomplete from '~/components/form/ControlledAutocomplete'
 
 interface bankDto {
   id: number
@@ -38,24 +27,23 @@ interface EditProfileFormProps {
 }
 
 type FormValues = {
-  avatar: string | null
+  avatar: CloudinaryFileUploadedInfo[] | null
   bio: string
   paymentInfo: {
-    bankName: string
-    bankShortName: string
-    bankCode: string
+    bankName: string | null
     accountName: string
     accountNumber: string
   }
 }
 
 const validationSchema = z.object({
-  avatar: z.string().trim().nullable(),
-  bio: z.string().max(50, APP_MESSAGE.FIELD_TOO_LONG('Tiểu sử', 200)).trim(),
+  avatar: z.array(z.object({}).passthrough()).optional(),
+  bio: z.string().trim().max(200, APP_MESSAGE.FIELD_TOO_LONG('Tiểu sử', 200)).optional(),
   paymentInfo: z.object({
-    bankName: z.string(),
-    bankShortName: z.string(),
-    bankCode: z.string(),
+    bankName: z
+      .string()
+      .nullable()
+      .refine((value) => value !== null, { message: APP_MESSAGE.REQUIRED_FIELD('Ngân hàng') }),
     accountName: z
       .string()
       .trim()
@@ -71,115 +59,64 @@ const validationSchema = z.object({
 
 const EditProfileForm = ({ instructorData, bankData }: EditProfileFormProps) => {
   const { putProfile } = useProfileApi()
-  const { uploadCloudinary } = useCloudinaryApi()
 
   const navigate = useNavigate()
 
-  const [previewURL, setPreviewURL] = useState<string | null>(instructorData.avatar)
-  const [file, setFile] = useState<File | null>(null)
-  const [fileError, setFileError] = useState(false)
-
-  const [selectedBank, setSelectedBank] = useState<string | null>(
-    instructorData.paymentInfo.bankShortName
-      ? instructorData.paymentInfo.bankShortName + ' - ' + instructorData.paymentInfo.bankName
-      : null
-  )
-  const [bankError, setBankError] = useState(false)
-
-  const handleUploadClick = () => {
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement
-    if (fileInput) {
-      fileInput.click()
-    }
-  }
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-
-    if (!file) {
-      setFile(null)
-      setPreviewURL('')
-      event.target.value = ''
-      return
-    }
-
-    if (file.size > MAX_FILE_SIZE || !ACCEPTED_FILE_TYPES.includes(file.type)) {
-      setFile(null)
-      setPreviewURL('')
-      event.target.value = ''
-      setFileError(true)
-      return
-    }
-
-    setFile(file)
-    const url = URL.createObjectURL(file)
-    setPreviewURL(url)
-
-    setFileError(false)
-  }
-
-  const filterOptions = createFilterOptions({
-    matchFrom: 'start',
-    stringify: (option: string) => option
-  })
-
   const defaultFormValues: FormValues = {
-    avatar: instructorData.avatar,
-    bio: instructorData.bio,
+    avatar: instructorData.avatar
+      ? Array(Object.assign({ url: instructorData?.avatar, resource_type: 'image', public_id: instructorData?.avatar }))
+      : null,
+    bio: instructorData.bio ?? '',
     paymentInfo: {
-      bankName: instructorData.paymentInfo.bankName,
-      bankShortName: instructorData.paymentInfo.bankShortName,
-      bankCode: instructorData.paymentInfo.bankCode,
-      accountName: instructorData.paymentInfo.accountName,
-      accountNumber: instructorData.paymentInfo.accountNumber
+      bankName: instructorData.paymentInfo
+        ? instructorData.paymentInfo?.bankShortName + ' - ' + instructorData.paymentInfo?.bankName
+        : null,
+      accountName: instructorData.paymentInfo?.accountName ?? '',
+      accountNumber: instructorData.paymentInfo?.accountNumber ?? ''
     }
   }
 
   const {
     handleSubmit,
     control,
-    formState: { isSubmitting, errors, isSubmitted, defaultValues }
+    formState: { isSubmitting, errors, defaultValues }
   } = useForm<FormValues>({
     defaultValues: defaultFormValues,
     resolver: zodResolver(validationSchema)
   })
 
   const onSubmit = handleSubmit(async (formData) => {
-    if (selectedBank === null) {
-      setBankError(true)
+    if (
+      JSON.stringify({
+        ...formData,
+        avatar: formData.avatar?.length
+          ? Array(
+              Object.assign({ url: instructorData?.avatar, resource_type: 'image', public_id: instructorData?.avatar })
+            )
+          : null
+      }) === JSON.stringify(defaultValues)
+    ) {
       return
-    } else {
-      bankData.forEach((bank) => {
-        if (selectedBank === bank.shortName + ' - ' + bank.name) {
-          formData.paymentInfo.bankName = bank.name
-          formData.paymentInfo.bankShortName = bank.shortName
-          formData.paymentInfo.bankCode = bank.code
-        }
-      })
     }
 
-    if (!previewURL) {
-      formData.avatar = null
-    }
+    const bankInfo = bankData.find((bank) => bank.shortName + ' - ' + bank.name === formData.paymentInfo.bankName)
 
-    if (previewURL !== instructorData.avatar) {
-      if (file) {
-        const response = await uploadCloudinary([file])
-        if (!response) {
-          notifyError(APP_MESSAGE.ACTION_DID_FAILED('Upload ảnh'))
-          return
-        } else {
-          formData.avatar = response.url
-        }
+    const updatedFormData = {
+      ...instructorData,
+      bio: formData.bio,
+      avatar: formData.avatar?.length ? formData.avatar[0].url : null,
+      paymentInfo: {
+        bankName: bankInfo?.name || '',
+        bankShortName: bankInfo?.shortName || '',
+        bankCode: bankInfo?.code || '',
+        accountName: formData.paymentInfo.accountName,
+        accountNumber: formData.paymentInfo.accountNumber
       }
-    }
-
-    if (JSON.stringify(formData) === JSON.stringify(defaultValues)) {
-      return
     }
 
     notifyLoading()
 
-    const { data: responseData, error: apiError } = await putProfile(formData as InstructorDto)
+    const { data: responseData, error: apiError } = await putProfile(updatedFormData)
     if (apiError) {
       notifyError(apiError.message)
     }
@@ -194,16 +131,13 @@ const EditProfileForm = ({ instructorData, bankData }: EditProfileFormProps) => 
       <Paper sx={{ display: 'flex', flexDirection: 'column', p: 3, gap: 1, width: '100%' }} elevation={2}>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-            <Avatar src={previewURL ?? ''} alt='avatar' variant='circular' />
-            <Button sx={{ maxWidth: 'fit-content' }} onClick={handleUploadClick} disabled={isSubmitting}>
-              {previewURL ? 'Thay đổi' : 'Tải lên'}
-            </Button>
-            <input
-              type='file'
-              id='fileInput'
-              style={{ display: 'none' }}
-              accept='image/png, image/jpeg, image/jpg'
-              onChange={handleFileChange}
+            <ControlledAvatarImageUpload
+              controller={{ name: 'avatar', control: control }}
+              label='Avatar'
+              clientAllowedFormats={[FileFormat.jpeg, FileFormat.jpg, FileFormat.png]}
+              minFile={1}
+              maxFiles={1}
+              maxFileSize={FileSize['5MB']}
             />
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, flexGrow: 1 }}>
@@ -223,9 +157,6 @@ const EditProfileForm = ({ instructorData, bankData }: EditProfileFormProps) => 
             />
           </Box>
         </Box>
-        {fileError && (
-          <FormHelperText error>{APP_MESSAGE.INVALID_FILE_FORMAT_OR_SIZE('png, jpg, jpeg', '5MB')}</FormHelperText>
-        )}
       </Paper>
 
       <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', padding: 3, gap: 2.5, width: '100%' }}>
@@ -237,31 +168,12 @@ const EditProfileForm = ({ instructorData, bankData }: EditProfileFormProps) => 
         </HeaderWrapper>
         <Grid container columnSpacing={4} rowSpacing={'20px'}>
           <Grid item xs={6}>
-            <FieldWrapper>
-              <Typography variant='body1'>Ngân hàng</Typography>
-              <Autocomplete
-                disablePortal
-                size='small'
-                value={selectedBank}
-                noOptionsText={APP_MESSAGE.THERE_IS_NO_SEARCH_RESULT}
-                onChange={(_event, newValue) => {
-                  setSelectedBank(newValue)
-                  if (newValue === null && isSubmitted) {
-                    setBankError(true)
-                  } else {
-                    setBankError(false)
-                  }
-                }}
-                options={bankData.map((bank) => bank.shortName + ' - ' + bank.name)}
-                filterOptions={filterOptions}
-                renderInput={(params) => <TextField {...params} placeholder='Chọn ngân hàng' error={bankError} />}
-              />
-            </FieldWrapper>
-            {bankError && (
-              <FormHelperText sx={{ maxWidth: '160px' }} error>
-                {APP_MESSAGE.REQUIRED_FIELD('Ngân hàng')}
-              </FormHelperText>
-            )}
+            <ControlledAutocomplete
+              placeholder='Chọn ngân hàng'
+              controller={{ name: 'paymentInfo.bankName', control: control }}
+              options={bankData.map((bank) => bank.shortName + ' - ' + bank.name)}
+              label='Ngân hàng'
+            />
           </Grid>
         </Grid>
         <Grid container columnSpacing={4} rowSpacing={'20px'}>
@@ -288,11 +200,7 @@ const EditProfileForm = ({ instructorData, bankData }: EditProfileFormProps) => 
         </Grid>
       </Paper>
 
-      <Button
-        sx={{ maxWidth: 'fit-content' }}
-        disabled={isSubmitting || bankError || Object.keys(errors).length > 0}
-        type='submit'
-      >
+      <Button sx={{ maxWidth: 'fit-content' }} disabled={isSubmitting || Object.keys(errors).length > 0} type='submit'>
         Lưu
       </Button>
     </StyledForm>
