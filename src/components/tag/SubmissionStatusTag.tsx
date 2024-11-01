@@ -2,7 +2,7 @@ import { Chip, SxProps, Theme } from '@mui/material'
 import { SubmissionStatus } from '~/global/constants'
 
 interface SubmissionStatusTagProps {
-  type: SubmissionStatus
+  type?: SubmissionStatus
 }
 
 const SubmissionStatusTag = ({ type }: SubmissionStatusTagProps) => {
@@ -26,7 +26,7 @@ const SubmissionStatusTag = ({ type }: SubmissionStatusTagProps) => {
       }
       break
     }
-    case SubmissionStatus.NOT_SUBMITTED: {
+    default: {
       label = 'Chưa nộp'
       styles = {
         backgroundColor: '#0000000a',

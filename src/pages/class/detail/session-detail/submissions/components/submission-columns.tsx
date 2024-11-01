@@ -88,16 +88,17 @@ export const submissionColumns: MRT_ColumnDef<AssignmentSubmissionItemResponseDt
     // accessorKey: 'submission.status',
     header: 'Trạng thái',
     size: 120,
-    accessorFn: (row) => row.submission?.status ?? SubmissionStatus.NOT_SUBMITTED,
+    accessorFn: (row) => row.submission?.status ?? 'Chưa nộp',
     Cell: ({ row }) => {
-      const type = row.original.submission?.status ?? SubmissionStatus.NOT_SUBMITTED
+      const type = row.original.submission?.status
       return <SubmissionStatusTag type={type} />
     },
     filterVariant: 'multi-select',
     filterSelectOptions: [
       { label: 'Đã nộp', value: SubmissionStatus.SUBMITTED },
       { label: 'Đã chấm', value: SubmissionStatus.GRADED },
-      { label: 'Chưa nộp', value: SubmissionStatus.NOT_SUBMITTED }
-    ]
+      { label: 'Chưa nộp', value: 'Chưa nộp' }
+    ],
+    enableSorting: false
   }
 ]
