@@ -239,9 +239,9 @@ const PublishClassForm = ({ courseId, duration }: PublishClassFormProps) => {
               description='Ngày bắt đầu tối thiểu là 1 tháng sau và tối đa là 3 tháng'
               type='date'
               inputProps={{
-                min: new Date(ONE_MONTH_ADDITIONAL).toISOString().split('T')[0],
+                min: new Date(ONE_MONTH_ADDITIONAL).toLocaleString('sv').split(' ')[0],
 
-                max: new Date(THREE_MONTH_ADDITIONAL).toISOString().split('T')[0]
+                max: new Date(THREE_MONTH_ADDITIONAL).toLocaleString('sv').split(' ')[0]
               }}
               fullWidth
               sx={{ gap: 1 }}

@@ -11,18 +11,18 @@ export const learnerColumns: MRT_ColumnDef<ClassLearnerDto>[] = [
     Cell: ({ row }) => {
       const { name, avatar } = row.original
       return (
-        <Box display='flex'>
+        <Box display='flex' alignItems={'center'} >
           <Avatar
             alt={name}
             src={avatar}
-            sx={{ width: 24, height: 24, marginRight: '0.5rem' }}
+            sx={{ width: 32, height: 32, marginRight: '0.5rem' }}
             slotProps={{
               img: {
                 onError: (event: SyntheticEvent<HTMLImageElement, Event>) => (event.currentTarget.src = fallbackAvatar)
               }
             }}
           />
-          <Typography variant='body1' marginLeft='0.5rem'>
+          <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
             {name}
           </Typography>
         </Box>

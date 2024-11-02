@@ -18,6 +18,10 @@ const ClassSessionDetail = lazy(() => import('~/pages/class/detail/session-detai
 const ClassLearnerDetail = lazy(() => import('~/pages/class/detail/learner-detail/LearnerDetail'))
 const TeachingTimesheet = lazy(() => import('~/pages/teaching-timesheet/TeachingTimesheet'))
 const SlotDetail = lazy(() => import('~/pages/teaching-timesheet/slot-detail/SlotDetail'))
+const AttendanceList = lazy(() => import('~/pages/teaching-timesheet/slot-detail/attendance/AttendanceList'))
+const TakingAttendance = lazy(
+  () => import('~/pages/teaching-timesheet/slot-detail/attendance/taking-attendance/TakingAttendance')
+)
 
 export const publicRoute = {
   login: {
@@ -111,5 +115,15 @@ export const protectedRoute = {
     name: 'Chi tiết tiết học',
     path: '/teaching-timesheet/slots/:slotId',
     Component: SlotDetail
+  },
+  attendanceList: {
+    name: 'Danh sách điểm danh',
+    path: '/teaching-timesheet/slots/:slotId/attendance',
+    Component: AttendanceList
+  },
+  takingAttendance: {
+    name: 'Điểm danh',
+    path: '/teaching-timesheet/slots/:slotId/attendance/edit',
+    Component: TakingAttendance
   }
 }
