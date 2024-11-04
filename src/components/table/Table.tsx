@@ -39,6 +39,15 @@ const Table = <TData extends MRT_RowData>({ title, tableOptions }: TableProps<TD
         verticalAlign: 'middle'
       }
     },
+    muiTableBodyProps: {
+      sx: {
+        '.MuiIconButton-root': {
+          '&:hover': {
+            backgroundColor: theme.palette.grey[300]
+          }
+        }
+      }
+    },
     renderTopToolbarCustomActions: () => (
       <Typography variant='subtitle1' my={'auto'} sx={{ color: theme.palette.info.dark }}>
         {title}

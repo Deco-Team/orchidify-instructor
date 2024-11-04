@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Loading from '~/components/loading/Loading'
 import { SlotDto } from '~/data/teaching-timesheet/teaching-timesheet.dto'
 import { useTimesheetApi } from '~/hooks/api/useTimesheetApi'
@@ -84,7 +84,16 @@ const SlotDetail = () => {
           )}
         </ContentWrapper>
       </Paper>
-      <Button sx={{ maxWidth: 'fit-content', mx: 'auto' }}>Điểm danh</Button>
+      <Button
+        sx={{ maxWidth: 'fit-content', mx: 'auto' }}
+        component={Link}
+        to={protectedRoute.attendanceList.path.replace(':slotId', data._id)}
+      >
+        {new Date().toLocaleString('sv').split(' ')[0] > new Date(data.start).toLocaleString('sv').split(' ')[0] ||
+        data.hasTakenAttendance
+          ? 'Xem điểm danh'
+          : 'Điểm danh'}
+      </Button>
     </StyledContainer>
   ) : (
     <Loading />

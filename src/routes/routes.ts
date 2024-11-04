@@ -22,6 +22,10 @@ const ClassSubmissionList = lazy(() => import('~/pages/class/detail/session-deta
 const ClassSubmissionDetail = lazy(
   () => import('~/pages/class/detail/session-detail/submissions/detail/SubmissionDetail')
 )
+const AttendanceList = lazy(() => import('~/pages/teaching-timesheet/slot-detail/attendance/AttendanceList'))
+const TakingAttendance = lazy(
+  () => import('~/pages/teaching-timesheet/slot-detail/attendance/taking-attendance/TakingAttendance')
+)
 
 export const publicRoute = {
   login: {
@@ -125,5 +129,15 @@ export const protectedRoute = {
     name: 'Chi tiết bài làm',
     path: '/classes/:classId/sessions/:sessionId/assignments/:assignmentId/submissions/:submissionId',
     Component: ClassSubmissionDetail
+  },
+  attendanceList: {
+    name: 'Danh sách điểm danh',
+    path: '/teaching-timesheet/slots/:slotId/attendance',
+    Component: AttendanceList
+  },
+  takingAttendance: {
+    name: 'Điểm danh',
+    path: '/teaching-timesheet/slots/:slotId/attendance/edit',
+    Component: TakingAttendance
   }
 }

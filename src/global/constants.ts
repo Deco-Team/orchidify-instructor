@@ -41,6 +41,12 @@ export enum RequestStatus {
   CANCELED = 'CANCELED'
 }
 
+export enum AttendanceStatus {
+  NOT_YET = 'NOT_YET',
+  PRESENT = 'PRESENT',
+  ABSENT = 'ABSENT'
+}
+
 export enum Weekday {
   MONDAY = 'Monday',
   TUESDAY = 'Tuesday',
