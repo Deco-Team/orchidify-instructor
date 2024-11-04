@@ -11,7 +11,7 @@ interface ClassDetailInformationProps {
 
 const ClassDetailInformation = ({ request }: ClassDetailInformationProps) => {
   return (
-    <Paper sx={{ display: 'flex', flexDirection: 'column', p: 3, gap: 2 }} elevation={2}>
+    <Paper sx={{ display: 'flex', flexDirection: 'column', p: 3, gap: 2.5 }} elevation={2}>
       <HeaderWrapper>
         <Typography variant='h2' sx={{ fontSize: '1.5rem', fontWeight: 700 }}>
           Thông tin lớp học
@@ -31,9 +31,13 @@ const ClassDetailInformation = ({ request }: ClassDetailInformationProps) => {
           </>
         )} */}
 
-        <Field label='Ngày bắt đầu' content={new Date(request.metadata.startDate).toLocaleDateString('vi-vn')} />
-
-        <Grid container>
+        <Grid container rowGap={1}>
+          <Grid item xs={6}>
+            <Field label='Ngày bắt đầu' content={new Date(request.metadata.startDate).toLocaleDateString('vi-vn')} />
+          </Grid>
+          <Grid item xs={6}>
+            <Field label='Thời lượng' content={`${request.metadata.duration} tuần`} />
+          </Grid>
           <Grid item xs={6}>
             <Field
               label='Ngày học trong tuần'

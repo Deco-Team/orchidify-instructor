@@ -41,7 +41,7 @@ const SessionDetailInformation = ({ session }: { session: SessionDto }) => {
                 <video
                   key={value.public_id}
                   controls
-                  style={{ width: '100', borderRadius: 4, backgroundColor: '#00000025' }}
+                  style={{ width: '100%', height: '408px', borderRadius: 4, backgroundColor: '#00000025' }}
                 >
                   <source src={value.url} type='video/mp4' />
                   {APP_MESSAGE.LOAD_DATA_FAILED('video')}
@@ -81,11 +81,11 @@ const SessionDetailInformation = ({ session }: { session: SessionDto }) => {
                     boxSizing: 'border-box'
                   }}
                 >
-                  <div style={{ width: '200px', height: '200px', padding: '0 2px' }}>
+                  <div style={{ width: '100%', height: '100%', padding: '0 2px' }}>
                     <img
                       src={value.url}
                       alt={`Lesson resource ${value.public_id}`}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                      style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '4px' }}
                     />
                   </div>
                 </div>

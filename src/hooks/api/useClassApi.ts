@@ -1,10 +1,15 @@
 import { useCallback } from 'react'
-import { ListResponseDto } from '~/data/common.dto'
+import { ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 import { useProtectedApi } from './useProtectedApi'
-import { ClassListItemResponseDto, ClassDetailResponseDto } from '~/data/class/class.dto'
-import { SessionDto } from '~/data/course/course.dto'
+import {
+  ClassListItemResponseDto,
+  ClassDetailResponseDto,
+  BaseAssignmentSubmissionDto,
+  AssignmentSubmissionItemResponseDto
+} from '~/data/class/class.dto'
+import { AssignmentDto, SessionDto } from '~/data/course/course.dto'
 
 const ROOT_ENDPOINT = '/classes/instructor'
 
@@ -89,5 +94,89 @@ export const useClassApi = () => {
     [callAppProtectedApi]
   )
 
-  return { getClassList, getClassById, getSessionById }
+  const getAssignmentById = useCallback(
+    async (classId: string, assignmentId: string) => {
+      const endpoint = `${ROOT_ENDPOINT}/${classId}/assignments/${assignmentId}`
+      const result = await callAppProtectedApi<AssignmentDto>(endpoint, 'GET')
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết bài tập') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  const getSubmissionList = useCallback(
+    async (classId: string, assignmentId: string) => {
+      const endpoint = `${ROOT_ENDPOINT}/${classId}/assignments/${assignmentId}/submissions`
+      const result = await callAppProtectedApi<{ docs: AssignmentSubmissionItemResponseDto[] }>(endpoint, 'GET')
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data.docs, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('danh sách bài làm') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  const getSubmissionById = useCallback(
+    async (classId: string, submissionId: string) => {
+      const endpoint = `${ROOT_ENDPOINT}/${classId}/assignment-submissions/${submissionId}`
+      const result = await callAppProtectedApi<BaseAssignmentSubmissionDto>(endpoint, 'GET')
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết bài làm') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  const gradeSubmission = useCallback(
+    async (classId: string, submissionId: string, grade: { point: number; feedback: string }) => {
+      const endpoint = `${ROOT_ENDPOINT}/${classId}/assignment-submissions/${submissionId}/grade`
+      const result = await callAppProtectedApi<SuccessResponseDto>(endpoint, 'POST', {}, {}, grade)
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Chấm điểm') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  return {
+    getClassList,
+    getClassById,
+    getSessionById,
+    getAssignmentById,
+    getSubmissionList,
+    getSubmissionById,
+    gradeSubmission
+  }
 }

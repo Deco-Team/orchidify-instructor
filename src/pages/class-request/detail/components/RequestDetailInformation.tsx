@@ -53,7 +53,7 @@ interface RequestDetailInformationProps {
 
 const RequestDetailInformation = ({ request }: RequestDetailInformationProps) => {
   return (
-    <Paper sx={{ display: 'flex', flexDirection: 'column', p: 3, gap: 2 }} elevation={2}>
+    <Paper sx={{ display: 'flex', flexDirection: 'column', p: 3, gap: 2.5 }} elevation={2}>
       <HeaderWrapper>
         <Typography variant='h2' sx={{ fontSize: '1.5rem', fontWeight: 700 }}>
           Thông tin yêu cầu

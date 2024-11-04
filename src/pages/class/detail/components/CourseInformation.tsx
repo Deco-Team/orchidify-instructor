@@ -90,11 +90,11 @@ const CourseInformation = ({ classDetail }: CourseInformationProps) => {
                 boxSizing: 'border-box'
               }}
             >
-              <div style={{ width: '200px', height: '200px', padding: '0 2px' }}>
+              <div style={{ width: '100%', height: '100%', padding: '0 2px' }}>
                 <img
                   src={media.url}
                   alt={`Course Image ${media.public_id}`}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                  style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '4px' }}
                 />
               </div>
             </div>

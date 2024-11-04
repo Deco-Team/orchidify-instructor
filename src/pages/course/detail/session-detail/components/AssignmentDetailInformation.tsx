@@ -55,9 +55,9 @@ const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto
                 <Box
                   sx={{
                     display: 'flex',
-                    gap: 2,
+                    gap: 1,
                     background: '#f4f4f4',
-                    width: 'fit-content',
+                    width: '250px',
                     p: 2.5,
                     borderRadius: 2,
                     border: '2px solid #d7d7d7',
@@ -67,7 +67,17 @@ const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto
                   onClick={() => window.open(value.url, '_blank')}
                 >
                   <InsertDriveFileOutlined />
-                  <Typography variant='subtitle1'>{value.public_id}</Typography>
+                  <Typography
+                    variant='subtitle1'
+                    sx={{
+                      width: '100%',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden'
+                    }}
+                  >
+                    {value.public_id}
+                  </Typography>
                 </Box>
               )}
             </div>

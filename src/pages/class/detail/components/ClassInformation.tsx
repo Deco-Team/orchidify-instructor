@@ -13,13 +13,13 @@ interface FieldProps {
 
 const Field: React.FC<FieldProps> = ({ label, content, weekDays = [], slotNumbers = [], statusTag }) => {
   const weekDayText = weekDays.length > 0 && {
-    [Weekday.MONDAY]: 'Thứ 2',
-    [Weekday.TUESDAY]: 'Thứ 3',
-    [Weekday.WEDNESDAY]: 'Thứ 4',
-    [Weekday.THURSDAY]: 'Thứ 5',
-    [Weekday.FRIDAY]: 'Thứ 6',
-    [Weekday.SATURDAY]: 'Thứ 7',
-    [Weekday.SUNDAY]: 'Chủ nhật'
+    [Weekday.MONDAY]: 'T2',
+    [Weekday.TUESDAY]: 'T3',
+    [Weekday.WEDNESDAY]: 'T4',
+    [Weekday.THURSDAY]: 'T5',
+    [Weekday.FRIDAY]: 'T6',
+    [Weekday.SATURDAY]: 'T7',
+    [Weekday.SUNDAY]: 'CN'
   }
 
   const slotNumberText = slotNumbers.length > 0 && {
@@ -30,7 +30,7 @@ const Field: React.FC<FieldProps> = ({ label, content, weekDays = [], slotNumber
   }
 
   return (
-    <Box display='flex' marginY='0.25rem'>
+    <Box display='flex'>
       <Typography variant='subtitle1' fontWeight={600} width={'180px'}>
         {label}
       </Typography>
@@ -67,7 +67,7 @@ const ClassInformation = ({ classDetail }: ClassInformationProps) => {
         </Typography>
         <Divider sx={{ flexGrow: 1 }} />
       </Box>
-      <Grid container>
+      <Grid container rowGap={1}>
         <Grid item xs={12}>
           <Field label='Mã lớp học' content={classDetail.code} />
         </Grid>
