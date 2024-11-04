@@ -1,6 +1,7 @@
-import { CourseLevel, ClassStatus, Weekday, SlotNumber, LearnerStatus } from '~/global/constants'
+import { CourseLevel, ClassStatus, Weekday, SlotNumber, LearnerStatus, SubmissionStatus } from '~/global/constants'
 import { BaseMediaDto } from '../common.dto'
 import { SessionDto } from '../course/course.dto'
+import { LearnerDetailResponseDto } from '../learner/learner.dto'
 
 export type ClassListItemResponseDto = {
   _id: string
@@ -75,4 +76,21 @@ export type ClassDetailResponseDto = {
   updatedAt: string
   rate?: number
   cancelReason?: string
+}
+
+export type AssignmentSubmissionItemResponseDto = {
+  _id: string
+  learner: LearnerDetailResponseDto
+  submission?: BaseAssignmentSubmissionDto
+}
+
+export type BaseAssignmentSubmissionDto = {
+  _id: string
+  attachments: BaseMediaDto[]
+  point?: number
+  feedback?: string
+  status: SubmissionStatus
+  learner: LearnerDetailResponseDto
+  createdAt: Date
+  updatedAt: Date
 }

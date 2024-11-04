@@ -22,6 +22,11 @@ export enum ClassStatus {
   CANCELED = 'CANCELED'
 }
 
+export enum SubmissionStatus {
+  SUBMITTED = 'SUBMITTED',
+  GRADED = 'GRADED'
+}
+
 export enum CourseLevel {
   BASIC = 'BASIC',
   INTERMEDIATE = 'INTERMEDIATE',

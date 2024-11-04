@@ -23,6 +23,7 @@ const SessionTable = ({ sessions, classId }: SessionTableProps) => {
         enableColumnFilters: false,
         enableHiding: false,
         enableColumnActions: false,
+        manualSorting: false,
         muiTableBodyRowProps: ({ row }) => ({
           onClick: () =>
             navigate(
