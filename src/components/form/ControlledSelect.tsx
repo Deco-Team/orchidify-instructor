@@ -27,7 +27,7 @@ const ControlledSelect = <TFieldValues extends FieldValues>({
 
   return (
     <>
-      <InputLabel id={labelId} sx={{ marginBottom: '0.7rem', color: '#000000' }}>
+      <InputLabel id={labelId} sx={{ marginBottom: '0.5rem', color: '#000000' }}>
         {label}
       </InputLabel>
       <Select
