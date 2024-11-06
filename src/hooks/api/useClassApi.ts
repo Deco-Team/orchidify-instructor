@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
+import { BaseMediaDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 import { useProtectedApi } from './useProtectedApi'
@@ -170,6 +170,25 @@ export const useClassApi = () => {
     [callAppProtectedApi]
   )
 
+  const uploadResourses = useCallback(
+    async (classId: string, sessionId: string, media: BaseMediaDto[]) => {
+      const endpoint = `${ROOT_ENDPOINT}/${classId}/sessions/${sessionId}/upload-resources`
+      const result = await callAppProtectedApi<SuccessResponseDto>(endpoint, 'PATCH', {}, {}, { media })
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Tải lên tài nguyên') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
   return {
     getClassList,
     getClassById,
@@ -177,6 +196,7 @@ export const useClassApi = () => {
     getAssignmentById,
     getSubmissionList,
     getSubmissionById,
-    gradeSubmission
+    gradeSubmission,
+    uploadResourses
   }
 }
