@@ -31,4 +31,5 @@ export type BaseMediaDto = {
   asset_folder: string
   original_filename: string
   original_extension: string
+  isAddedLater?: boolean
 }

@@ -26,6 +26,7 @@ const AttendanceList = lazy(() => import('~/pages/teaching-timesheet/slot-detail
 const TakingAttendance = lazy(
   () => import('~/pages/teaching-timesheet/slot-detail/attendance/taking-attendance/TakingAttendance')
 )
+const UploadResources = lazy(() => import('~/pages/class/detail/session-detail/upload-resources/UploadResources'))
 
 export const publicRoute = {
   login: {
@@ -139,5 +140,10 @@ export const protectedRoute = {
     name: 'Điểm danh',
     path: '/teaching-timesheet/slots/:slotId/attendance/edit',
     Component: TakingAttendance
+  },
+  uploadResources: {
+    name: 'Tải lên tài nguyên',
+    path: '/classes/:classId/sessions/:sessionId/upload-resources',
+    Component: UploadResources
   }
 }

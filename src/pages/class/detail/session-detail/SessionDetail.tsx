@@ -38,7 +38,13 @@ const SessionDetail = () => {
     <Box sx={{ marginBottom: '40px', display: 'flex', flexDirection: 'column' }}>
       <SessionDetailHeader id={classId!} />
       <SessionDetailInformation session={data} />
-      <Button sx={{ maxWidth: 'fit-content', mx: 'auto', marginTop: '1.25rem' }}>Tải lên tài nguyên</Button>
+      <Button
+        sx={{ maxWidth: 'fit-content', mx: 'auto', marginTop: '1.25rem' }}
+        component={Link}
+        to={'upload-resources'}
+      >
+        Tải lên tài nguyên
+      </Button>
       {/*
         Only allow 1 assignment per session 
       */}

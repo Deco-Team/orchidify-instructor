@@ -123,7 +123,7 @@ const CourseFields = ({ control, courseTypes }: CourseFieldsProps) => {
         <Grid item xs={12}>
           <ControlledFileAreaUpload
             controller={{ name: 'media', control: control }}
-            label='HÌnh ảnh khóa học'
+            label='Hình ảnh khóa học'
             clientAllowedFormats={[FileFormat.jpeg, FileFormat.jpg, FileFormat.png]}
             minFile={1}
             maxFiles={10}
