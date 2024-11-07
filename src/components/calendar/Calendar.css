@@ -25,6 +25,7 @@
   --fc-fourth-event-text-color: #e92c2c;
 
   --fc-event-border-color: #0ea5e9;
+  --fc-timegrid-event-bg-color: #0ea5e91a;
 }
 
 .fc-button {
@@ -64,7 +65,16 @@
   max-width: fit-content;
 }
 
-.fc-daygrid-event-harness:nth-child(1) .fc-event-main {
+.fc-daygrid-event-harness .fc-event-main {
+  border-radius: 4px;
+  padding: 2px 3px;
+}
+
+.fc-timegrid-event-harness-inset .fc-timegrid-event {
+  background-color: var(--fc-timegrid-event-bg-color) !important;
+}
+
+/* .fc-daygrid-event-harness:nth-child(1) .fc-event-main {
   background-color: var(--fc-first-event-bg-color);
   color: var(--fc-first-event-text-color);
   border-radius: 4px;
@@ -90,7 +100,7 @@
   color: var(--fc-fourth-event-text-color);
   border-radius: 4px;
   padding: 2px 3px;
-}
+} */
 
 .fc-v-event {
   border: none;

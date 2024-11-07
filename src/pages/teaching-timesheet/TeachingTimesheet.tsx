@@ -47,7 +47,22 @@ const TeachingTimesheet = () => {
         start: slot.start.toString(),
         end: slot.end.toString(),
         display: 'block',
-        backgroundColor: '#2ec2b34c'
+        backgroundColor:
+          slot.slotNumber === 1
+            ? 'var(--fc-first-event-bg-color)'
+            : slot.slotNumber === 2
+              ? 'var(--fc-second-event-bg-color)'
+              : slot.slotNumber === 3
+                ? 'var(--fc-third-event-bg-color)'
+                : 'var(--fc-fourth-event-bg-color)',
+        textColor:
+          slot.slotNumber === 1
+            ? 'var(--fc-first-event-text-color)'
+            : slot.slotNumber === 2
+              ? 'var(--fc-second-event-text-color)'
+              : slot.slotNumber === 3
+                ? 'var(--fc-third-event-text-color)'
+                : 'var(--fc-fourth-event-text-color'
       }))
 
       setEventData(transformedEventData)

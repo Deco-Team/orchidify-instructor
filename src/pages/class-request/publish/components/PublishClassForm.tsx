@@ -1,25 +1,19 @@
-import { Box, Button, FormHelperText, Grid, InputLabel, OutlinedInput, Paper, Typography } from '@mui/material'
-import { HeaderWrapper, Line, StyledForm } from './PublishClassForm.styled'
-import {
-  ONE_MONTH_ADDITIONAL,
-  PublishClasDto,
-  publishClassSchema,
-  THREE_MONTH_ADDITIONAL
-} from '~/data/class-request/publish-class.dto'
+import { Box, Button, CircularProgress, Typography } from '@mui/material'
+import { StyledForm } from './PublishClassForm.styled'
+import { PublishClasDto, publishClassSchema } from '~/data/class-request/publish-class.dto'
 import { useForm } from 'react-hook-form'
-import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
-import ControlledSelect from '~/components/form/ControlledSelect'
 import Calendar from '~/components/calendar/Calendar'
 import { useState, useEffect, useRef } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SlotNumber, Weekday } from '~/global/constants'
+import { CalendarType, SlotNumber, Weekday } from '~/global/constants'
 import { notifyError, notifyLoading, notifySuccess } from '~/utils/toastify'
 import { useRequestApi } from '~/hooks/api/useRequestApi'
 import { APP_MESSAGE } from '~/global/app-message'
-import { protectedRoute } from '~/routes/routes'
 import { useNavigate } from 'react-router-dom'
 import { convertStringToArray } from '~/utils/format'
 import FullCalendar from '@fullcalendar/react'
+import PublishFormFields from './PublishFormFields'
+import { useTimesheetApi } from '~/hooks/api/useTimesheetApi'
 
 interface PublishClassFormProps {
   courseId: string
@@ -28,10 +22,12 @@ interface PublishClassFormProps {
 
 interface SelectedSlotEvent {
   id: string
+  title: string
   start: string | Date
   end: string | Date
   display: string
   backgroundColor: string
+  textColor?: string
 }
 
 const weekdayMapping = {
@@ -62,6 +58,7 @@ const generateAllDayEvents = (startDate: string, duration: number, weekdaysStrin
 
         events.push({
           id: `${formattedDate}-${weekday}`,
+          title: 'Đang chọn',
           start: formattedDate,
           end: formattedDate,
           display: 'background',
@@ -101,9 +98,26 @@ const updateEventTimesWithSlots = (events: SelectedSlotEvent[], slotNumber: Slot
     updatedEvents.push({
       ...event,
       id: `${event.id}-slot-${slotNumber}`,
+      title: 'Đang chọn - Tiết ' + slotNumber,
       start: startDate,
       end: endDate,
-      display: 'block'
+      display: 'block',
+      backgroundColor:
+        slotNumber === 1
+          ? 'var(--fc-first-event-bg-color)'
+          : slotNumber === 2
+            ? 'var(--fc-second-event-bg-color)'
+            : slotNumber === 3
+              ? 'var(--fc-third-event-bg-color)'
+              : 'var(--fc-fourth-event-bg-color)',
+      textColor:
+        slotNumber === 1
+          ? 'var(--fc-first-event-text-color)'
+          : slotNumber === 2
+            ? 'var(--fc-second-event-text-color)'
+            : slotNumber === 3
+              ? 'var(--fc-third-event-text-color)'
+              : 'var(--fc-fourth-event-text-color'
     })
   })
 
@@ -119,6 +133,7 @@ const defaultFormValues = {
 const PublishClassForm = ({ courseId, duration }: PublishClassFormProps) => {
   const navigate = useNavigate()
   const { getAvailableTime, createPublishClassRequest } = useRequestApi()
+  const { getTeachingTimesheet } = useTimesheetApi()
 
   const calendarRef = useRef<FullCalendar | null>(null)
 
@@ -126,10 +141,84 @@ const PublishClassForm = ({ courseId, duration }: PublishClassFormProps) => {
   const [slotNumbersData, setSlotNumbersData] = useState<{ name: string; value: SlotNumber }[]>([])
   const [events, setEvents] = useState<SelectedSlotEvent[]>([])
 
+  const [isLoading, setIsLoading] = useState(false)
+  const [displayEventTime, setDisplayEventTime] = useState(true)
+
+  const mapViewTypeToApi = (viewType: string) => {
+    switch (viewType) {
+      case 'dayGridMonth':
+        return CalendarType.MONTH
+      case 'timeGridWeek':
+        return CalendarType.WEEK
+      default:
+        return CalendarType.MONTH
+    }
+  }
+
+  const fetchTimesheetData = async (viewType: string, startDate: string) => {
+    const apiViewType = mapViewTypeToApi(viewType)
+    setDisplayEventTime(apiViewType === CalendarType.WEEK)
+
+    setIsLoading(true)
+
+    const { data: teachingTimesheet, error: apiError } = await getTeachingTimesheet(startDate, apiViewType)
+
+    if (teachingTimesheet) {
+      const transformedEventData = teachingTimesheet.map((slot) => ({
+        id: slot._id,
+        title: apiViewType === CalendarType.WEEK ? '' : 'Tiết ' + slot.slotNumber,
+        start: slot.start.toString(),
+        end: slot.end.toString(),
+        display: 'block',
+        backgroundColor:
+          slot.slotNumber === 1
+            ? 'var(--fc-first-event-bg-color)'
+            : slot.slotNumber === 2
+              ? 'var(--fc-second-event-bg-color)'
+              : slot.slotNumber === 3
+                ? 'var(--fc-third-event-bg-color)'
+                : 'var(--fc-fourth-event-bg-color)',
+        textColor:
+          slot.slotNumber === 1
+            ? 'var(--fc-first-event-text-color)'
+            : slot.slotNumber === 2
+              ? 'var(--fc-second-event-text-color)'
+              : slot.slotNumber === 3
+                ? 'var(--fc-third-event-text-color)'
+                : 'var(--fc-fourth-event-text-color'
+      }))
+
+      setEvents((prev) => {
+        const newData = transformedEventData
+
+        // Create a Map to store events by a unique identifier (e.g., id)
+        const eventMap = new Map()
+
+        // Add existing events to the map
+        prev.forEach((event) => eventMap.set(event.id, event))
+
+        // Add new events to the map, overwriting duplicates
+        newData.forEach((event) => eventMap.set(event.id, event))
+
+        // Convert the Map back to an array
+        return Array.from(eventMap.values())
+      })
+    }
+
+    if (apiError) {
+      notifyError(apiError.message)
+    }
+
+    setIsLoading(false)
+  }
+
+  const handleDatesChange = (viewType: string, startDate: string) => {
+    fetchTimesheetData(viewType, startDate)
+  }
+
   const {
     handleSubmit,
     control,
-    // getValues,
     setError,
     setValue,
     watch,
@@ -144,11 +233,23 @@ const PublishClassForm = ({ courseId, duration }: PublishClassFormProps) => {
   const { startDate, weekdaysString, slotNumber } = formValues
 
   useEffect(() => {
-    // setSlotNumbersData([])
     setValue('slotNumber', SlotNumber.NONE)
   }, [startDate, weekdaysString, setValue])
 
   useEffect(() => {
+    if (startDate) {
+      const weekdays = new Date(startDate).getDay() as keyof typeof weekdayMapping
+      const weekdayMapping = {
+        1: [Weekday.MONDAY, Weekday.THURSDAY],
+        2: [Weekday.TUESDAY, Weekday.FRIDAY],
+        3: [Weekday.WEDNESDAY, Weekday.SATURDAY],
+        4: [Weekday.MONDAY, Weekday.THURSDAY],
+        5: [Weekday.TUESDAY, Weekday.FRIDAY],
+        6: [Weekday.WEDNESDAY, Weekday.SATURDAY]
+      }
+      setValue('weekdaysString', (weekdayMapping[weekdays] || []).toString())
+    }
+
     if (startDate && duration && weekdaysString) {
       const allDayEvents = generateAllDayEvents(startDate, duration, weekdaysString)
 
@@ -162,7 +263,7 @@ const PublishClassForm = ({ courseId, duration }: PublishClassFormProps) => {
         calendarRef.current?.getApi().gotoDate(new Date(updatedEvents[0].start))
       }
     }
-  }, [startDate, duration, weekdaysString, slotNumber])
+  }, [startDate, duration, slotNumber, setValue, weekdaysString])
 
   const getSlotNumbers = async () => {
     if (oldData.startDate === startDate && oldData.weekdaysString === weekdaysString) return
@@ -205,98 +306,62 @@ const PublishClassForm = ({ courseId, duration }: PublishClassFormProps) => {
     }
     if (data) {
       notifySuccess(APP_MESSAGE.ACTION_DID_SUCCESSFULLY('Gửi yêu cầu mở'))
-      navigate(protectedRoute.courseDetail.path.replace(':id', courseId || ''))
+      navigate(-1)
     }
   })
 
   return (
     <StyledForm onSubmit={onSubmit}>
-      <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', padding: 3, gap: 2.5, width: '100%' }}>
-        <HeaderWrapper>
-          <Typography variant='h5' fontWeight={'bold'}>
-            Yêu cầu mở
-          </Typography>
-          <Line />
-        </HeaderWrapper>
-        <Grid container columnSpacing={4} rowSpacing={'20px'}>
-          <Grid item xs={12}>
-            <ControlledOutlinedInput
-              size='small'
-              controller={{ name: 'description', control: control }}
-              label='Mô tả yêu cầu'
-              placeholder='Nhập mô tả yêu cầu'
-              multiline
-              minRows={4}
-              fullWidth
-              sx={{ gap: 1 }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <ControlledOutlinedInput
-              size='small'
-              controller={{ name: 'startDate', control: control }}
-              label='Ngày bắt đầu'
-              description='Ngày bắt đầu tối thiểu là 1 tháng sau và tối đa là 3 tháng'
-              type='date'
-              inputProps={{
-                min: new Date(ONE_MONTH_ADDITIONAL).toLocaleString('sv').split(' ')[0],
-
-                max: new Date(THREE_MONTH_ADDITIONAL).toLocaleString('sv').split(' ')[0]
-              }}
-              fullWidth
-              sx={{ gap: 1 }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Box sx={{ gap: 1, display: 'flex', flexDirection: 'column' }}>
-              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <InputLabel sx={{ color: '#000000' }}>Thời lượng</InputLabel>
-                <FormHelperText>Thời lượng tối thiểu là 1 tuần và tối đa là 12 tuần</FormHelperText>
-              </Box>
-              <Box>
-                <OutlinedInput size='small' value={duration} fullWidth disabled />
-              </Box>
-            </Box>
-          </Grid>
-
-          <Grid item xs={6}>
-            <ControlledSelect
-              size='small'
-              controller={{ name: 'weekdaysString', control: control }}
-              label='Ngày học trong tuần'
-              labelId='weekdaysString'
-              items={[
-                { name: 'T2, T5', value: [Weekday.MONDAY, Weekday.THURSDAY].toString() },
-                { name: 'T3, T6', value: [Weekday.TUESDAY, Weekday.FRIDAY].toString() },
-                { name: 'T4, T7', value: [Weekday.WEDNESDAY, Weekday.SATURDAY].toString() }
-              ]}
-              displayEmpty
-              placeholder='Chọn ngày học'
-              sx={{ width: '100%' }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <ControlledSelect
-              size='small'
-              controller={{ name: 'slotNumber', control: control }}
-              label='Tiết học'
-              labelId='slotNumber'
-              items={slotNumbersData}
-              displayEmpty
-              onOpen={getSlotNumbers}
-              placeholder='Chọn tiết học'
-              renderChips={false}
-              sx={{ width: '100%' }}
-            />
-          </Grid>
-        </Grid>
-      </Paper>
+      <PublishFormFields
+        control={control}
+        formValues={formValues}
+        duration={duration}
+        slotNumbersData={slotNumbersData}
+        getSlotNumbers={getSlotNumbers}
+      />
       <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 1 }}>
-        <Typography variant='caption'>
-          <span style={{ textDecoration: 'underline' }}>Chú thích</span>: Tiết 1: 7h - 9h, tiết 2: 9h30 - 11h30, tiết 3:
-          13h - 15h, tiết 4: 15h30 - 17h30
+        <Typography variant='body2'>
+          <span style={{ textDecoration: 'underline' }}>Chú thích:</span>
+          <li>
+            <span style={{ fontWeight: 600, color: 'var(--fc-first-event-text-color)' }}>Tiết 1</span>: 7:00 - 9:00
+          </li>
+          <li>
+            <span style={{ fontWeight: 600, color: 'var(--fc-second-event-text-color)' }}>Tiết 2</span>: 9:30 - 11:30
+          </li>
+          <li>
+            <span style={{ fontWeight: 600, color: 'var(--fc-third-event-text-color)' }}>Tiết 3</span>: 13:00 - 15:00
+          </li>
+          <li>
+            <span style={{ fontWeight: 600, color: 'var(--fc-fourth-event-text-color)' }}>Tiết 4</span>: 15:30 - 1:30
+          </li>
         </Typography>
-        <Calendar events={events} calendarRef={calendarRef} />
+        <Box sx={{ position: 'relative' }}>
+          <Calendar
+            events={events}
+            calendarRef={calendarRef}
+            onDatesChange={handleDatesChange}
+            displayEventTime={displayEventTime}
+            showNonCurrentDates={false}
+          />
+          {isLoading && (
+            <Box
+              sx={{
+                display: 'flex',
+                backgroundColor: '#ffffffb2',
+                width: '100%',
+                height: '100%',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                zIndex: 1
+              }}
+              justifyContent='center'
+              alignItems='center'
+            >
+              <CircularProgress size={80} />
+            </Box>
+          )}
+        </Box>
       </Box>
       <Button sx={{ maxWidth: 'fit-content' }} disabled={isSubmitting || Object.keys(errors).length > 0} type='submit'>
         Gửi yêu cầu mở

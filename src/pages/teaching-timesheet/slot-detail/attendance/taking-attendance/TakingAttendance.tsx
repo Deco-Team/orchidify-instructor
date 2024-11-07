@@ -64,8 +64,10 @@ const TakingAttendance = () => {
   const onSubmit = handleSubmit(async (formData) => {
     const { data: result, error: apiError } = await takeAttendance(slotId!, Object.values(formData))
     if (result) {
-      notifySuccess(APP_MESSAGE.ACTION_DID_SUCCESSFULLY('Điểm danh'))
-      navigate(protectedRoute.attendanceList.path.replace(':slotId', slotId!))
+      notifySuccess(
+        APP_MESSAGE.ACTION_DID_SUCCESSFULLY(data?.slot.hasTakenAttendance ? 'Cập nhật điểm danh' : 'Điểm danh')
+      )
+      navigate(-1)
     } else if (apiError) {
       notifyError(apiError.message)
     }
