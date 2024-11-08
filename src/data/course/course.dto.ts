@@ -28,7 +28,8 @@ export type CourseDetailResponseDto = {
   learnerLimit: number
   instructorId: string
   sessions: SessionDto[]
-  rate: number
+  rate?: number
+  ratingSummary?: RatingSummaryDto
   discount: number
   gardenRequiredToolkits: string
   isPublished: boolean
@@ -55,4 +56,16 @@ export interface AssignmentDto {
 export interface CourseTypesResponstDto {
   groupName: string
   groupItems: string[]
+}
+
+interface RatingSummaryDto {
+  totalSum: number
+  totalCount: number
+  totalCountByRate: {
+    1: number
+    2: number
+    3: number
+    4: number
+    5: number
+  }
 }
