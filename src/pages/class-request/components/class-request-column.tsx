@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 import RequestStatusTag from '~/components/tag/RequestStatustag'
 import { ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
@@ -9,7 +9,9 @@ export const classRequestColumn: MRT_ColumnDef<ClassRequestListItemResponseDto>[
   {
     accessorKey: 'type',
     header: 'Loại yêu cầu',
-    size: 170,
+    size: 140,
+    grow: false,
+    enableSorting: false,
     Cell: ({ cell }) => {
       const type = cell.getValue() as RequestType
 
@@ -27,7 +29,8 @@ export const classRequestColumn: MRT_ColumnDef<ClassRequestListItemResponseDto>[
   {
     accessorKey: 'metadata.code',
     header: 'Mã khóa học',
-    size: 170,
+    size: 165,
+    grow: false,
     enableColumnFilter: false
   },
   {
@@ -40,18 +43,19 @@ export const classRequestColumn: MRT_ColumnDef<ClassRequestListItemResponseDto>[
     accessorKey: 'createdAt',
     header: 'Thời gian tạo',
     size: 170,
+    grow: false,
     enableColumnFilter: false,
     Cell: ({ cell }) => {
       const date = cell.getValue() as string
       return (
-        <>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
             {new Date(date).toLocaleTimeString('vi-VN')}
           </Typography>
           <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
             {new Date(date).toLocaleDateString('vi-VN')}
           </Typography>
-        </>
+        </Box>
       )
     }
   },
@@ -59,25 +63,28 @@ export const classRequestColumn: MRT_ColumnDef<ClassRequestListItemResponseDto>[
     accessorKey: 'updatedAt',
     header: 'Cập nhật cuối',
     size: 170,
+    grow: false,
     enableColumnFilter: false,
     Cell: ({ cell }) => {
       const date = cell.getValue() as string
       return (
-        <>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
             {new Date(date).toLocaleTimeString('vi-VN')}
           </Typography>
           <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
             {new Date(date).toLocaleDateString('vi-VN')}
           </Typography>
-        </>
+        </Box>
       )
     }
   },
   {
     accessorKey: 'status',
     header: 'Trạng thái',
-    size: 170,
+    size: 130,
+    grow: false,
+    enableSorting: false,
     Cell: ({ cell }) => {
       const type = cell.getValue() as RequestStatus
       return <RequestStatusTag type={type} />
@@ -95,6 +102,7 @@ export const classRequestColumn: MRT_ColumnDef<ClassRequestListItemResponseDto>[
     accessorKey: 'rejectReason',
     header: 'Lý do từ chối',
     size: 170,
+    enableSorting: false,
     enableColumnFilter: false,
     Cell: ({ cell }) => {
       const reason = cell.getValue() as string

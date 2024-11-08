@@ -15,7 +15,8 @@ export const takingAttendanceColumns = ({
   {
     accessorKey: 'learner',
     header: 'Ảnh đại diện',
-    size: 100,
+    size: 120,
+    grow: false,
     Cell: ({ row }) => (
       <>
         <Controller
@@ -40,13 +41,13 @@ export const takingAttendanceColumns = ({
   },
   {
     accessorKey: 'learner.name',
-    header: 'Họ tên',
-    size: 200
+    header: 'Họ tên'
   },
   {
     accessorKey: 'status',
     header: 'Trạng thái',
-    size: 250,
+    size: 220,
+    grow: false,
     Cell: ({ row }) => (
       <FormControl>
         <Controller
@@ -68,7 +69,8 @@ export const takingAttendanceColumns = ({
   {
     accessorKey: 'note',
     header: 'Ghi chú',
-    size: 300,
+    size: 400,
+    grow: false,
     Cell: ({ row }) => (
       <Controller
         name={`${row.index}.note`}
