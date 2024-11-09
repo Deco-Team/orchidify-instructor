@@ -2,12 +2,17 @@ import { useCallback } from 'react'
 import { useProtectedApi } from './useProtectedApi'
 import { APP_MESSAGE } from '~/global/app-message'
 import { ErrorResponseDto } from '~/data/error.dto'
-import { AvailableTimeResponse, ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
+import { AvailableTimeResponse, ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
 import { SlotNumber, Weekday } from '~/global/constants'
 import { IdResponseDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
+import {
+  PayoutRequestDetailResponseDto,
+  PayoutRequestListItemResponseDto
+} from '~/data/payout-request/payout-request.dto'
 
 const TIMESHEET_ENDPOINT = '/garden-timesheets/instructor'
 const CLASS_REQUEST_ENDPOINT = '/class-requests/instructor'
+const PAYOUT_REQUEST_ENDPOINT = '/payout-requests/instructor'
 
 interface CreatePublishClassRequest {
   description: string
@@ -147,11 +152,112 @@ export const useRequestApi = () => {
     [callAppProtectedApi]
   )
 
+  const getPayoutRequestList = useCallback(
+    async (
+      page = 1,
+      pageSize = 10,
+      sorting: { field: string; desc: boolean }[] = [],
+      filters: { field: string; value: unknown }[] = []
+    ) => {
+      const endpoint = `${PAYOUT_REQUEST_ENDPOINT}`
+      const sortingFormat = sorting.map((sort) => `${sort.field}.${sort.desc ? 'desc' : 'asc'}`).join('_')
+      let filtersFormat = {}
+      filters.forEach((filter) => {
+        filtersFormat = Object.assign({ [filter.field]: filter.value }, filtersFormat)
+      })
+      const result = await callAppProtectedApi<ListResponseDto<PayoutRequestListItemResponseDto>>(
+        endpoint,
+        'GET',
+        {},
+        {
+          page,
+          limit: pageSize,
+          sort: sortingFormat,
+          ...filtersFormat
+        },
+        {}
+      )
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('danh sách yêu cầu') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  const getPayoutRequestById = useCallback(
+    async (requestId: string) => {
+      const endpoint = `${PAYOUT_REQUEST_ENDPOINT}/${requestId}`
+      const result = await callAppProtectedApi<PayoutRequestDetailResponseDto>(endpoint, 'GET')
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chi tiết yêu cầu rút tiền') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  const cancelPayoutRequest = useCallback(
+    async (requestId: string) => {
+      const endpoint = `${PAYOUT_REQUEST_ENDPOINT}/${requestId}/cancel`
+      const result = await callAppProtectedApi<SuccessResponseDto>(endpoint, 'PATCH')
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Hủy yêu cầu rút tiền') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  const createPayoutRequest = useCallback(
+    async (request: { amount: number; description: string }) => {
+      const endpoint = `${PAYOUT_REQUEST_ENDPOINT}`
+      const result = await callAppProtectedApi<IdResponseDto>(endpoint, 'POST', {}, {}, request)
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Gửi yêu cầu rút tiền') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
   return {
     getAvailableTime,
     createPublishClassRequest,
     getClassRequestList,
     getClassRequestById,
-    cancelClassRequest
+    cancelClassRequest,
+    getPayoutRequestList,
+    getPayoutRequestById,
+    cancelPayoutRequest,
+    createPayoutRequest
   }
 }

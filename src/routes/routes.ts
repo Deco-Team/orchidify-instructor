@@ -27,6 +27,9 @@ const TakingAttendance = lazy(
   () => import('~/pages/teaching-timesheet/slot-detail/attendance/taking-attendance/TakingAttendance')
 )
 const UploadResources = lazy(() => import('~/pages/class/detail/session-detail/upload-resources/UploadResources'))
+const PayoutRequestList = lazy(() => import('~/pages/payout-request/PayoutRequestList'))
+const PayoutRequestDetail = lazy(() => import('~/pages/payout-request/detail/PayoutRequestDetail'))
+const CreatePayoutRequest = lazy(() => import('~/pages/payout-request/create-payout-request/CreatePayoutRequestForm'))
 
 export const publicRoute = {
   login: {
@@ -145,5 +148,20 @@ export const protectedRoute = {
     name: 'Tải lên tài nguyên',
     path: '/classes/:classId/sessions/:sessionId/upload-resources',
     Component: UploadResources
+  },
+  payoutRequestList: {
+    name: 'Yêu cầu rút tiền',
+    path: '/payout-requests',
+    Component: PayoutRequestList
+  },
+  payoutRequestDetail: {
+    name: 'Chi tiết yêu cầu rút tiền',
+    path: '/payout-requests/:id',
+    Component: PayoutRequestDetail
+  },
+  createPayoutRequest: {
+    name: 'Tạo yêu cầu rút tiền',
+    path: '/payout-requests/create',
+    Component: CreatePayoutRequest
   }
 }
