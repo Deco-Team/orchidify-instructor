@@ -20,3 +20,8 @@ interface PaymentInfoDto {
   accountNumber: string
   accountName: string
 }
+
+export interface InstructorCertificationDto {
+  name: string
+  url: string
+}
