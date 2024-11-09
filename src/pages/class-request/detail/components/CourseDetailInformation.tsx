@@ -2,7 +2,7 @@ import { Box, Paper, Typography } from '@mui/material'
 import Carousel from '~/components/slider/Carousel'
 import { formatCourseLevel, formatCurrency } from '~/utils/format'
 import { Field } from './RequestDetailInformation'
-import { ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
+import { ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
 import { ContentWrapper, HeaderWrapper, Line } from '../ClassRequestDetail.styled'
 
 interface CourseDetailInformationProps {

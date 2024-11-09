@@ -1,7 +1,7 @@
 import { Box, Paper, Rating, Typography } from '@mui/material'
 import RequestStatusTag from '~/components/tag/RequestStatustag'
 import ClassStatusTag from '~/components/tag/ClassStatusTag'
-import { ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
+import { ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
 import { ClassStatus, CourseStatus, RequestStatus } from '~/global/constants'
 import { formatRequestType } from '~/utils/format'
 import { ContentWrapper, HeaderWrapper, Line } from '../ClassRequestDetail.styled'
@@ -69,7 +69,7 @@ const RequestDetailInformation = ({ request }: RequestDetailInformationProps) =>
 
       <ContentWrapper>
         <Typography variant='subtitle1' fontWeight={600}>
-          Mô tả
+          Mô tả yêu cầu
         </Typography>
         <Typography variant='subtitle1' fontWeight={400}>
           {request.description}

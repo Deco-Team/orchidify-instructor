@@ -1,7 +1,7 @@
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 import { useEffect, useState } from 'react'
 import Table from '~/components/table/Table'
-import { ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
+import { ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
 import { ListResponseDto } from '~/data/common.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { useRequestApi } from '~/hooks/api/useRequestApi'

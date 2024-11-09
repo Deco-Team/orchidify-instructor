@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
+import { ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
 import { useRequestApi } from '~/hooks/api/useRequestApi'
 import { notifyError } from '~/utils/toastify'
 import RequestDetailHeader from './components/RequestDetailHeader'

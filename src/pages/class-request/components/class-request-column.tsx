@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 import RequestStatusTag from '~/components/tag/RequestStatustag'
-import { ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
+import { ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
 import { RequestStatus, RequestType } from '~/global/constants'
 import { formatRequestType } from '~/utils/format'
 
