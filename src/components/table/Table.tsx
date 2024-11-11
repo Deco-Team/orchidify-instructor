@@ -11,6 +11,7 @@ const Table = <TData extends MRT_RowData>({ title, tableOptions }: TableProps<TD
   const theme = useTheme()
 
   const table = useMaterialReactTable({
+    layoutMode: 'grid',
     manualPagination: true,
     manualSorting: true,
     manualFiltering: true,
@@ -25,7 +26,7 @@ const Table = <TData extends MRT_RowData>({ title, tableOptions }: TableProps<TD
     },
     muiTableHeadProps: {
       sx: {
-        height: '56px'
+        minHeight: '56px'
       }
     },
     muiTableHeadRowProps: {
@@ -36,7 +37,7 @@ const Table = <TData extends MRT_RowData>({ title, tableOptions }: TableProps<TD
     },
     muiTableHeadCellProps: {
       sx: {
-        verticalAlign: 'middle'
+        justifyContent: 'center'
       }
     },
     muiTableBodyProps: {
