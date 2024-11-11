@@ -52,7 +52,7 @@ const ChatBox = ({ classId, learnerId, instructorId, learner }: ChatBoxProps) =>
       const messageQuery = query(
         collection(db, 'message'),
         where('chatRoomId', '==', querySnapshot.docs[0].id),
-        limit(50)
+        limit(500)
       )
 
       const unsubscribe = onSnapshot(messageQuery, (QuerySnapshot) => {
@@ -79,6 +79,20 @@ const ChatBox = ({ classId, learnerId, instructorId, learner }: ChatBoxProps) =>
   const shouldDisplayTimestamp = (prevTimestamp: Date | null, currentTimestamp: Date, minutesGap = 30) => {
     if (!prevTimestamp) return true // Show timestamp if there's no previous timestamp
     return (currentTimestamp.getTime() - prevTimestamp.getTime()) / (1000 * 60) >= minutesGap
+  }
+
+  const isSameDay = (date1: Date, date2: Date | null) => {
+    if (!date2) return false
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    )
+  }
+
+  const isToday = (date: Date) => {
+    const today = new Date()
+    return isSameDay(date, today)
   }
 
   const getMessagePosition = (index: number, messages: DocumentData[]) => {
@@ -127,8 +141,18 @@ const ChatBox = ({ classId, learnerId, instructorId, learner }: ChatBoxProps) =>
             const previousMessage = messages[index - 1]
             const previousMessageDate = previousMessage?.createdAt?.toDate() || null
 
-            const showDateHeader = !previousMessageDate
-            const showTimestamp = !previousMessageDate || shouldDisplayTimestamp(previousMessageDate, messageDate)
+            // Show date header if the date is not today or there’s a 30-minute gap between non-today messages
+            const showDateHeader =
+              !isToday(messageDate) &&
+              (!previousMessageDate ||
+                !isSameDay(previousMessageDate, messageDate) ||
+                shouldDisplayTimestamp(previousMessageDate, messageDate))
+
+            // Show timestamp if 30-minute gap within the same day, including today
+            const showTimestamp =
+              isToday(messageDate) || isSameDay(messageDate, previousMessageDate)
+                ? shouldDisplayTimestamp(previousMessageDate, messageDate)
+                : false
 
             const position = getMessagePosition(index, messages)
 
@@ -136,13 +160,28 @@ const ChatBox = ({ classId, learnerId, instructorId, learner }: ChatBoxProps) =>
               <Box display={'flex'} flexDirection={'column'} key={message.id}>
                 {showDateHeader && (
                   <Typography variant='caption' sx={{ textAlign: 'center', margin: '12px 0' }}>
-                    {messageDate.toLocaleString('vi-VN', {
-                      weekday: 'short',
-                      month: 'numeric',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
+                    {(() => {
+                      const today = new Date()
+                      const timeDifference = today.getTime() - messageDate.getTime()
+                      const daysDifference = timeDifference / (1000 * 60 * 60 * 24)
+
+                      if (daysDifference <= 7) {
+                        // Show only weekday, hour, and minute for messages within the last 7 days
+                        return messageDate
+                          .toLocaleString('vi-VN', {
+                            weekday: 'short',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })
+                          .replace('Th ', 'T')
+                      } else {
+                        // Show full format "hh:mm dd Tháng MM, yyyy" for messages older than 7 days
+                        return `${messageDate.toLocaleTimeString('vi-VN', {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })} ${messageDate.getDate()} Tháng ${messageDate.getMonth() + 1}, ${messageDate.getFullYear()}`
+                      }
+                    })()}
                   </Typography>
                 )}
                 {showTimestamp && !showDateHeader && (

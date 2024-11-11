@@ -1,8 +1,9 @@
 import Table from '~/components/table/Table'
 import { learnerColumns } from './learner-columns'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { protectedRoute } from '~/routes/routes'
 import { ClassLearnerDto } from '~/data/class/class.dto'
+import { Button } from '@mui/material'
 
 interface LearnerTableProps {
   classId: string
@@ -34,7 +35,30 @@ const LearnerTable = ({ classId, learners }: LearnerTableProps) => {
           sx: {
             cursor: 'pointer'
           }
-        })
+        }),
+        enableRowActions: true,
+        positionActionsColumn: 'last',
+        displayColumnDefOptions: {
+          'mrt-row-actions': {
+            header: '',
+            size: 150,
+            grow: false,
+            muiTableBodyCellProps: {
+              align: 'center'
+            }
+          }
+        },
+        renderRowActions: ({ row }) => {
+          return (
+            <Button
+              component={Link}
+              to={`learners/${row.original._id}/chat`}
+              onClick={(event) => event.stopPropagation()}
+            >
+              Trao đổi
+            </Button>
+          )
+        }
       }}
     />
   )
