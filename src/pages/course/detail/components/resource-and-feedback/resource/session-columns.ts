@@ -5,7 +5,8 @@ export const sessionColumns: MRT_ColumnDef<SessionDto>[] = [
   {
     accessorKey: 'sessionNumber',
     header: 'STT',
-    size: 50,
+    size: 100,
+    grow: false,
     muiTableHeadCellProps: {
       align: 'center'
     },

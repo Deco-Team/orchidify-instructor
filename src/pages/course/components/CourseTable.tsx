@@ -7,16 +7,18 @@ import { courseColumns } from './course-columns'
 import { ListResponseDto } from '~/data/common.dto'
 import { useNavigate } from 'react-router-dom'
 import { useCourseApi } from '~/hooks/api/useCourseApi'
-import { CourseListItemResponseDto } from '~/data/course/course.dto'
+import { CourseListItemResponseDto, CourseTypesResponstDto } from '~/data/course/course.dto'
 import { protectedRoute } from '~/routes/routes'
 import { CourseStatus } from '~/global/constants'
+import { IconButton, InputAdornment, ListSubheader, MenuItem, Select, Typography } from '@mui/material'
+import { Close } from '@mui/icons-material'
 
 interface CourseTableProps {
   statusFilter: CourseStatus
 }
 
 const CourseTable = ({ statusFilter }: CourseTableProps) => {
-  const { getCourseList } = useCourseApi()
+  const { getCourseList, getCourseTypes } = useCourseApi()
   const [data, setData] = useState<ListResponseDto<CourseListItemResponseDto>>({
     docs: [],
     totalDocs: 0,
@@ -72,6 +74,65 @@ const CourseTable = ({ statusFilter }: CourseTableProps) => {
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getCourseList, pagination.pageIndex, pagination.pageSize, sorting, columnFilters])
+
+  const renderGroupedItems = (courseTypes: CourseTypesResponstDto[]) => {
+    return courseTypes.reduce((acc, group) => {
+      acc.push(
+        <ListSubheader key={group.groupName} sx={{ color: '#000000', fontWeight: '500' }}>
+          {group.groupName}
+        </ListSubheader>
+      )
+      group.groupItems.forEach((item) => {
+        acc.push(
+          <MenuItem key={item} value={item}>
+            {item}
+          </MenuItem>
+        )
+      })
+      return acc
+    }, [] as JSX.Element[])
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      const { data: courseTypes, error: apiError } = await getCourseTypes()
+
+      if (courseTypes) {
+        courseColumns[courseColumns.findIndex((column) => column.id === 'type')].Filter = ({ column }) => (
+          <Select
+            defaultValue={''}
+            value={column.getFilterValue() || ''}
+            variant='standard'
+            onChange={(e) => column.setFilterValue(e.target.value)}
+            displayEmpty
+            endAdornment={
+              <InputAdornment sx={{ marginRight: '10px' }} position='end'>
+                <IconButton
+                  disabled={!column.getFilterValue()}
+                  size='small'
+                  onClick={() => {
+                    column.setFilterValue('')
+                  }}
+                >
+                  <Close />
+                </IconButton>
+              </InputAdornment>
+            }
+            fullWidth
+          >
+            <MenuItem value='' disabled>
+              <Typography sx={{ color: '#000000DE', opacity: 0.5, overflow: 'hidden' }}>
+                Lọc kết quả theo thể loại
+              </Typography>
+            </MenuItem>
+            {renderGroupedItems(courseTypes)}
+          </Select>
+        )
+      }
+
+      setError(apiError)
+    })()
+  }, [getCourseTypes])
 
   if (error) {
     notifyError(error.message)

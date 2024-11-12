@@ -17,6 +17,6 @@ export const options = [
   { id: 4, text: 'Lớp học', link: protectedRoute.classList.path, Icon: Class },
   { id: 5, text: 'Yêu cầu lớp học', link: protectedRoute.classRequestList.path, Icon: NoteAlt },
   { id: 6, text: 'Lịch dạy', link: protectedRoute.teachingTimesheet.path, Icon: Event },
-  { id: 7, text: 'Yêu cầu rút tiền', link: protectedRoute.dashboard.path, Icon: CurrencyExchange },
+  { id: 7, text: 'Yêu cầu rút tiền', link: protectedRoute.payoutRequestList.path, Icon: CurrencyExchange },
   { id: 8, text: 'Thống kê', link: protectedRoute.dashboard.path, Icon: BarChart }
 ]

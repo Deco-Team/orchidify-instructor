@@ -1,41 +1,29 @@
 import { Box, Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 import RequestStatusTag from '~/components/tag/RequestStatustag'
-import { ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
-import { RequestStatus, RequestType } from '~/global/constants'
-import { formatRequestType } from '~/utils/format'
+import { PayoutRequestListItemResponseDto } from '~/data/payout-request/payout-request.dto'
+import { RequestStatus } from '~/global/constants'
+import { formatCurrency } from '~/utils/format'
 
-export const classRequestColumn: MRT_ColumnDef<ClassRequestListItemResponseDto>[] = [
+export const payoutRequestColumn: MRT_ColumnDef<PayoutRequestListItemResponseDto>[] = [
   {
-    accessorKey: 'type',
-    header: 'Loại yêu cầu',
-    size: 140,
+    accessorKey: 'amount',
+    header: 'Số tiền',
+    size: 150,
     grow: false,
-    enableSorting: false,
+    enableColumnFilter: false,
     Cell: ({ cell }) => {
-      const type = cell.getValue() as RequestType
-
-      return <Typography variant='subtitle2'>{formatRequestType(type)}</Typography>
-    },
-    filterVariant: 'multi-select',
-    filterSelectOptions: [{ label: 'Mở lớp học', value: RequestType.PUBLISH_CLASS }]
-  },
-  //   {
-  //     accessorKey: 'classId',
-  //     header: 'Mã lớp học',
-  //     size: 170,
-  //     enableColumnFilter: false
-  //   },
-  {
-    accessorKey: 'metadata.code',
-    header: 'Mã khóa học',
-    size: 165,
-    grow: false,
-    enableColumnFilter: false
+      const amount = cell.getValue() as number
+      return (
+        <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
+          {formatCurrency(amount)}
+        </Typography>
+      )
+    }
   },
   {
-    accessorKey: 'metadata.title',
-    header: 'Tên khóa học',
+    accessorKey: 'description',
+    header: 'Mô tả yêu cầu',
     size: 300,
     enableColumnFilter: false
   },
@@ -82,9 +70,8 @@ export const classRequestColumn: MRT_ColumnDef<ClassRequestListItemResponseDto>[
   {
     accessorKey: 'status',
     header: 'Trạng thái',
-    size: 130,
+    size: 150,
     grow: false,
-    enableSorting: false,
     Cell: ({ cell }) => {
       const type = cell.getValue() as RequestStatus
       return <RequestStatusTag type={type} />

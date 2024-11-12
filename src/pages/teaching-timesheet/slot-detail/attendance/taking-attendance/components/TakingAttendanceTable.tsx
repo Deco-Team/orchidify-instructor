@@ -14,6 +14,7 @@ const TakingAttendanceTable = ({ attendance, control }: TakingAttendanceTablePro
     <Table
       title='Danh sách học viên'
       tableOptions={{
+        layoutMode: 'grid',
         columns: takingAttendanceColumns({ control }),
         data: attendance.docs || [],
         rowCount: attendance.docs.length,
@@ -26,6 +27,8 @@ const TakingAttendanceTable = ({ attendance, control }: TakingAttendanceTablePro
         rowNumberDisplayMode: 'static',
         displayColumnDefOptions: {
           'mrt-row-numbers': {
+            size: 40,
+            grow: false,
             muiTableHeadCellProps: {
               align: 'center'
             },

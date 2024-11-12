@@ -17,5 +17,7 @@ export const APP_MESSAGE = {
   INVALID_VALUE: (valueList: string[]) =>
     `Chỉ chấp nhận${valueList.length > 1 ? ' các' : ''} giá trị ${valueList.join(', ')}`,
   NOT_TIME_TO_TAKE_ATTENDANCE: 'Chưa tới giờ điểm danh. Vui lòng quay lại sau.',
-  TAKE_ATTENDANCE_IS_OVER: 'Đã hết thời gian điểm danh.'
+  TAKE_ATTENDANCE_IS_OVER: 'Đã hết thời gian điểm danh.',
+  AMOUNT_OVER_BALANCE: 'Số tiền vượt quá số dư tài khoản',
+  NO_PAYMENT_INFO: 'Không tìm thấy thông tin TK ngân hàng. Vui lòng cập nhật trước khi tạo yêu cầu.'
 }

@@ -18,7 +18,6 @@ const LearnerTable = ({ classId, learners }: LearnerTableProps) => {
         columns: learnerColumns,
         data: learners || [],
         rowCount: learners.length,
-        enableBottomToolbar: false,
         enableSorting: true,
         enableColumnFilters: false,
         enableHiding: false,

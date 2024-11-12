@@ -56,7 +56,7 @@ export default function CourseDetail() {
           courseId={data._id}
         />
         <CourseDetailInformation course={data} />
-        <CourseDetailResourceAndFeedback courseId={data._id} sessions={data.sessions} />
+        <CourseDetailResourceAndFeedback course={data} />
       </Box>
       <DeleteCourseConfirmation
         courseId={data._id}

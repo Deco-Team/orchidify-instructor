@@ -10,7 +10,8 @@ export const submissionColumns: MRT_ColumnDef<AssignmentSubmissionItemResponseDt
     // accessorKey: 'learner',
     header: 'Tên học viên',
     accessorFn: (row) => row.learner.avatar + row.learner.name,
-    size: 300,
+    size: 400,
+    grow: false,
     Cell: ({ row }) => {
       const learner = row.original.learner as LearnerDetailResponseDto
 
@@ -31,25 +32,26 @@ export const submissionColumns: MRT_ColumnDef<AssignmentSubmissionItemResponseDt
   {
     accessorKey: 'learner.email',
     header: 'Email',
-    size: 300
+    size: 400
   },
   {
     // accessorKey: 'submission.createdAt',
     header: 'Thời gian nộp',
     size: 150,
+    grow: false,
     accessorFn: (row) => (row.submission?.createdAt ? new Date(row.submission.createdAt).toLocaleString('vi-VN') : ''),
     Cell: ({ row }) => {
       const date = row.original.submission?.createdAt
       return (
         date && (
-          <>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
               {new Date(date).toLocaleTimeString('vi-VN')}
             </Typography>
             <Typography variant='subtitle2' sx={{ fontWeight: 400 }}>
               {new Date(date).toLocaleDateString('vi-VN')}
             </Typography>
-          </>
+          </Box>
         )
       )
     },
@@ -59,6 +61,10 @@ export const submissionColumns: MRT_ColumnDef<AssignmentSubmissionItemResponseDt
     // accessorKey: 'submission.point',
     header: 'Điểm',
     size: 100,
+    grow: false,
+    muiTableBodyCellProps: {
+      align: 'center'
+    },
     filterVariant: 'range',
     accessorFn: (row) => row.submission?.point ?? '',
     Cell: ({ row }) => (
@@ -88,6 +94,7 @@ export const submissionColumns: MRT_ColumnDef<AssignmentSubmissionItemResponseDt
     // accessorKey: 'submission.status',
     header: 'Trạng thái',
     size: 120,
+    grow: false,
     accessorFn: (row) => row.submission?.status ?? 'Chưa nộp',
     Cell: ({ row }) => {
       const type = row.original.submission?.status
