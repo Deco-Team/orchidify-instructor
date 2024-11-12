@@ -75,6 +75,7 @@ export type ClassDetailResponseDto = {
   createdAt: string
   updatedAt: string
   rate?: number
+  ratingSummary?: RatingSummaryDto
   cancelReason?: string
 }
 
@@ -93,4 +94,16 @@ export type BaseAssignmentSubmissionDto = {
   learner: LearnerDetailResponseDto
   createdAt: Date
   updatedAt: Date
+}
+
+interface RatingSummaryDto {
+  totalSum: number
+  totalCount: number
+  totalCountByRate: {
+    1: number
+    2: number
+    3: number
+    4: number
+    5: number
+  }
 }

@@ -1,5 +1,5 @@
 import { Grid, Paper, Typography } from '@mui/material'
-import { ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
+import { ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
 import { ContentWrapper, HeaderWrapper, Line } from '../ClassRequestDetail.styled'
 import { Field } from './RequestDetailInformation'
 import { convertArrayToString, formatWeekdays } from '~/utils/format'

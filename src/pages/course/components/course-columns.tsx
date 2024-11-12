@@ -9,18 +9,18 @@ export const courseColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
   {
     accessorKey: 'code',
     header: 'Mã khóa học',
-    size: 120,
+    grow: false,
     enableColumnFilter: false
   },
   {
     accessorKey: 'title',
-    header: 'Tên khóa học',
-    size: 300
+    header: 'Tên khóa học'
   },
   {
     accessorKey: 'price',
     header: 'Giá',
-    maxSize: 120,
+    grow: false,
+    size: 120,
     muiTableHeadCellProps: {
       align: 'right'
     },
@@ -36,7 +36,9 @@ export const courseColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
   {
     accessorKey: 'level',
     header: 'Cấp độ',
-    size: 120,
+    grow: false,
+    minSize: 130,
+    maxSize: 250,
     Cell: ({ cell }) => {
       const level = cell.getValue() as CourseLevel
 
@@ -65,9 +67,13 @@ export const courseColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
     ]
   },
   {
+    id: 'type',
     accessorKey: 'type',
     header: 'Thể loại',
-    size: 180,
+    grow: true,
+    size: 120,
+    filterVariant: 'select',
+    filterSelectOptions: [],
     Cell: ({ cell }) => {
       return (cell.getValue() as []).join(', ')
     }
@@ -76,6 +82,7 @@ export const courseColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
     accessorKey: 'learnerLimit',
     header: 'Giới hạn học viên',
     size: 200,
+    grow: false,
     muiTableHeadCellProps: {
       align: 'right'
     },
@@ -87,7 +94,8 @@ export const courseColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
   {
     accessorKey: 'status',
     header: 'Trạng thái',
-    size: 150,
+    maxSize: 150,
+    grow: false,
     enableColumnFilter: false,
     Cell: ({ cell }) => {
       const type = cell.getValue() as CourseStatus

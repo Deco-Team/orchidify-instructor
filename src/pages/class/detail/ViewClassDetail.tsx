@@ -41,11 +41,7 @@ export default function ViewClassDetail() {
       <Header showCancelRequestButton={classDetail.learners.length === 0} onCancelRequestButtonClick={() => {}} />
       <ClassInformation classDetail={classDetail} />
       <CourseInformation classDetail={classDetail} />
-      <SessionLearnerFeedbackList
-        classId={classDetail._id}
-        sessions={classDetail.sessions}
-        learners={classDetail.learners}
-      />
+      <SessionLearnerFeedbackList classDetail={classDetail} />
     </>
   ) : (
     <Loading />

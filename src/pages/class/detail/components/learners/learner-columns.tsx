@@ -8,6 +8,8 @@ export const learnerColumns: MRT_ColumnDef<ClassLearnerDto>[] = [
   {
     accessorKey: 'name',
     header: 'Tên học viên',
+    size: 400,
+    grow: false,
     Cell: ({ row }) => {
       const { name, avatar } = row.original
       return (

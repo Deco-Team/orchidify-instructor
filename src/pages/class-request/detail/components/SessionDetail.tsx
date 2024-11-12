@@ -11,7 +11,7 @@ import {
   Typography
 } from '@mui/material'
 import React, { useState } from 'react'
-import { ClassRequestListItemResponseDto } from '~/data/class-request/request.dto'
+import { ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
 import { ContentWrapper, Line, MediaWrapper } from '../ClassRequestDetail.styled'
 import { APP_MESSAGE } from '~/global/app-message'
 import Carousel from '~/components/slider/Carousel'

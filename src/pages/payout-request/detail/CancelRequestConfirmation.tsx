@@ -11,13 +11,13 @@ interface CancelRequestConfirmationProps {
 }
 
 const CancelRequestConfirmation = ({ requestId, open, handleClose, onSuccess }: CancelRequestConfirmationProps) => {
-  const { cancelClassRequest } = useRequestApi()
+  const { cancelPayoutRequest } = useRequestApi()
 
   const handleConfirm = async () => {
-    const { data, error } = await cancelClassRequest(requestId)
+    const { data, error } = await cancelPayoutRequest(requestId)
 
     if (data) {
-      notifySuccess(APP_MESSAGE.ACTION_DID_SUCCESSFULLY('Hủy yêu cầu lớp học'))
+      notifySuccess(APP_MESSAGE.ACTION_DID_SUCCESSFULLY('Hủy yêu cầu rút tiền'))
       onSuccess()
     } else {
       notifyError(error.message)
@@ -35,7 +35,7 @@ const CancelRequestConfirmation = ({ requestId, open, handleClose, onSuccess }: 
       handleConfirm={handleConfirm}
       handleCancel={handleCancel}
       title='Xác nhận hủy yêu cầu'
-      description={APP_MESSAGE.CONFIRM_ACTION('hủy yêu cầu mở lớp học')}
+      description={APP_MESSAGE.CONFIRM_ACTION('hủy yêu cầu rút tiền')}
       confirmButtonText='Hủy'
       confirmButtonColor='error'
       cancelButtonText='Thoát'

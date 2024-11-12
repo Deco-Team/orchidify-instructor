@@ -19,6 +19,7 @@ const AttendanceTable = ({ attendance, hasTakenAttendance, takeAttendance }: Att
     <Table
       title='Danh sách học viên'
       tableOptions={{
+        layoutMode: 'grid',
         columns:
           new Date().toLocaleString('sv').split(' ')[0] ===
           new Date(attendance.slot.start).toLocaleString('sv').split(' ')[0]
@@ -61,11 +62,14 @@ const AttendanceTable = ({ attendance, hasTakenAttendance, takeAttendance }: Att
           'mrt-row-actions': {
             header: '',
             size: 120,
+            grow: false,
             muiTableBodyCellProps: {
               align: 'center'
             }
           },
           'mrt-row-numbers': {
+            size: 40,
+            grow: false,
             muiTableHeadCellProps: {
               align: 'center'
             },

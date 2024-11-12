@@ -6,12 +6,14 @@ export const classColumns: MRT_ColumnDef<ClassListItemResponseDto>[] = [
   {
     accessorKey: 'code',
     header: 'Mã lớp học',
-    size: 150
+    size: 160,
+    grow: false
   },
   {
     accessorKey: 'course.code',
     header: 'Mã khóa học',
-    size: 150
+    size: 165,
+    grow: false
   },
   {
     accessorKey: 'title',
@@ -22,7 +24,8 @@ export const classColumns: MRT_ColumnDef<ClassListItemResponseDto>[] = [
     accessorKey: 'startDate',
     header: 'Ngày bắt đầu',
     enableColumnFilter: false,
-    size: 150,
+    size: 170,
+    grow: false,
     Cell: ({ row }) => {
       const date = new Date(row.original.createdAt)
       return date.toLocaleDateString('vi-VN')
@@ -31,6 +34,7 @@ export const classColumns: MRT_ColumnDef<ClassListItemResponseDto>[] = [
   {
     accessorKey: 'duration',
     size: 150,
+    grow: false,
     header: 'Thời gian',
     enableColumnFilter: false,
     Cell: ({ row }) => {
@@ -40,7 +44,8 @@ export const classColumns: MRT_ColumnDef<ClassListItemResponseDto>[] = [
   {
     accessorKey: 'learnerQuantity',
     header: 'Số học viên',
-    size: 200,
+    size: 160,
+    grow: false,
     muiTableHeadCellProps: {
       align: 'right'
     },
@@ -56,6 +61,7 @@ export const classColumns: MRT_ColumnDef<ClassListItemResponseDto>[] = [
     accessorKey: 'status',
     header: 'Trạng thái',
     size: 150,
+    grow: false,
     enableColumnFilter: false,
     enableSorting: false,
     Cell: ({ row }) => {

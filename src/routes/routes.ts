@@ -28,6 +28,10 @@ const TakingAttendance = lazy(
 )
 const UploadResources = lazy(() => import('~/pages/class/detail/session-detail/upload-resources/UploadResources'))
 const Chat = lazy(() => import('~/pages/chat-with-learner/Chat'))
+const Certifications = lazy(() => import('~/pages/profile/certifications/Certifications'))
+const PayoutRequestList = lazy(() => import('~/pages/payout-request/PayoutRequestList'))
+const PayoutRequestDetail = lazy(() => import('~/pages/payout-request/detail/PayoutRequestDetail'))
+const CreatePayoutRequest = lazy(() => import('~/pages/payout-request/create-payout-request/CreatePayoutRequestForm'))
 
 export const publicRoute = {
   login: {
@@ -151,5 +155,25 @@ export const protectedRoute = {
     name: 'Chat với học viên',
     path: '/classes/:classId/learners/:learnerId/chat',
     Component: Chat
+  },
+  certifications: {
+    name: 'Chứng chỉ của tôi',
+    path: '/profile/certifications',
+    Component: Certifications
+  },
+  payoutRequestList: {
+    name: 'Yêu cầu rút tiền',
+    path: '/payout-requests',
+    Component: PayoutRequestList
+  },
+  payoutRequestDetail: {
+    name: 'Chi tiết yêu cầu rút tiền',
+    path: '/payout-requests/:id',
+    Component: PayoutRequestDetail
+  },
+  createPayoutRequest: {
+    name: 'Tạo yêu cầu rút tiền',
+    path: '/payout-requests/create',
+    Component: CreatePayoutRequest
   }
 }

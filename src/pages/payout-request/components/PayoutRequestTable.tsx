@@ -1,18 +1,18 @@
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 import { useEffect, useState } from 'react'
 import Table from '~/components/table/Table'
-import { ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
 import { ListResponseDto } from '~/data/common.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { useRequestApi } from '~/hooks/api/useRequestApi'
 import { notifyError } from '~/utils/toastify'
-import { classRequestColumn } from './class-request-column'
 import { protectedRoute } from '~/routes/routes'
 import { useNavigate } from 'react-router-dom'
+import { PayoutRequestListItemResponseDto } from '~/data/payout-request/payout-request.dto'
+import { payoutRequestColumn } from './payout-request-columns'
 
-const ClassRequestTable = () => {
-  const { getClassRequestList } = useRequestApi()
-  const [data, setData] = useState<ListResponseDto<ClassRequestListItemResponseDto>>({
+const PayoutRequestTable = () => {
+  const { getPayoutRequestList } = useRequestApi()
+  const [data, setData] = useState<ListResponseDto<PayoutRequestListItemResponseDto>>({
     docs: [],
     totalDocs: 0,
     offset: 0,
@@ -36,13 +36,13 @@ const ClassRequestTable = () => {
 
   useEffect(() => {
     ;(async () => {
-      const { data: courses, error: apiError } = await getClassRequestList(
+      const { data: courses, error: apiError } = await getPayoutRequestList(
         pagination.pageIndex + 1,
         pagination.pageSize,
         sorting.map((sort) => ({ field: sort.id, desc: sort.desc })),
         [
           ...columnFilters.map((filter) => ({ field: filter.id, value: filter.value }))
-          //   { field: 'status', value: statusFilter }
+          // { field: 'status', value: statusFilter }
         ]
       )
       if (courses) {
@@ -64,7 +64,7 @@ const ClassRequestTable = () => {
       }
       setError(apiError)
     })()
-  }, [getClassRequestList, pagination.pageIndex, pagination.pageSize, sorting, columnFilters])
+  }, [getPayoutRequestList, pagination.pageIndex, pagination.pageSize, sorting, columnFilters])
 
   if (error) {
     notifyError(error.message)
@@ -73,14 +73,14 @@ const ClassRequestTable = () => {
     <Table
       title='Danh sách các yêu cầu'
       tableOptions={{
-        columns: classRequestColumn,
+        columns: payoutRequestColumn,
         data: data.docs || [],
         rowCount: data.totalDocs,
         onPaginationChange: setPagination,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
         muiTableBodyRowProps: ({ row }) => ({
-          onClick: () => navigate(protectedRoute.classRequestDetail.path.replace(':id', row.original._id)),
+          onClick: () => navigate(protectedRoute.payoutRequestDetail.path.replace(':id', row.original._id)),
           sx: {
             cursor: 'pointer'
           }
@@ -98,4 +98,4 @@ const ClassRequestTable = () => {
   )
 }
 
-export default ClassRequestTable
+export default PayoutRequestTable

@@ -87,7 +87,7 @@ const Profile = () => {
         <Box sx={{ display: 'flex', gap: 1 }}>
           <MuiLink
             component={Link}
-            to={protectedRoute.profile.path}
+            to={protectedRoute.certifications.path}
             underline='always'
             marginLeft={'192px'}
             color={'inherit'}

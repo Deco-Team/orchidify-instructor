@@ -1,18 +1,21 @@
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 import { useEffect, useState } from 'react'
-import Table from '~/components/table/Table'
-import { ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
-import { ListResponseDto } from '~/data/common.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
-import { useRequestApi } from '~/hooks/api/useRequestApi'
 import { notifyError } from '~/utils/toastify'
-import { classRequestColumn } from './class-request-column'
-import { protectedRoute } from '~/routes/routes'
-import { useNavigate } from 'react-router-dom'
+import Table from '~/components/table/Table'
+import { ListResponseDto } from '~/data/common.dto'
+import useFeedbackApi from '~/hooks/api/useFeedbackApi'
+import { FeedbackDto } from '~/data/feedback/feedback.dto'
+import { feedbackColumns } from './feedback-columns'
 
-const ClassRequestTable = () => {
-  const { getClassRequestList } = useRequestApi()
-  const [data, setData] = useState<ListResponseDto<ClassRequestListItemResponseDto>>({
+interface FeedbackTableProps {
+  courseId: string
+}
+
+const FeedbackTable = ({ courseId }: FeedbackTableProps) => {
+  const { getCourseFeedbackList } = useFeedbackApi()
+
+  const [data, setData] = useState<ListResponseDto<FeedbackDto>>({
     docs: [],
     totalDocs: 0,
     offset: 0,
@@ -32,21 +35,18 @@ const ClassRequestTable = () => {
   const [sorting, setSorting] = useState<MRT_SortingState>([])
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
   const [error, setError] = useState<ErrorResponseDto | null>(null)
-  const navigate = useNavigate()
 
   useEffect(() => {
     ;(async () => {
-      const { data: courses, error: apiError } = await getClassRequestList(
+      const { data: feedbacks, error: apiError } = await getCourseFeedbackList(
+        courseId,
+        columnFilters.find((filter) => filter.id === 'rate')?.value as number,
         pagination.pageIndex + 1,
         pagination.pageSize,
-        sorting.map((sort) => ({ field: sort.id, desc: sort.desc })),
-        [
-          ...columnFilters.map((filter) => ({ field: filter.id, value: filter.value }))
-          //   { field: 'status', value: statusFilter }
-        ]
+        sorting.map((sort) => ({ field: sort.id, desc: sort.desc }))
       )
-      if (courses) {
-        setData(courses)
+      if (feedbacks) {
+        setData(feedbacks)
       } else {
         setData({
           docs: [],
@@ -64,27 +64,24 @@ const ClassRequestTable = () => {
       }
       setError(apiError)
     })()
-  }, [getClassRequestList, pagination.pageIndex, pagination.pageSize, sorting, columnFilters])
+  }, [courseId, getCourseFeedbackList, pagination, sorting, columnFilters])
 
   if (error) {
     notifyError(error.message)
   }
+
   return (
     <Table
-      title='Danh sách các yêu cầu'
+      title='Đánh giá'
       tableOptions={{
-        columns: classRequestColumn,
+        columns: feedbackColumns,
         data: data.docs || [],
         rowCount: data.totalDocs,
+        enableHiding: false,
+        enableColumnActions: false,
         onPaginationChange: setPagination,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
-        muiTableBodyRowProps: ({ row }) => ({
-          onClick: () => navigate(protectedRoute.classRequestDetail.path.replace(':id', row.original._id)),
-          sx: {
-            cursor: 'pointer'
-          }
-        }),
         muiPaginationProps: {
           rowsPerPageOptions: [5, 10, 20]
         },
@@ -98,4 +95,4 @@ const ClassRequestTable = () => {
   )
 }
 
-export default ClassRequestTable
+export default FeedbackTable

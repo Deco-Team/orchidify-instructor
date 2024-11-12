@@ -1,4 +1,4 @@
-import { InstructorDto } from '~/data/profile/instructor.dto'
+import { InstructorCertificationDto, InstructorDto } from '~/data/profile/instructor.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 import { useCallback } from 'react'
@@ -45,5 +45,21 @@ export const useProfileApi = () => {
     [callAppProtectedApi]
   )
 
-  return { getProfile, putProfile }
+  const getInstructorCertifications = useCallback(async () => {
+    const endpoint = `${ROOT_ENDPOINT}/certifications`
+    const result = await callAppProtectedApi<{ docs: InstructorCertificationDto[] }>(endpoint, 'GET', {}, {}, {})
+
+    if (result) {
+      const { data, error } = result
+      if (data) return { data: data.docs, error: null }
+      if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+    }
+
+    return {
+      data: null,
+      error: { message: APP_MESSAGE.LOAD_DATA_FAILED('chứng chỉ') } as ErrorResponseDto
+    }
+  }, [callAppProtectedApi])
+
+  return { getProfile, putProfile, getInstructorCertifications }
 }
