@@ -45,15 +45,6 @@ const RequestDetailInformation = ({ request }: RequestDetailInformationProps) =>
         <Field label='Trạng thái' requestStatusTag={request.status} />
       </ContentWrapper>
 
-      <ContentWrapper>
-        <Typography variant='subtitle1' fontWeight={600}>
-          Mô tả
-        </Typography>
-        <Typography variant='subtitle1' fontWeight={400}>
-          {request.description}
-        </Typography>
-      </ContentWrapper>
-
       {request.status === RequestStatus.REJECTED && (
         <ContentWrapper>
           <Typography variant='subtitle1' fontWeight={600}>
@@ -64,6 +55,15 @@ const RequestDetailInformation = ({ request }: RequestDetailInformationProps) =>
           </Typography>
         </ContentWrapper>
       )}
+
+      <ContentWrapper>
+        <Typography variant='subtitle1' fontWeight={600}>
+          Mô tả
+        </Typography>
+        <Typography variant='subtitle1' fontWeight={400}>
+          {request.description}
+        </Typography>
+      </ContentWrapper>
     </Paper>
   )
 }
