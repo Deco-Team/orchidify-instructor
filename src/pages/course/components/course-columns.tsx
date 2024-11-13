@@ -71,7 +71,7 @@ export const courseColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
     accessorKey: 'type',
     header: 'Thể loại',
     grow: true,
-    size: 120,
+    size: 200,
     filterVariant: 'select',
     filterSelectOptions: [],
     Cell: ({ cell }) => {

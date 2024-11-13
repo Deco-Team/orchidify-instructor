@@ -69,7 +69,7 @@ export const childCourseColumns: MRT_ColumnDef<ChildCourseDetailDto>[] = [
     id: 'type',
     accessorKey: 'type',
     header: 'Thể loại',
-    size: 120,
+    size: 200,
     grow: false,
     filterVariant: 'select',
     filterSelectOptions: [],
