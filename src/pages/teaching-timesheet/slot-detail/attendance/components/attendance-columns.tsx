@@ -190,7 +190,7 @@ export const attendanceHistoryColumns: MRT_ColumnDef<AttendanceListItemResponseD
   {
     accessorKey: 'status',
     header: 'Trạng thái',
-    size: 100,
+    size: 160,
     grow: false,
     Cell: ({ cell }) => {
       const type = cell.getValue() as AttendanceStatus
