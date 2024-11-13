@@ -20,6 +20,7 @@ const ChildCourseTable = ({ childCourses }: ChildCourseTableProps) => {
         layoutMode: 'grid',
         enableBottomToolbar: false,
         enableSorting: true,
+        manualSorting: false,
         enableColumnFilters: false,
         enableHiding: false,
         enableColumnActions: false,

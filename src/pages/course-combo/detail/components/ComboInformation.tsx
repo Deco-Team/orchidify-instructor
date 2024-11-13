@@ -47,7 +47,7 @@ const ComboInformation = ({ comboDetail }: ComboInformationProps) => {
           <Field label='Giảm giá' content={`${comboDetail.discount}%`} />
         </Box>
       </Box>
-      <Box marginBottom='1.25rem'>
+      <Box>
         <Typography variant='subtitle1' fontWeight={600} marginBottom='0.5rem'>
           Mô tả Combo khóa học
         </Typography>
