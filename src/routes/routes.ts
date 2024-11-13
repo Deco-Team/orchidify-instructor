@@ -31,6 +31,8 @@ const Certifications = lazy(() => import('~/pages/profile/certifications/Certifi
 const PayoutRequestList = lazy(() => import('~/pages/payout-request/PayoutRequestList'))
 const PayoutRequestDetail = lazy(() => import('~/pages/payout-request/detail/PayoutRequestDetail'))
 const CreatePayoutRequest = lazy(() => import('~/pages/payout-request/create-payout-request/CreatePayoutRequestForm'))
+const ViewCourseComboList = lazy(() => import('~/pages/course-combo/list/ViewCourseComboList'))
+const ViewCourseComboDetail = lazy(() => import('~/pages/course-combo/detail/ViewCourseComboDetail'))
 
 export const publicRoute = {
   login: {
@@ -169,5 +171,15 @@ export const protectedRoute = {
     name: 'Tạo yêu cầu rút tiền',
     path: '/payout-requests/create',
     Component: CreatePayoutRequest
+  },
+  courseComboList: {
+    name: 'Combo khóa học',
+    path: '/course-combos',
+    Component: ViewCourseComboList
+  },
+  courseComboDetail: {
+    name: 'Chi tiết Combo khóa học',
+    path: '/course-combos/:id',
+    Component: ViewCourseComboDetail
   }
 }
