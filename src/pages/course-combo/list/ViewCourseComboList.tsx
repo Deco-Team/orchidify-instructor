@@ -74,7 +74,7 @@ export default function ViewCourseComboList() {
     <>
       <Box display='flex' justifyContent='space-between' alignItems='center'>
         <PageHeader title='Combo khóa học' />
-        <Button color='secondary' component={Link} to={protectedRoute.createCourse.path} endIcon={<Add />}>
+        <Button color='secondary' component={Link} to={protectedRoute.createCourseCombo.path} endIcon={<Add />}>
           Tạo Combo
         </Button>
       </Box>
