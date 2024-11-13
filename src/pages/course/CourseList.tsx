@@ -21,7 +21,7 @@ export default function CourseList() {
         name='courseList'
         items={[
           { label: 'Bản Nháp', content: <CourseTable statusFilter={CourseStatus.DRAFT} /> },
-          { label: 'Chờ duyệt', content: <CourseTable statusFilter={CourseStatus.REQUESTING} /> },
+          // { label: 'Chờ duyệt', content: <CourseTable statusFilter={CourseStatus.REQUESTING} /> },
           { label: 'Công khai', content: <CourseTable statusFilter={CourseStatus.ACTIVE} /> }
         ]}
       />

@@ -18,14 +18,14 @@ const CourseStatusTag = ({ type }: CourseStatusTagProps) => {
       }
       break
     }
-    case CourseStatus.REQUESTING: {
-      label = 'Chờ duyệt'
-      styles = {
-        backgroundColor: '#d4f7ff',
-        '& .MuiChip-label': { color: '#5badd0' }
-      }
-      break
-    }
+    // case CourseStatus.REQUESTING: {
+    //   label = 'Chờ duyệt'
+    //   styles = {
+    //     backgroundColor: '#d4f7ff',
+    //     '& .MuiChip-label': { color: '#5badd0' }
+    //   }
+    //   break
+    // }
     case CourseStatus.ACTIVE: {
       label = 'Đã công khai'
       styles = {

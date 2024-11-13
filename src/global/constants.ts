@@ -10,7 +10,7 @@ export enum LearnerStatus {
 
 export enum CourseStatus {
   DRAFT = 'DRAFT',
-  REQUESTING = 'REQUESTING',
+  // REQUESTING = 'REQUESTING',
   ACTIVE = 'ACTIVE',
   DELETED = 'DELETED'
 }

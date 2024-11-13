@@ -25,6 +25,7 @@ export type CourseDetailResponseDto = {
   thumbnail: string
   media: BaseMediaDto[]
   status: CourseStatus
+  isRequesting: boolean
   learnerLimit: number
   instructorId: string
   sessions: SessionDto[]

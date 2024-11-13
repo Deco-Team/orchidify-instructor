@@ -104,7 +104,7 @@ export const courseColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
     filterVariant: 'multi-select',
     filterSelectOptions: [
       { label: 'Bản nháp', value: CourseStatus.DRAFT },
-      { label: 'Chờ duyệt', value: CourseStatus.REQUESTING },
+      // { label: 'Chờ duyệt', value: CourseStatus.REQUESTING },
       { label: 'Đang hoạt động', value: CourseStatus.ACTIVE }
     ]
   }

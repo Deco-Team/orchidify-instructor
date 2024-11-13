@@ -54,6 +54,7 @@ export default function CourseDetail() {
           courseStatus={data.status}
           onDeleteButtonClick={handleOpenDeleteConfirmation}
           courseId={data._id}
+          isRequesting={data.isRequesting}
         />
         <CourseDetailInformation course={data} />
         <CourseDetailResourceAndFeedback course={data} />
