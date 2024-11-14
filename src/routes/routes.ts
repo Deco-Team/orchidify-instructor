@@ -27,6 +27,7 @@ const TakingAttendance = lazy(
   () => import('~/pages/teaching-timesheet/slot-detail/attendance/taking-attendance/TakingAttendance')
 )
 const UploadResources = lazy(() => import('~/pages/class/detail/session-detail/upload-resources/UploadResources'))
+const Chat = lazy(() => import('~/pages/chat-with-learner/Chat'))
 const Certifications = lazy(() => import('~/pages/profile/certifications/Certifications'))
 const PayoutRequestList = lazy(() => import('~/pages/payout-request/PayoutRequestList'))
 const PayoutRequestDetail = lazy(() => import('~/pages/payout-request/detail/PayoutRequestDetail'))
@@ -151,6 +152,11 @@ export const protectedRoute = {
     name: 'Tải lên tài nguyên',
     path: '/classes/:classId/sessions/:sessionId/upload-resources',
     Component: UploadResources
+  },
+  chatWithLearner: {
+    name: 'Chat với học viên',
+    path: '/classes/:classId/learners/:learnerId/chat',
+    Component: Chat
   },
   certifications: {
     name: 'Chứng chỉ của tôi',

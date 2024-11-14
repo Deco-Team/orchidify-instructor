@@ -1,4 +1,4 @@
-import { Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import Header from './components/Header'
 import { useLearnerApi } from '~/hooks/api/useLearnerApi'
 import { useEffect, useState } from 'react'
@@ -35,7 +35,9 @@ export default function LearnerDetail() {
       <Header classId={classId!} />
       <Information learner={data} />
       <Box display='flex' marginTop='1.25rem'>
-        <Button sx={{ margin: 'auto' }}>Trao đổi</Button>
+        <Button sx={{ margin: 'auto' }} component={Link} to={'chat'}>
+          Trao đổi
+        </Button>
       </Box>
     </>
   ) : (
