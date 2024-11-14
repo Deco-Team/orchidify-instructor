@@ -102,7 +102,6 @@ const EditProfileForm = ({ instructorData, bankData }: EditProfileFormProps) => 
     const bankInfo = bankData.find((bank) => bank.shortName + ' - ' + bank.name === formData.paymentInfo.bankName)
 
     const updatedFormData = {
-      ...instructorData,
       bio: formData.bio,
       avatar: formData.avatar?.length ? formData.avatar[0].url : null,
       paymentInfo: {

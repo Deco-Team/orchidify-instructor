@@ -101,7 +101,11 @@ export const ControlledFileFieldUpload = <TFieldValues extends FieldValues>({
           <ImageList sx={{ width: 'fit-content', display: 'flex', m: 0, gap: '8px !important' }}>
             {selectedFiles.map((image, index) => (
               <ImageListItem key={image.public_id} sx={{ width: '100%', borderRadius: 1, overflow: 'hidden' }}>
-                <img src={image.url} alt={image.display_name} style={{ width: '200px', height: '200px' }} />
+                <img
+                  src={image.url.replace('.pdf', '.png')}
+                  alt={image.display_name}
+                  style={{ width: '200px', height: '200px' }}
+                />
                 <ImageListItemBar
                   sx={{
                     height: '58px',
