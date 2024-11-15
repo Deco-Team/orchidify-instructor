@@ -13,7 +13,7 @@ import {
 } from 'firebase/firestore'
 import Message from './Message'
 import SendMessage from './SendMessage'
-import { db } from '~/utils/chat-firebase/firebase'
+import { db } from '~/utils/firebase/firestore'
 import { Avatar, Box, Typography } from '@mui/material'
 import { LearnerDetailResponseDto } from '~/data/learner/learner.dto'
 

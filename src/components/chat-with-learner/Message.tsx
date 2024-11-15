@@ -1,6 +1,6 @@
 import { DocumentData } from 'firebase/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth } from '~/utils/chat-firebase/firebase'
+import { auth } from '~/utils/firebase/auth'
 import { Box, Typography, Tooltip } from '@mui/material'
 
 interface MessageProps {
