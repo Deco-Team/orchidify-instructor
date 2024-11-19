@@ -10,6 +10,7 @@ import UpdateCourseComboForm from './components/UpdateCourseComboForm'
 import { useCourseApi } from '~/hooks/api/useCourseApi'
 import { CourseListItemResponseDto } from '~/data/course/course.dto'
 import { CourseStatus } from '~/global/constants'
+import { Box } from '@mui/material'
 
 const UpdateCourseCombo = () => {
   const [comboDetail, setComboDetail] = useState<CourseComboDetailResponseDto | null>(null)
@@ -43,7 +44,7 @@ const UpdateCourseCombo = () => {
   }, [comboId, getCourseComboById, getCourseList, navigate])
 
   return comboDetail && courseList ? (
-    <>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
       <PageHeader
         title='Cập nhật Combo khóa học'
         breadcrumbsItems={[
@@ -53,7 +54,7 @@ const UpdateCourseCombo = () => {
         ]}
       />
       <UpdateCourseComboForm comboDetail={comboDetail} courseList={courseList} />
-    </>
+    </Box>
   ) : (
     <Loading />
   )

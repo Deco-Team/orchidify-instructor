@@ -79,8 +79,6 @@ const UpdateCourseComboForm = ({ courseList, comboDetail }: UpdateCourseComboFor
     }
   })
 
-  console.log(errors)
-
   return (
     <StyledForm onSubmit={onSubmit}>
       <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', padding: 3, gap: 2.5, width: '100%' }}>
@@ -165,7 +163,9 @@ const UpdateCourseComboForm = ({ courseList, comboDetail }: UpdateCourseComboFor
           title='Danh sách khóa học trong combo'
           tableOptions={{
             columns: courseComboColumns,
-            data: courseList.filter((course) => formValues.childCourseIds.includes(course._id)),
+            data: courseList
+              .filter((course) => formValues.childCourseIds.includes(course._id))
+              .sort((a, b) => formValues.childCourseIds.indexOf(a._id) - formValues.childCourseIds.indexOf(b._id)),
             rowCount: formValues.childCourseIds.length,
             enableBottomToolbar: false,
             enableSorting: true,

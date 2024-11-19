@@ -73,8 +73,6 @@ const CreateCourseComboForm = ({ courses }: CreateCourseComboFormProps) => {
     }
   })
 
-  console.log(errors)
-
   return (
     <StyledForm onSubmit={onSubmit}>
       <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', padding: 3, gap: 2.5, width: '100%' }}>
@@ -159,7 +157,9 @@ const CreateCourseComboForm = ({ courses }: CreateCourseComboFormProps) => {
           title='Danh sách khóa học trong combo'
           tableOptions={{
             columns: courseComboColumns,
-            data: courses.filter((course) => formValues.childCourseIds.includes(course._id)),
+            data: courses
+              .filter((course) => formValues.childCourseIds.includes(course._id))
+              .sort((a, b) => formValues.childCourseIds.indexOf(a._id) - formValues.childCourseIds.indexOf(b._id)),
             rowCount: formValues.childCourseIds.length,
             enableBottomToolbar: false,
             enableSorting: true,
