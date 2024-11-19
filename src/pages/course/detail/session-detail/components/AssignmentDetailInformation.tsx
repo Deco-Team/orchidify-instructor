@@ -40,7 +40,7 @@ const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto
             }}
           >
             <div style={{ width: '100%', height: '100%', padding: '0 2px' }}>
-              {value.resource_type === 'image' && value.format !== 'pdf' ? (
+              {value.resource_type === 'image' ? (
                 <img
                   src={value.url}
                   alt={`Lesson resource ${value.public_id}`}
@@ -76,7 +76,7 @@ const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto
                       overflow: 'hidden'
                     }}
                   >
-                    {value.public_id}
+                    {value.original_filename}
                   </Typography>
                 </Box>
               )}

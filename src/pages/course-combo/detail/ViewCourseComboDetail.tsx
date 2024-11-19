@@ -1,4 +1,4 @@
-import { Navigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import ComboInformation from './components/ComboInformation'
 import Header from './components/Header'
 import { useCourseComboApi } from '~/hooks/api/useCourseComboApi'
@@ -17,6 +17,7 @@ export default function ViewCourseComboDetail() {
   const [error, setError] = useState<ErrorResponseDto | null>(null)
   const { getCourseComboById } = useCourseComboApi()
   const params = useParams()
+  const navigate = useNavigate()
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false)
 
   const comboId = params.id
@@ -36,7 +37,7 @@ export default function ViewCourseComboDetail() {
   }
 
   const handleDeleteSuccess = () => {
-    return <Navigate to={protectedRoute.courseList.path} replace />
+    navigate(protectedRoute.courseComboList.path, { replace: true })
   }
 
   return comboDetail ? (

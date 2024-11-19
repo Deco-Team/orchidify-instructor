@@ -4,10 +4,11 @@ import { MRT_Localization_VI } from 'material-react-table/locales/vi'
 
 interface TableProps<TData extends MRT_RowData> {
   title: string
+  marginTop?: string
   tableOptions: MRT_TableOptions<TData>
 }
 
-const Table = <TData extends MRT_RowData>({ title, tableOptions }: TableProps<TData>) => {
+const Table = <TData extends MRT_RowData>({ title, marginTop = '1.25rem', tableOptions }: TableProps<TData>) => {
   const theme = useTheme()
 
   const table = useMaterialReactTable({
@@ -21,7 +22,7 @@ const Table = <TData extends MRT_RowData>({ title, tableOptions }: TableProps<TD
     localization: MRT_Localization_VI,
     muiTablePaperProps: {
       sx: {
-        marginTop: '1.25rem'
+        marginTop
       }
     },
     muiTableHeadProps: {

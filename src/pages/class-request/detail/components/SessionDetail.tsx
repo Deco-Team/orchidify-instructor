@@ -127,11 +127,46 @@ const SessionDetail = ({ request }: SessionDetailProps) => {
                                 }}
                               >
                                 <div style={{ width: '100%', height: '100%', padding: '0 2px' }}>
-                                  <img
-                                    src={value.url}
-                                    alt={`Lesson resource ${value.public_id}`}
-                                    style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '4px' }}
-                                  />
+                                  {value.resource_type === 'image' ? (
+                                    <img
+                                      src={value.url}
+                                      alt={`Lesson resource ${value.public_id}`}
+                                      style={{
+                                        width: '200px',
+                                        height: '200px',
+                                        objectFit: 'cover',
+                                        borderRadius: '4px'
+                                      }}
+                                    />
+                                  ) : (
+                                    <Box
+                                      sx={{
+                                        display: 'flex',
+                                        gap: 1,
+                                        background: '#f4f4f4',
+                                        width: '250px',
+                                        p: 2.5,
+                                        borderRadius: 2,
+                                        border: '2px solid #d7d7d7',
+                                        alignItems: 'center',
+                                        cursor: 'pointer'
+                                      }}
+                                      onClick={() => window.open(value.url, '_blank')}
+                                    >
+                                      <InsertDriveFileOutlined />
+                                      <Typography
+                                        variant='subtitle1'
+                                        sx={{
+                                          width: '100%',
+                                          textOverflow: 'ellipsis',
+                                          whiteSpace: 'nowrap',
+                                          overflow: 'hidden'
+                                        }}
+                                      >
+                                        {value.original_filename}
+                                      </Typography>
+                                    </Box>
+                                  )}
                                 </div>
                               </div>
                             ))}
@@ -168,7 +203,7 @@ const SessionDetail = ({ request }: SessionDetailProps) => {
                                   }}
                                 >
                                   <div style={{ width: '100%', height: '100%', padding: '0 2px' }}>
-                                    {value.resource_type === 'image' && value.format !== 'pdf' ? (
+                                    {value.resource_type === 'image' ? (
                                       <img
                                         src={value.url}
                                         alt={`Lesson resource ${value.public_id}`}

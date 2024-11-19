@@ -23,7 +23,7 @@ const UpdateCourse = () => {
         setData(course)
         if (apiError) {
           notifyError(apiError.message)
-          navigate(protectedRoute.courseDetail.path, { replace: true })
+          navigate(protectedRoute.courseDetail.path.replace(':id', courseId), { replace: true })
         }
       })()
     }
