@@ -11,6 +11,7 @@ import CourseInformation from './components/CourseInformation'
 import SessionLearnerFeedbackList from './components/SessionLearnerFeedbackList'
 import { ClassDetailResponseDto } from '~/data/class/class.dto'
 import SendCancelClassRequestConfirmation from './components/CancelConfirmation'
+import { ClassStatus } from '~/global/constants'
 
 export default function ViewClassDetail() {
   const [classDetail, setClassRDetail] = useState<ClassDetailResponseDto | null>(null)
@@ -41,7 +42,7 @@ export default function ViewClassDetail() {
   return classDetail ? (
     <>
       <Header
-        showCancelClassRequestButton={classDetail.learners.length === 0}
+        showCancelClassRequestButton={classDetail.status === ClassStatus.PUBLISHED && classDetail.learners.length === 0}
         onCancelClassRequestButtonClick={() => setOpenSendCancelClassRequestConfirmation(true)}
       />
       <ClassInformation classDetail={classDetail} />
