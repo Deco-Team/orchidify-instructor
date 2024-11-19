@@ -162,9 +162,12 @@ export const ControlledFileAreaUpload = <TFieldValues extends FieldValues>({
 
   const handleUploadSuccess = (info: CloudinaryFileUploadedInfo) => {
     if (multiple) {
-      setSelectedFiles((prev) => [...prev, info])
+      setSelectedFiles((prev) => [
+        ...prev,
+        { ...info, resource_type: info.format === 'pdf' ? 'raw' : info.resource_type }
+      ])
     } else {
-      setSelectedFiles([info])
+      setSelectedFiles([{ ...info, resource_type: info.format === 'pdf' ? 'raw' : info.resource_type }])
     }
   }
 
@@ -195,7 +198,7 @@ export const ControlledFileAreaUpload = <TFieldValues extends FieldValues>({
                 </IconButton>
               </React.Fragment>
             ) : (
-              (file.resource_type === 'raw' || (file.resource_type === 'image' && file.format === 'pdf')) && (
+              file.resource_type === 'raw' && (
                 <Box
                   key={file.public_id}
                   sx={{
@@ -229,8 +232,7 @@ export const ControlledFileAreaUpload = <TFieldValues extends FieldValues>({
           <ImageList sx={{ width: 'fit-content', display: 'flex', m: 0, gap: '8px !important' }}>
             {selectedFiles.map(
               (file, index) =>
-                file.resource_type === 'image' &&
-                file.format !== 'pdf' && (
+                file.resource_type === 'image' && (
                   <ImageListItem key={file.public_id} sx={{ width: '100%', borderRadius: 1, overflow: 'hidden' }}>
                     <img src={file.url} alt={file.display_name} style={{ width: '200px', height: '200px' }} />
                     <ImageListItemBar

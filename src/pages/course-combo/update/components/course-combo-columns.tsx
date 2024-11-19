@@ -1,15 +1,15 @@
 import { Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
-import { ChildCourseDetailDto } from '~/data/course-combo/courseCombo'
+import { CourseListItemResponseDto } from '~/data/course/course.dto'
 import { CourseLevel } from '~/global/constants'
 import { formatCourseLevel, formatCurrency } from '~/utils/format'
 
-export const childCourseColumns: MRT_ColumnDef<ChildCourseDetailDto>[] = [
+export const courseComboColumns: MRT_ColumnDef<CourseListItemResponseDto>[] = [
   {
     accessorKey: 'code',
     header: 'Mã khóa học',
-    size: 150,
-    grow: false
+    grow: false,
+    size: 150
   },
   {
     accessorKey: 'title',
@@ -18,8 +18,8 @@ export const childCourseColumns: MRT_ColumnDef<ChildCourseDetailDto>[] = [
   {
     accessorKey: 'price',
     header: 'Giá',
-    size: 120,
     grow: false,
+    size: 120,
     muiTableHeadCellProps: {
       align: 'right'
     },
@@ -35,11 +35,10 @@ export const childCourseColumns: MRT_ColumnDef<ChildCourseDetailDto>[] = [
   {
     accessorKey: 'level',
     header: 'Cấp độ',
-    size: 110,
     grow: false,
+    size: 110,
     Cell: ({ cell }) => {
       const level = cell.getValue() as CourseLevel
-
       return (
         <Typography
           variant='subtitle2'
@@ -57,20 +56,15 @@ export const childCourseColumns: MRT_ColumnDef<ChildCourseDetailDto>[] = [
         </Typography>
       )
     },
-    filterVariant: 'multi-select',
-    filterSelectOptions: [
-      { label: 'Cơ bản', value: CourseLevel.BASIC },
-      { label: 'Trung bình', value: CourseLevel.INTERMEDIATE },
-      { label: 'Nâng cao', value: CourseLevel.ADVANCED }
-    ],
+    enableColumnFilter: false,
     enableSorting: false
   },
   {
     id: 'type',
     accessorKey: 'type',
     header: 'Thể loại',
-    size: 200,
     grow: true,
+    size: 200,
     filterVariant: 'select',
     filterSelectOptions: [],
     Cell: ({ cell }) => {

@@ -1,9 +1,10 @@
 import { useCallback } from 'react'
 import { useProtectedApi } from './useProtectedApi'
-import { ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
+import { IdResponseDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
 import { CourseComboDetailResponseDto, CourseComboListItemResponseDto } from '~/data/course-combo/courseCombo'
+import { CreateUpdateCourseComboDto } from '~/data/course-combo/create-update-course-combo.dto'
 
 const ROOT_ENDPOINT = '/courses/instructor/combo'
 
@@ -88,5 +89,43 @@ export const useCourseComboApi = () => {
     [callAppProtectedApi]
   )
 
-  return { getCourseComboList, getCourseComboById, deleteCourseCombo }
+  const createCourseCombo = useCallback(
+    async (courseCombo: CreateUpdateCourseComboDto) => {
+      const endpoint = `${ROOT_ENDPOINT}`
+      const result = await callAppProtectedApi<IdResponseDto>(endpoint, 'POST', {}, {}, courseCombo)
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Tạo Combo khóa học') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  const updateCourseCombo = useCallback(
+    async (courseComboId: string, courseCombo: CreateUpdateCourseComboDto) => {
+      const endpoint = `${ROOT_ENDPOINT}/${courseComboId}`
+      const result = await callAppProtectedApi<SuccessResponseDto>(endpoint, 'PUT', {}, {}, courseCombo)
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Cập nhật Combo khóa học') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  return { getCourseComboList, getCourseComboById, deleteCourseCombo, createCourseCombo, updateCourseCombo }
 }
