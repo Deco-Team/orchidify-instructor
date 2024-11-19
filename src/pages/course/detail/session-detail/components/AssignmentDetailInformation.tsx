@@ -76,7 +76,7 @@ const AssignmentDetailInformation = ({ assignment }: { assignment: AssignmentDto
                       overflow: 'hidden'
                     }}
                   >
-                    {value.public_id}
+                    {value.original_filename}
                   </Typography>
                 </Box>
               )}

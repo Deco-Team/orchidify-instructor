@@ -112,7 +112,7 @@ const SubmissionDetailInformation = ({ submission }: SubmissionInfoProps) => {
                     overflow: 'hidden'
                   }}
                 >
-                  {submission.attachments[0].public_id}
+                  {submission.attachments[0].original_filename}
                 </Typography>
               </Box>
             )}
