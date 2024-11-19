@@ -14,7 +14,7 @@ const Header = ({ onDeleteButtonClick }: HeaderProps) => {
     <Box display='flex' justifyContent='space-between' alignItems='center'>
       <PageHeader title='Chi tiết Combo khóa học' breadcrumbsItems={breadcrumbsItems} />
       <Box display='flex' gap='1.5rem'>
-        <Button color='warning' component={Link} to={protectedRoute.updateCourse.path}>
+        <Button color='warning' component={Link} to={'update'}>
           Cập nhật
         </Button>
         <Button color='error' onClick={onDeleteButtonClick}>

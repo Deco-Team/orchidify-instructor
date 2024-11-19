@@ -197,7 +197,7 @@ const SessionDetail = ({ request }: SessionDetailProps) => {
                                           overflow: 'hidden'
                                         }}
                                       >
-                                        {value.public_id}
+                                        {value.original_filename}
                                       </Typography>
                                     </Box>
                                   )}
