@@ -1,7 +1,7 @@
 import { Box, Paper, Rating, Typography } from '@mui/material'
 import RequestStatusTag from '~/components/tag/RequestStatustag'
 import ClassStatusTag from '~/components/tag/ClassStatusTag'
-import { ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
+import { ClassRequestDetailResponseDto } from '~/data/class-request/class-request.dto'
 import { ClassStatus, CourseStatus, RequestStatus } from '~/global/constants'
 import { formatRequestType } from '~/utils/format'
 import { ContentWrapper, HeaderWrapper, Line } from '../ClassRequestDetail.styled'
@@ -48,7 +48,7 @@ export const Field: React.FC<FieldProps> = ({
 )
 
 interface RequestDetailInformationProps {
-  request: ClassRequestListItemResponseDto
+  request: ClassRequestDetailResponseDto
 }
 
 const RequestDetailInformation = ({ request }: RequestDetailInformationProps) => {

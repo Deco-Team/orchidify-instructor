@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
+import { ClassRequestDetailResponseDto } from '~/data/class-request/class-request.dto'
 import { useRequestApi } from '~/hooks/api/useRequestApi'
 import { notifyError } from '~/utils/toastify'
 import RequestDetailHeader from './components/RequestDetailHeader'
@@ -18,7 +18,7 @@ const ClassRequestDetail = () => {
   const classRequestId = params.id
   const { getClassRequestById } = useRequestApi()
   const navigate = useNavigate()
-  const [data, setData] = useState<ClassRequestListItemResponseDto | null>(null)
+  const [data, setData] = useState<ClassRequestDetailResponseDto | null>(null)
   const [openCancelConfirmation, setOpenCancelConfirmation] = useState(false)
 
   useEffect(() => {

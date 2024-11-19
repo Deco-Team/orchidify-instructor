@@ -9,35 +9,38 @@ export const classRequestColumn: MRT_ColumnDef<ClassRequestListItemResponseDto>[
   {
     accessorKey: 'type',
     header: 'Loại yêu cầu',
-    size: 140,
-    grow: false,
-    enableSorting: false,
-    Cell: ({ cell }) => {
-      const type = cell.getValue() as RequestType
-
-      return <Typography variant='subtitle2'>{formatRequestType(type)}</Typography>
-    },
-    filterVariant: 'multi-select',
-    filterSelectOptions: [{ label: 'Mở lớp học', value: RequestType.PUBLISH_CLASS }]
-  },
-  //   {
-  //     accessorKey: 'classId',
-  //     header: 'Mã lớp học',
-  //     size: 170,
-  //     enableColumnFilter: false
-  //   },
-  {
-    accessorKey: 'metadata.code',
-    header: 'Mã khóa học',
     size: 165,
     grow: false,
-    enableColumnFilter: false
+    Cell: ({ row }) => {
+      const type = row.original.type
+      return formatRequestType(type)
+    },
+    filterVariant: 'multi-select',
+    filterSelectOptions: [
+      { label: 'Mở lớp học', value: RequestType.PUBLISH_CLASS },
+      { label: 'Hủy lớp học', value: RequestType.CANCEL_CLASS }
+    ]
   },
   {
-    accessorKey: 'metadata.title',
-    header: 'Tên khóa học',
-    size: 300,
-    enableColumnFilter: false
+    accessorKey: 'metadata.code',
+    header: 'Mã lớp học',
+    size: 160,
+    Cell: ({ row: { original } }) => {
+      return original.type === RequestType.PUBLISH_CLASS ? 'Không có dữ liệu' : original.metadata.code
+    }
+  },
+  {
+    accessorKey: 'metadata.course',
+    header: 'Mã khóa học',
+    size: 170,
+    grow: false,
+    Cell: ({ row: { original } }) => {
+      return original.type === RequestType.PUBLISH_CLASS ? original.metadata.code : original.metadata.course!.code
+    }
+  },
+  {
+    accessorFn: (row) => row.metadata.title,
+    header: 'Tên khóa học'
   },
   {
     accessorKey: 'createdAt',

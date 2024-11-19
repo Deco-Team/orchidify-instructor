@@ -52,7 +52,7 @@ const RequestStatusTag = ({ type }: RequestStatusTagProps) => {
     }
   }
 
-  return <Chip label={label} variant={label === RequestStatus.CANCELED ? 'outlined' : 'filled'} sx={styles} />
+  return <Chip label={label} variant={type === RequestStatus.CANCELED ? 'outlined' : 'filled'} sx={styles} />
 }
 
 export default RequestStatusTag

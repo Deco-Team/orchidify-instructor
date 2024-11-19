@@ -38,8 +38,8 @@ export function formatRequestType(type: RequestType): string {
   switch (type) {
     case RequestType.PUBLISH_CLASS:
       return 'Mở lớp học'
-    // case RequestType.CANCEL_CLASS:
-    //   return 'Hủy lớp học'
+    case RequestType.CANCEL_CLASS:
+      return 'Hủy lớp học'
     default:
       return 'Chưa xác định'
   }

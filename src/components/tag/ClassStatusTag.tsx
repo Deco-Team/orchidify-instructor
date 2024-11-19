@@ -44,7 +44,7 @@ const ClassStatusTag = ({ type }: ClassStatusTagProps) => {
     }
   }
 
-  return <Chip label={label} variant={label === ClassStatus.CANCELED ? 'outlined' : 'filled'} sx={styles} />
+  return <Chip label={label} variant={type === ClassStatus.CANCELED ? 'outlined' : 'filled'} sx={styles} />
 }
 
 export default ClassStatusTag

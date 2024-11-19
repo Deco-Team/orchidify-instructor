@@ -27,7 +27,7 @@ export const classColumns: MRT_ColumnDef<ClassListItemResponseDto>[] = [
     size: 170,
     grow: false,
     Cell: ({ row }) => {
-      const date = new Date(row.original.createdAt)
+      const date = new Date(row.original.startDate)
       return date.toLocaleDateString('vi-VN')
     }
   },
