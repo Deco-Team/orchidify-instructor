@@ -82,7 +82,8 @@ export const FileFormat = {
 }
 
 export enum RequestType {
-  PUBLISH_CLASS = 'PUBLISH_CLASS'
+  PUBLISH_CLASS = 'PUBLISH_CLASS',
+  CANCEL_CLASS = 'CANCEL_CLASS'
 }
 
 export enum CalendarType {

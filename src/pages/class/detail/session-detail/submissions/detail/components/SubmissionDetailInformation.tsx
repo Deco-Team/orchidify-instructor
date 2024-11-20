@@ -73,7 +73,7 @@ const SubmissionDetailInformation = ({ submission }: SubmissionInfoProps) => {
           }}
         >
           <div style={{ width: '100%', height: '100%', padding: '0 2px' }}>
-            {submission.attachments[0].resource_type === 'image' && submission.attachments[0].format !== 'pdf' ? (
+            {submission.attachments[0].resource_type === 'image' ? (
               <img
                 src={submission.attachments[0].url}
                 alt={`Lesson resource ${submission.attachments[0].public_id}`}

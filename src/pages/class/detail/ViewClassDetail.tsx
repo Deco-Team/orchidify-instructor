@@ -10,10 +10,13 @@ import ClassInformation from './components/ClassInformation'
 import CourseInformation from './components/CourseInformation'
 import SessionLearnerFeedbackList from './components/SessionLearnerFeedbackList'
 import { ClassDetailResponseDto } from '~/data/class/class.dto'
+import SendCancelClassRequestConfirmation from './components/CancelConfirmation'
+import { ClassStatus } from '~/global/constants'
 
 export default function ViewClassDetail() {
   const [classDetail, setClassRDetail] = useState<ClassDetailResponseDto | null>(null)
   const [error, setError] = useState<ErrorResponseDto | null>(null)
+  const [openSendCancelClassRequestConfirmation, setOpenSendCancelClassRequestConfirmation] = useState(false)
   const { getClassById } = useClassApi()
   const params = useParams()
   const navigate = useNavigate()
@@ -38,10 +41,19 @@ export default function ViewClassDetail() {
 
   return classDetail ? (
     <>
-      <Header showCancelRequestButton={classDetail.learners.length === 0} onCancelRequestButtonClick={() => {}} />
+      <Header
+        showCancelClassRequestButton={classDetail.status === ClassStatus.PUBLISHED && classDetail.learners.length === 0}
+        onCancelClassRequestButtonClick={() => setOpenSendCancelClassRequestConfirmation(true)}
+      />
       <ClassInformation classDetail={classDetail} />
       <CourseInformation classDetail={classDetail} />
       <SessionLearnerFeedbackList classDetail={classDetail} />
+      <SendCancelClassRequestConfirmation
+        open={openSendCancelClassRequestConfirmation}
+        classId={classDetail._id}
+        onSuccess={() => {}}
+        handleClose={() => setOpenSendCancelClassRequestConfirmation(false)}
+      />
     </>
   ) : (
     <Loading />

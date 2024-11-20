@@ -2,7 +2,11 @@ import { useCallback } from 'react'
 import { useProtectedApi } from './useProtectedApi'
 import { APP_MESSAGE } from '~/global/app-message'
 import { ErrorResponseDto } from '~/data/error.dto'
-import { AvailableTimeResponse, ClassRequestListItemResponseDto } from '~/data/class-request/class-request.dto'
+import {
+  AvailableTimeResponse,
+  ClassRequestDetailResponseDto,
+  ClassRequestListItemResponseDto
+} from '~/data/class-request/class-request.dto'
 import { SlotNumber, Weekday } from '~/global/constants'
 import { IdResponseDto, ListResponseDto, SuccessResponseDto } from '~/data/common.dto'
 import {
@@ -20,6 +24,11 @@ interface CreatePublishClassRequest {
   startDate: Date
   weekdays: Weekday[]
   slotNumbers: SlotNumber[]
+}
+
+interface CreateCancelClassRequest {
+  classId: string
+  description: string
 }
 
 export const useRequestApi = () => {
@@ -68,7 +77,27 @@ export const useRequestApi = () => {
 
       return {
         data: null,
-        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Gửi yêu cầu mở') } as ErrorResponseDto
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Gửi yêu cầu mở lớp học') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  const createCancelClassRequest = useCallback(
+    async (request: CreateCancelClassRequest) => {
+      const endpoint = `${CLASS_REQUEST_ENDPOINT}/cancel-class`
+
+      const result = await callAppProtectedApi<IdResponseDto>(endpoint, 'POST', {}, {}, request)
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Gửi yêu cầu hủy lớp học') } as ErrorResponseDto
       }
     },
     [callAppProtectedApi]
@@ -117,7 +146,7 @@ export const useRequestApi = () => {
   const getClassRequestById = useCallback(
     async (requestId: string) => {
       const endpoint = `${CLASS_REQUEST_ENDPOINT}/${requestId}`
-      const result = await callAppProtectedApi<ClassRequestListItemResponseDto>(endpoint, 'GET')
+      const result = await callAppProtectedApi<ClassRequestDetailResponseDto>(endpoint, 'GET')
 
       if (result) {
         const { data, error } = result
@@ -252,6 +281,7 @@ export const useRequestApi = () => {
   return {
     getAvailableTime,
     createPublishClassRequest,
+    createCancelClassRequest,
     getClassRequestList,
     getClassRequestById,
     cancelClassRequest,
