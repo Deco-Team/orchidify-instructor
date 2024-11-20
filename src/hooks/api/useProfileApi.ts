@@ -7,6 +7,22 @@ import { SuccessResponseDto } from '~/data/common.dto'
 
 const ROOT_ENDPOINT = '/instructors'
 
+interface UpdateProfileDto {
+  certificates?: {
+    name: string
+    url: string
+  }[]
+  bio?: string
+  avatar?: string | null
+  paymentInfo?: {
+    bankName: string
+    bankShortName: string
+    bankCode: string
+    accountNumber: string
+    accountName: string
+  }
+}
+
 export const useProfileApi = () => {
   const { callAppProtectedApi } = useProtectedApi()
 
@@ -27,7 +43,7 @@ export const useProfileApi = () => {
   }, [callAppProtectedApi])
 
   const putProfile = useCallback(
-    async (instructor: InstructorDto) => {
+    async (instructor: UpdateProfileDto) => {
       const endpoint = `${ROOT_ENDPOINT}/profile`
       const result = await callAppProtectedApi<SuccessResponseDto>(endpoint, 'PUT', {}, {}, instructor)
 

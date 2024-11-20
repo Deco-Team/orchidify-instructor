@@ -36,6 +36,7 @@ const ViewCourseComboList = lazy(() => import('~/pages/course-combo/list/ViewCou
 const ViewCourseComboDetail = lazy(() => import('~/pages/course-combo/detail/ViewCourseComboDetail'))
 const CreateCourseCombo = lazy(() => import('~/pages/course-combo/create/CreateCourseCombo'))
 const UpdateCourseCombo = lazy(() => import('~/pages/course-combo/update/UpdateCourseCombo'))
+const UploadCertification = lazy(() => import('~/pages/profile/upload-certification/UploadCertification'))
 
 export const publicRoute = {
   login: {
@@ -199,5 +200,10 @@ export const protectedRoute = {
     name: 'Cập nhật combo khóa học',
     path: '/course-combos/:id/update',
     Component: UpdateCourseCombo
+  },
+  uploadCertification: {
+    name: 'Cập nhật chứng chỉ',
+    path: '/profile/certifications/edit',
+    Component: UploadCertification
   }
 }
