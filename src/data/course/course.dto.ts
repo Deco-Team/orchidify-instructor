@@ -51,6 +51,8 @@ export interface AssignmentDto {
   _id: string
   title: string
   description: string
+  deadline: string
+  sessionNumber: number
   attachments: BaseMediaDto[]
 }
 

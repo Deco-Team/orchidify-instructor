@@ -13,6 +13,10 @@ import { AssignmentDto, SessionDto } from '~/data/course/course.dto'
 
 const ROOT_ENDPOINT = '/classes/instructor'
 
+interface UpdateClassAssignmentRequest {
+  deadline: string
+}
+
 export const useClassApi = () => {
   const { callAppProtectedApi } = useProtectedApi()
 
@@ -189,6 +193,26 @@ export const useClassApi = () => {
     [callAppProtectedApi]
   )
 
+  const updateClassAssignment = useCallback(
+    async (classId: string, assignmentId: string, request: UpdateClassAssignmentRequest) => {
+      const endpoint = `${ROOT_ENDPOINT}/${classId}/assignments/${assignmentId}`
+
+      const result = await callAppProtectedApi<SuccessResponseDto>(endpoint, 'PATCH', {}, {}, request)
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.ACTION_DID_FAILED('Cập nhật bài tập của lớp') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
   return {
     getClassList,
     getClassById,
@@ -197,6 +221,7 @@ export const useClassApi = () => {
     getSubmissionList,
     getSubmissionById,
     gradeSubmission,
-    uploadResourses
+    uploadResourses,
+    updateClassAssignment
   }
 }
