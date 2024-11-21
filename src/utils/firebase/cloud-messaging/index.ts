@@ -1,15 +1,7 @@
-import { getMessaging, getToken, onMessage } from 'firebase/messaging'
+import { getMessaging, getToken } from 'firebase/messaging'
 import { app } from '../firebase'
 
 export const messaging = getMessaging(app)
-
-export const onMessageListener = () =>
-  new Promise((resolve) => {
-    onMessage(messaging, (payload) => {
-      console.log('payload', payload)
-      resolve(payload)
-    })
-  })
 
 const checkAndRequestNotificationPermission = async () => {
   if (!('Notification' in window)) {
@@ -41,7 +33,6 @@ export const getRegistrationToken = async () => {
     const currentToken = await getToken(messaging, {
       vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
     })
-    localStorage.setItem('fcm_token', currentToken)
 
     return currentToken ? currentToken : null
   } catch (err) {
