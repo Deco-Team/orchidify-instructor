@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   query,
   collection,
@@ -9,7 +9,8 @@ import {
   and,
   addDoc,
   serverTimestamp,
-  DocumentData
+  DocumentData,
+  orderBy
 } from 'firebase/firestore'
 import Message from './Message'
 import SendMessage from './SendMessage'
@@ -40,32 +41,41 @@ const ChatBox = ({ classId, learnerId, instructorId, learner }: ChatBoxProps) =>
     )
 
     const querySnapshot = await getDocs(q)
-    if (querySnapshot.empty) {
-      await addDoc(collection(db, 'chat-room'), {
+    if (!querySnapshot.empty) {
+      setChatRoomId(querySnapshot.docs[0].id)
+    } else {
+      const docRef = await addDoc(collection(db, 'chat-room'), {
         classId,
         learnerId,
         instructorId,
         createdAt: serverTimestamp()
       })
-    } else {
-      setChatRoomId(querySnapshot.docs[0].id)
-      const messageQuery = query(
-        collection(db, 'message'),
-        where('chatRoomId', '==', querySnapshot.docs[0].id),
-        limit(500)
-      )
 
-      const unsubscribe = onSnapshot(messageQuery, (QuerySnapshot) => {
-        const fetchedMessages: DocumentData[] = []
-        QuerySnapshot.forEach((doc) => {
-          fetchedMessages.push({ ...doc.data(), id: doc.id })
-        })
-        const sortedMessages = fetchedMessages.sort((a, b) => a.createdAt - b.createdAt)
-        setMessages(sortedMessages)
-      })
-      return unsubscribe
+      setChatRoomId(docRef.id)
     }
   }
+
+  const loadMessages = useCallback(() => {
+    if (!chatRoomId) return
+
+    const messageQuery = query(
+      collection(db, 'message'),
+      where('chatRoomId', '==', chatRoomId),
+      limit(500),
+      orderBy('createdAt', 'desc')
+    )
+
+    const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
+      const fetchedMessages: DocumentData[] = []
+      querySnapshot.forEach((doc) => {
+        fetchedMessages.push({ ...doc.data(), id: doc.id })
+      })
+      const sortedMessages = fetchedMessages.sort((a, b) => a.createdAt - b.createdAt)
+      setMessages(sortedMessages)
+    })
+
+    return unsubscribe
+  }, [chatRoomId])
 
   useEffect(() => {
     checkExistChatRoom()
@@ -73,12 +83,32 @@ const ChatBox = ({ classId, learnerId, instructorId, learner }: ChatBoxProps) =>
   }, [])
 
   useEffect(() => {
+    if (chatRoomId) {
+      const unsubscribe = loadMessages()
+      return () => {
+        if (unsubscribe) {
+          unsubscribe()
+        }
+      }
+    }
+  }, [chatRoomId, loadMessages])
+
+  useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'auto' })
   }, [messages])
 
   const shouldDisplayTimestamp = (prevTimestamp: Date | null, currentTimestamp: Date, minutesGap = 30) => {
     if (!prevTimestamp) return true // Show timestamp if there's no previous timestamp
-    return (currentTimestamp.getTime() - prevTimestamp.getTime()) / (1000 * 60) >= minutesGap
+
+    // Check if the messages are on different days
+    const isNewDay = !isSameDay(currentTimestamp, prevTimestamp)
+
+    // Check if the gap between messages exceeds the specified minutes
+    const timeDifference = (currentTimestamp.getTime() - prevTimestamp.getTime()) / (1000 * 60)
+    const isLargeGap = timeDifference >= minutesGap
+
+    // Show timestamp if it's a new day or if there's a large time gap
+    return isNewDay || isLargeGap
   }
 
   const isSameDay = (date1: Date, date2: Date | null) => {
@@ -95,7 +125,12 @@ const ChatBox = ({ classId, learnerId, instructorId, learner }: ChatBoxProps) =>
     return isSameDay(date, today)
   }
 
-  const getMessagePosition = (index: number, messages: DocumentData[]) => {
+  const getMessagePosition = (
+    index: number,
+    messages: DocumentData[],
+    showDateHeader: boolean,
+    showTimestamp: boolean
+  ) => {
     const currentMessage = messages[index]
     const prevMessage = messages[index - 1]
     const nextMessage = messages[index + 1]
@@ -113,6 +148,11 @@ const ChatBox = ({ classId, learnerId, instructorId, learner }: ChatBoxProps) =>
       (nextMessage &&
         currentMessage.createdAt &&
         shouldDisplayTimestamp(currentMessage.createdAt?.toDate(), nextMessage.createdAt?.toDate()))
+
+    if (showDateHeader || showTimestamp) {
+      if (isFirstMessage && isLastMessage) return 'after-header-single'
+      if (isFirstMessage) return 'after-header-first'
+    }
 
     if (isFirstMessage && isLastMessage) return 'single'
     if (isFirstMessage) return 'first'
@@ -154,7 +194,7 @@ const ChatBox = ({ classId, learnerId, instructorId, learner }: ChatBoxProps) =>
                 ? shouldDisplayTimestamp(previousMessageDate, messageDate)
                 : false
 
-            const position = getMessagePosition(index, messages)
+            const position = getMessagePosition(index, messages, showDateHeader, showTimestamp)
 
             return (
               <Box display={'flex'} flexDirection={'column'} key={message.id}>
