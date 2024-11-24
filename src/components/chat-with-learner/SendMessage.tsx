@@ -1,9 +1,10 @@
 import React, { MutableRefObject, useState } from 'react'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
-import { auth, db } from '~/utils/chat-firebase/firebase'
 import { User } from 'firebase/auth'
 import { IconButton, InputAdornment, OutlinedInput } from '@mui/material'
 import { Send } from '@mui/icons-material'
+import { auth } from '~/utils/firebase/auth'
+import { db } from '~/utils/firebase/firestore'
 
 interface SendMessageProps {
   scroll: MutableRefObject<HTMLSpanElement | null>
