@@ -5,7 +5,7 @@ import { Box, Typography, Tooltip } from '@mui/material'
 
 interface MessageProps {
   message: DocumentData
-  position: 'single' | 'first' | 'middle' | 'last'
+  position: 'single' | 'first' | 'middle' | 'last' | 'after-header-first' | 'after-header-single'
 }
 
 const Message = ({ message, position }: MessageProps) => {
@@ -52,14 +52,27 @@ const Message = ({ message, position }: MessageProps) => {
     single: '18px',
     first: '18px 18px 4px 18px',
     middle: '18px 4px 4px 18px',
-    last: '18px 4px 18px 18px'
+    last: '18px 4px 18px 18px',
+    'after-header-first': '18px 18px 4px 18px',
+    'after-header-single': '18px 18px 18px 18px'
   }[position]
 
   const borderRadiusLeft = {
     single: '18px',
     first: '18px 18px 18px 4px',
     middle: '4px 18px 18px 4px',
-    last: '4px 18px 18px 18px'
+    last: '4px 18px 18px 18px',
+    'after-header-first': '18px 18px 18px 4px',
+    'after-header-single': '18px 18px 18px 18px'
+  }[position]
+
+  const marginTop = {
+    first: '8px',
+    'after-header-first': '0px',
+    'after-header-single': '0px',
+    middle: '2px',
+    last: '2px',
+    single: '0'
   }[position]
 
   return (
@@ -77,7 +90,7 @@ const Message = ({ message, position }: MessageProps) => {
           padding: '8px 16px',
           backgroundColor: user?.uid === message.senderId ? '#2EC4B6' : '#00000033',
           marginLeft: user?.uid === message.senderId ? 'auto' : '0',
-          marginTop: position === 'middle' || position === 'last' ? '2px' : '0px'
+          marginTop
         }}
       >
         <Box display='flex' flexDirection='column' gap={0.5}>
