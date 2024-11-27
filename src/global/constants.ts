@@ -90,3 +90,9 @@ export enum CalendarType {
   MONTH = 'MONTH',
   WEEK = 'WEEK'
 }
+
+export enum NotificationType {
+  CLASS = 'CLASS',
+  CLASS_REQUEST = 'CLASS_REQUEST',
+  PAYOUT_REQUEST = 'PAYOUT_REQUEST'
+}

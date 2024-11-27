@@ -1,4 +1,4 @@
-import { RequestType, CourseLevel, Weekday } from '~/global/constants'
+import { RequestType, CourseLevel, Weekday, NotificationType } from '~/global/constants'
 
 export const formatNumber = (num: number): string => {
   const numStr = num.toString()
@@ -74,4 +74,17 @@ export function formatWeekdays(weekdays: Weekday[]): string[] {
         return 'Chưa xác định'
     }
   })
+}
+
+export function formatNotificationType(type: string): string {
+  switch (type) {
+    case NotificationType.CLASS:
+      return 'classes'
+    case NotificationType.CLASS_REQUEST:
+      return 'class-requests'
+    case NotificationType.PAYOUT_REQUEST:
+      return 'payout-requests'
+    default:
+      return ''
+  }
 }
