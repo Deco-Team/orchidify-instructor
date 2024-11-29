@@ -24,23 +24,26 @@ export const classRequestColumn: MRT_ColumnDef<ClassRequestListItemResponseDto>[
   {
     accessorKey: 'metadata.code',
     header: 'Mã lớp học',
-    size: 160,
+    size: 140,
     Cell: ({ row: { original } }) => {
       return original.type === RequestType.PUBLISH_CLASS ? 'Không có dữ liệu' : original.metadata.code
-    }
+    },
+    enableColumnFilter: false
   },
   {
-    accessorKey: 'metadata.course',
+    accessorFn: (row) => row.metadata.course,
     header: 'Mã khóa học',
     size: 170,
     grow: false,
     Cell: ({ row: { original } }) => {
       return original.type === RequestType.PUBLISH_CLASS ? original.metadata.code : original.metadata.course!.code
-    }
+    },
+    enableColumnFilter: false
   },
   {
     accessorFn: (row) => row.metadata.title,
-    header: 'Tên khóa học'
+    header: 'Tên khóa học',
+    enableColumnFilter: false
   },
   {
     accessorKey: 'createdAt',

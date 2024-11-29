@@ -1,9 +1,10 @@
-import { Badge, Box, IconButton, Toolbar } from '@mui/material'
+import { Box, IconButton, Toolbar } from '@mui/material'
 import { StyledAppBar } from './AppBar.styled'
 import { Menu, Notifications, AccountCircle } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
 import { protectedRoute } from '~/routes/routes'
-// import NotificationDialog from './NotificationDialog'
+import NotificationDialog from './NotificationDialog'
+import PopupState, { bindTrigger } from 'material-ui-popup-state'
 
 interface AppBarProps {
   open: boolean
@@ -35,12 +36,21 @@ const AppBar = ({ open, drawerwidth, handleDrawer }: AppBarProps) => {
         </IconButton>
         <Box sx={{ flexGrow: 1 }} />
         <Box>
-          <IconButton size='large' aria-label='show 17 new notifications' color='inherit'>
-            <Badge badgeContent={17} color='error'>
-              <Notifications sx={{ color: '#2EC4B6' }} />
-            </Badge>
-          </IconButton>
-          {/* <NotificationDialog /> */}
+          <PopupState variant='popover' popupId='demo-popup-popover'>
+            {(popupState) => (
+              <>
+                <IconButton
+                  size='large'
+                  aria-label='show 17 new notifications'
+                  color='inherit'
+                  {...bindTrigger(popupState)}
+                >
+                  <Notifications sx={{ color: '#2EC4B6' }} />
+                </IconButton>
+                <NotificationDialog popupState={popupState} />
+              </>
+            )}
+          </PopupState>
           <IconButton size='large' edge='end' color='inherit' component={Link} to={protectedRoute.profile.path}>
             <AccountCircle sx={{ color: '#2EC4B6' }} />
           </IconButton>

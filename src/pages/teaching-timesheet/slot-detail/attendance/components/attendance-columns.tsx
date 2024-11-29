@@ -1,4 +1,4 @@
-import { Box, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material'
+import { Avatar, Box, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 import AttendanceStatusTag from '~/components/tag/AttendanceStatusTag'
 import { AttendanceListItemResponseDto } from '~/data/teaching-timesheet/attendance.dto'
@@ -11,10 +11,11 @@ export const attendanceColumns: MRT_ColumnDef<AttendanceListItemResponseDto>[] =
     size: 120,
     grow: false,
     Cell: ({ row }) => (
-      <img
+      <Avatar
+        alt={row.original.learner.name}
         src={row.original.learner.avatar}
-        alt='avatar'
-        style={{ width: 90, height: 90, objectFit: 'cover', borderRadius: 4 }}
+        sx={{ width: 90, height: 90, borderRadius: 1 }}
+        variant='square'
       />
     ),
     enableEditing: false,
@@ -71,10 +72,11 @@ export const takenAttendanceColumns: MRT_ColumnDef<AttendanceListItemResponseDto
     size: 120,
     grow: false,
     Cell: ({ row }) => (
-      <img
+      <Avatar
+        alt={row.original.learner.name}
         src={row.original.learner.avatar}
-        alt='avatar'
-        style={{ width: 90, height: 90, objectFit: 'cover', borderRadius: 4 }}
+        sx={{ width: 90, height: 90, borderRadius: 1 }}
+        variant='square'
       />
     ),
     enableEditing: false,
@@ -167,10 +169,11 @@ export const attendanceHistoryColumns: MRT_ColumnDef<AttendanceListItemResponseD
     size: 120,
     grow: false,
     Cell: ({ row }) => (
-      <img
+      <Avatar
+        alt={row.original.learner.name}
         src={row.original.learner.avatar}
-        alt='avatar'
-        style={{ width: 90, height: 90, objectFit: 'cover', borderRadius: 4 }}
+        sx={{ width: 90, height: 90, borderRadius: 1 }}
+        variant='square'
       />
     ),
     enableEditing: false,

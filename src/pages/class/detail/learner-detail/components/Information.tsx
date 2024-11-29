@@ -1,6 +1,5 @@
-import { Paper, Box, Typography, Divider } from '@mui/material'
+import { Paper, Box, Typography, Divider, Avatar } from '@mui/material'
 import { LearnerDetailResponseDto } from '~/data/learner/learner.dto'
-import fallbackAvatar from '~/assets/avatar.png'
 
 interface FieldProps {
   label: string
@@ -32,14 +31,12 @@ const Information = ({ learner }: InformationProps) => {
         <Divider sx={{ flexGrow: 1 }} />
       </Box>
       <Box display='flex' gap='1rem' marginBottom='1.25rem'>
-        <Box width='250px' height='250px'>
-          <img
-            src={learner.avatar}
-            alt={learner.name}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
-            onError={(event) => (event.currentTarget.src = fallbackAvatar)}
-          />
-        </Box>
+        <Avatar
+          src={learner.avatar}
+          alt={learner.name}
+          sx={{ width: 250, height: 250, borderRadius: '4px' }}
+          variant='square'
+        />
         <Box display='flex' flexDirection='column' gap={1} flexGrow='1' justifyContent='center'>
           <Field label='Tên học viên' content={learner.name} />
           <Field label='Email' content={learner.email} />
