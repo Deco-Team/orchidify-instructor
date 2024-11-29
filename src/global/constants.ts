@@ -96,3 +96,20 @@ export enum NotificationType {
   CLASS_REQUEST = 'CLASS_REQUEST',
   PAYOUT_REQUEST = 'PAYOUT_REQUEST'
 }
+
+export enum ReportType {
+  CourseSum = 'CourseSum',
+  LearnerSum = 'LearnerSum',
+  InstructorSum = 'InstructorSum',
+  RecruitmentApplicationSum = 'RecruitmentApplicationSum',
+  CourseComboSum = 'CourseComboSum',
+  ClassSum = 'ClassSum',
+  ClassRequestSum = 'RequestSum',
+  PayoutRequestSum = 'PayoutRequestSum',
+  RevenueSum = 'RevenueSum',
+
+  LearnerSumByMonth = 'LearnerSumByMonth',
+  InstructorSumByMonth = 'InstructorSumByMonth',
+  LearnerEnrolledSumByMonth = 'LearnerEnrolledSumByMonth',
+  RevenueSumByMonth = 'RevenueSumByMonth'
+}

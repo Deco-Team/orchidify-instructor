@@ -15,3 +15,13 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #a0a0a5;
 }
+
+.rdp-today {
+  background-color: #2ec4b6;
+  color: #fff !important;
+  border-radius: 100%;
+}
+
+.rdp-month_caption {
+  justify-content: center;
+}
