@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Grid, Paper, Typography } from '@mui/material'
+import { Box, Button, Checkbox, Grid, Paper, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { HeaderWrapper, Line, StyledForm } from './CreatePayoutRequestForm.styled'
@@ -13,6 +13,8 @@ import { protectedRoute } from '~/routes/routes'
 import PageHeader from '~/components/header/PageHeader'
 import { useEffect, useState } from 'react'
 import { useProfileApi } from '~/hooks/api/useProfileApi'
+import { TitleWrapper } from '../PayoutRequestList.styled'
+import Loading from '~/components/loading/Loading'
 
 interface CreatePayoutRequestDto {
   amount: number
@@ -23,7 +25,12 @@ const CreatePayoutRequestForm = () => {
   const { createPayoutRequest } = useRequestApi()
   const { getProfile } = useProfileApi()
   const navigate = useNavigate()
-  const [maxAmount, setMaxAmount] = useState<number>(0)
+  const [balance, setBalance] = useState<number>(200000)
+  const [checked, setChecked] = useState(false)
+
+  const handleCheckMaxAvailableAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked)
+  }
 
   const defaultFormValues: CreatePayoutRequestDto = {
     amount: 0,
@@ -36,7 +43,7 @@ const CreatePayoutRequestForm = () => {
       .int({ message: APP_MESSAGE.INVALID_VALUE(['số nguyên']) })
       .min(200000, APP_MESSAGE.VALUE_OUT_OF_RANGE(formatCurrency(200000), formatCurrency(50000000)))
       .max(50000000, APP_MESSAGE.VALUE_OUT_OF_RANGE(formatCurrency(200000), formatCurrency(50000000)))
-      .max(maxAmount, APP_MESSAGE.AMOUNT_OVER_BALANCE),
+      .max(balance, APP_MESSAGE.AMOUNT_OVER_BALANCE),
     description: z
       .string()
       .trim()
@@ -47,7 +54,9 @@ const CreatePayoutRequestForm = () => {
   const {
     handleSubmit,
     control,
-    formState: { isSubmitting, errors }
+    setValue,
+    trigger,
+    formState: { isSubmitting, errors, isSubmitted }
   } = useForm<CreatePayoutRequestDto>({
     defaultValues: defaultFormValues,
     resolver: zodResolver(createPayoutRequestSchema)
@@ -81,20 +90,36 @@ const CreatePayoutRequestForm = () => {
 
       if (data) {
         if (!data.paymentInfo) {
-          navigate(protectedRoute.payoutRequestList.path, { replace: true })
+          navigate(protectedRoute.editProfile.path)
           notifyError(APP_MESSAGE.NO_PAYMENT_INFO)
         }
-        setMaxAmount(data.balance)
+        setBalance(data.balance)
       }
     })()
   }, [getProfile, navigate])
 
-  return (
+  useEffect(() => {
+    if (checked) {
+      setValue('amount', Math.min(balance, 50000000))
+    } else {
+      setValue('amount', 0)
+    }
+    if (isSubmitted) {
+      trigger('amount')
+    }
+  }, [checked, isSubmitted, balance, setValue, trigger])
+
+  return balance ? (
     <>
-      <PageHeader
-        title='Tạo yêu cầu rút tiền'
-        breadcrumbsItems={[protectedRoute.payoutRequestList, protectedRoute.createPayoutRequest]}
-      />
+      <TitleWrapper>
+        <PageHeader
+          title='Tạo yêu cầu rút tiền'
+          breadcrumbsItems={[protectedRoute.payoutRequestList, protectedRoute.createPayoutRequest]}
+        />
+        <Typography variant='body1' color='warning' fontStyle={'italic'}>
+          Số dư: {formatCurrency(balance)}
+        </Typography>
+      </TitleWrapper>
       <StyledForm onSubmit={onSubmit}>
         <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', padding: 3, gap: 2.5, width: '100%' }}>
           <HeaderWrapper>
@@ -117,7 +142,10 @@ const CreatePayoutRequestForm = () => {
                 sx={{ gap: 1 }}
               />
             </Grid>
-            <Grid item xs={6}>
+          </Grid>
+
+          <Grid container rowSpacing={'20px'}>
+            <Grid item xs={6} paddingRight={2}>
               <ControlledOutlinedInput
                 size='small'
                 controller={{ name: 'amount', control: control }}
@@ -128,6 +156,14 @@ const CreatePayoutRequestForm = () => {
                 fullWidth
                 sx={{ gap: 1 }}
               />
+            </Grid>
+            <Grid item xs={6} sx={{ placeContent: 'end' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: errors.amount ? '23px' : 0 }}>
+                <Checkbox checked={checked} onChange={handleCheckMaxAvailableAmount} />
+                <Typography variant='body1' color='warning' fontStyle={'italic'}>
+                  Rút tối đa số tiền khả dụng
+                </Typography>
+              </Box>
             </Grid>
           </Grid>
         </Paper>
@@ -140,6 +176,8 @@ const CreatePayoutRequestForm = () => {
         </Button>
       </StyledForm>
     </>
+  ) : (
+    <Loading />
   )
 }
 
