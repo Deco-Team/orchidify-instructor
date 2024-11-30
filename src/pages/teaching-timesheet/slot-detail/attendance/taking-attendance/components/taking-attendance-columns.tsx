@@ -1,4 +1,4 @@
-import { FormControl, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material'
+import { Avatar, FormControl, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 import { Control, Controller } from 'react-hook-form'
 import { AttendanceListItemResponseDto } from '~/data/teaching-timesheet/attendance.dto'
@@ -25,10 +25,11 @@ export const takingAttendanceColumns = ({
           defaultValue={row.original.learnerId}
           render={({ field }) => <TextField {...field} sx={{ display: 'none' }} />}
         />
-        <img
+        <Avatar
+          alt={row.original.learner.name}
           src={row.original.learner.avatar}
-          alt='avatar'
-          style={{ width: 90, height: 90, objectFit: 'cover', borderRadius: 4 }}
+          sx={{ width: 90, height: 90, borderRadius: 1 }}
+          variant='square'
         />
       </>
     ),

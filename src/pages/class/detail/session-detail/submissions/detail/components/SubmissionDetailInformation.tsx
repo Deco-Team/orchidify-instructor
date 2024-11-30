@@ -1,5 +1,5 @@
 import { InsertDriveFileOutlined } from '@mui/icons-material'
-import { Box, Divider, Paper, Typography } from '@mui/material'
+import { Avatar, Box, Divider, Paper, Typography } from '@mui/material'
 import SubmissionStatusTag from '~/components/tag/SubmissionStatusTag'
 import { BaseAssignmentSubmissionDto } from '~/data/class/class.dto'
 import { SubmissionStatus } from '~/global/constants'
@@ -38,13 +38,12 @@ const SubmissionDetailInformation = ({ submission }: SubmissionInfoProps) => {
         <Divider sx={{ flexGrow: 1 }} />
       </Box>
       <Box display='flex' gap='1rem'>
-        <Box width='250px' height='250px'>
-          <img
-            src={submission.learner.avatar}
-            alt={submission.learner.name}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
-          />
-        </Box>
+        <Avatar
+          src={submission.learner.avatar}
+          alt={submission.learner.name}
+          sx={{ width: 250, height: 250, borderRadius: '4px' }}
+          variant='square'
+        />
         <Box display='flex' flexDirection='column' gap={1} flexGrow='1'>
           <Field label='Tên học viên' content={submission.learner.name} />
           <Field label='Thời gian nộp' content={new Date(submission.createdAt).toLocaleString('vi-vn')} />
