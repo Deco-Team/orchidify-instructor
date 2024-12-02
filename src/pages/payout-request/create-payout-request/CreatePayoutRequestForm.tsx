@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { useProfileApi } from '~/hooks/api/useProfileApi'
 import { TitleWrapper } from '../PayoutRequestList.styled'
 import Loading from '~/components/loading/Loading'
+import { ErrorResponseDto } from '~/data/error.dto'
 
 interface CreatePayoutRequestDto {
   amount: number
@@ -24,8 +25,10 @@ interface CreatePayoutRequestDto {
 const CreatePayoutRequestForm = () => {
   const { createPayoutRequest } = useRequestApi()
   const { getProfile } = useProfileApi()
+  const { getPayoutUsage } = useRequestApi()
   const navigate = useNavigate()
-  const [balance, setBalance] = useState<number>(200000)
+  const [usageData, setUsageData] = useState<{ balance: number; usage: number; count: number }>()
+  const [error, setError] = useState<ErrorResponseDto | null>(null)
   const [checked, setChecked] = useState(false)
 
   const handleCheckMaxAvailableAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +46,7 @@ const CreatePayoutRequestForm = () => {
       .int({ message: APP_MESSAGE.INVALID_VALUE(['số nguyên']) })
       .min(200000, APP_MESSAGE.VALUE_OUT_OF_RANGE(formatCurrency(200000), formatCurrency(50000000)))
       .max(50000000, APP_MESSAGE.VALUE_OUT_OF_RANGE(formatCurrency(200000), formatCurrency(50000000)))
-      .max(balance, APP_MESSAGE.AMOUNT_OVER_BALANCE),
+      .max(usageData?.balance || 0, APP_MESSAGE.AMOUNT_OVER_BALANCE),
     description: z
       .string()
       .trim()
@@ -80,36 +83,47 @@ const CreatePayoutRequestForm = () => {
 
   useEffect(() => {
     ;(async () => {
-      const { data, error } = await getProfile()
+      const [{ data: profileData, error: profileError }, { data: usageData, error: usageError }] = await Promise.all([
+        getProfile(),
+        getPayoutUsage()
+      ])
 
-      if (error) {
-        notifyError(error.message)
-        navigate(protectedRoute.payoutRequestList.path)
+      if (profileError || usageError) {
+        setError(profileError || usageError)
         return
       }
 
-      if (data) {
-        if (!data.paymentInfo) {
+      if (profileData) {
+        if (!profileData.paymentInfo) {
           navigate(protectedRoute.editProfile.path)
           notifyError(APP_MESSAGE.NO_PAYMENT_INFO)
+          return
         }
-        setBalance(data.balance)
+      }
+
+      if (usageData) {
+        setUsageData(usageData)
       }
     })()
-  }, [getProfile, navigate])
+  }, [getPayoutUsage, getProfile, navigate])
+
+  if (error) {
+    notifyError(error.message)
+    navigate(-1)
+  }
 
   useEffect(() => {
     if (checked) {
-      setValue('amount', Math.min(balance, 50000000))
+      setValue('amount', Math.min(usageData?.balance ?? 0, 50000000 - (usageData?.usage ?? 0)))
     } else {
       setValue('amount', 0)
     }
     if (isSubmitted) {
       trigger('amount')
     }
-  }, [checked, isSubmitted, balance, setValue, trigger])
+  }, [checked, isSubmitted, setValue, trigger, usageData?.balance, usageData?.usage])
 
-  return balance ? (
+  return usageData ? (
     <>
       <TitleWrapper>
         <PageHeader
@@ -117,7 +131,7 @@ const CreatePayoutRequestForm = () => {
           breadcrumbsItems={[protectedRoute.payoutRequestList, protectedRoute.createPayoutRequest]}
         />
         <Typography variant='body1' color='warning' fontStyle={'italic'}>
-          Số dư: {formatCurrency(balance)}
+          Số dư: {formatCurrency(usageData.balance)} - Số yêu cầu còn lại: {5 - usageData.count}
         </Typography>
       </TitleWrapper>
       <StyledForm onSubmit={onSubmit}>
