@@ -29,7 +29,10 @@ const PayoutRequestTable = () => {
     pageIndex: 0,
     pageSize: 10
   })
-  const [sorting, setSorting] = useState<MRT_SortingState>([])
+  const [sorting, setSorting] = useState<MRT_SortingState>([
+    { id: 'hasMadePayout', desc: true },
+    { id: 'createdAt', desc: true }
+  ])
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
   const [error, setError] = useState<ErrorResponseDto | null>(null)
   const navigate = useNavigate()
