@@ -10,14 +10,16 @@ export interface TeachingTimesheetItemResponseDto {
     sessionNumber: number
     sessionTitle: string
   }
+  hasTakenAttendance?: boolean
+  createdAt: Date
+  updatedAt: Date
+  garden: {
+    name: string
+  }
 }
 
 export interface SlotDto extends TeachingTimesheetItemResponseDto {
   slotNumber: number
-  hasTakenAttendance?: boolean
-  garden: {
-    name: string
-  }
   class: {
     code: string
     title: string
@@ -27,6 +29,4 @@ export interface SlotDto extends TeachingTimesheetItemResponseDto {
       code: string
     }
   }
-  createdAt: Date
-  updatedAt: Date
 }
