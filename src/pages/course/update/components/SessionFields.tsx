@@ -213,7 +213,7 @@ const SessionFields = ({
                       </Grid>
                     </>
                   )}
-                  {!sessionValues[index]?.assignments && (
+                  {index < sessionValues.length - 1 && !sessionValues[index]?.assignments && (
                     <Button
                       onClick={() => {
                         updateSession(index, {
