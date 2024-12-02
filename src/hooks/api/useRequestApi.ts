@@ -278,6 +278,28 @@ export const useRequestApi = () => {
     [callAppProtectedApi]
   )
 
+  const getPayoutUsage = useCallback(async () => {
+    const endpoint = `${PAYOUT_REQUEST_ENDPOINT}/usage`
+    const result = await callAppProtectedApi<{ balance: number; usage: number; count: number }>(
+      endpoint,
+      'GET',
+      {},
+      {},
+      {}
+    )
+
+    if (result) {
+      const { data, error } = result
+      if (data) return { data: data, error: null }
+      if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+    }
+
+    return {
+      data: null,
+      error: { message: APP_MESSAGE.LOAD_DATA_FAILED('thông tin yêu cầu') } as ErrorResponseDto
+    }
+  }, [callAppProtectedApi])
+
   return {
     getAvailableTime,
     createPublishClassRequest,
@@ -288,6 +310,7 @@ export const useRequestApi = () => {
     getPayoutRequestList,
     getPayoutRequestById,
     cancelPayoutRequest,
-    createPayoutRequest
+    createPayoutRequest,
+    getPayoutUsage
   }
 }

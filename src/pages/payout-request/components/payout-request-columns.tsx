@@ -1,3 +1,4 @@
+import { Check } from '@mui/icons-material'
 import { Box, Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 import RequestStatusTag from '~/components/tag/RequestStatustag'
@@ -84,6 +85,20 @@ export const payoutRequestColumn: MRT_ColumnDef<PayoutRequestListItemResponseDto
       { label: 'Quá hạn', value: RequestStatus.EXPIRED },
       { label: 'Đã hủy', value: RequestStatus.CANCELED }
     ]
+  },
+  {
+    accessorKey: 'hasMadePayout',
+    header: 'Đã chuyển',
+    size: 150,
+    grow: false,
+    enableColumnFilter: false,
+    Cell: ({ cell }) => {
+      const hasMadePayout = cell.getValue() as boolean
+      return hasMadePayout && <Check color='success' />
+    },
+    muiTableBodyCellProps: {
+      align: 'center'
+    }
   },
   {
     accessorKey: 'rejectReason',
