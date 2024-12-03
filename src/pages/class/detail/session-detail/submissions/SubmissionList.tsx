@@ -87,7 +87,9 @@ const SubmissionList = () => {
 
       if (classData && assignment) {
         const classDateList = calculateDateList(classData.startDate, classData.duration, classData.weekdays)
-        const minDeadline = classDateList[assignment.sessionNumber - 1].set('hour', 0).toISOString()
+        const minDeadline = dayjs().isAfter(classDateList[assignment.sessionNumber - 1].set('hour', 0))
+          ? dayjs().toISOString()
+          : classDateList[assignment.sessionNumber - 1].set('hour', 0).toISOString()
         const maxDeadline = classDateList[classDateList.length - 1]
           .set('hour', 23)
           .set('minute', 59)
@@ -106,7 +108,7 @@ const SubmissionList = () => {
         notifyError(combinedErrorMessage)
       }
     })()
-  }, [getAssignmentById, getSubmissionList, classId, assignmentId])
+  }, [getAssignmentById, getSubmissionList, classId, assignmentId, getClassById])
 
   return dataAssignment && dataSubmissions ? (
     <>
