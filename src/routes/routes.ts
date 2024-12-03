@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 
 const Dashboard = lazy(() => import('~/pages/dashboard/Dashboard'))
+const Statistic = lazy(() => import('~/pages/statistic/Statistic'))
 const Login = lazy(() => import('~/pages/login/Login'))
 const Profile = lazy(() => import('~/pages/profile/Profile'))
 const EditProfile = lazy(() => import('~/pages/profile/edit-profile/EditProfile'))
@@ -51,6 +52,7 @@ export const protectedRoute = {
     path: '/dashboard',
     Component: Dashboard
   },
+  statistic: { name: 'Thống kê', path: '/statistic', Component: Statistic },
   profile: {
     name: 'Trang cá nhân',
     path: '/profile',
