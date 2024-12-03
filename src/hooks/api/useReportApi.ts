@@ -4,7 +4,9 @@ import {
   ClassByStatusDto,
   LearnerEnrolledByMonthDto,
   RevenueSumByMonthDto,
-  TotalSummaryDto
+  TotalSummaryDto,
+  TransactionByDateDto,
+  TransactionByMonthDto
 } from '~/data/report/report.dto'
 import { ErrorResponseDto } from '~/data/error.dto'
 import { APP_MESSAGE } from '~/global/app-message'
@@ -84,5 +86,50 @@ export const useReportApi = () => {
     [callAppProtectedApi]
   )
 
-  return { getTotalSumary, getClassByStatus, getLeanerEnrolledByMonth, getRevenueSumByMonth }
+  const getTransactionByMonth = useCallback(
+    async (year: number) => {
+      const endpoint = `${ROOT_ENDPOINT}/transaction-count-by-month`
+      const result = await callAppProtectedApi<{ docs: TransactionByMonthDto[] }>(endpoint, 'GET', {}, { year }, {})
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data.docs, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('doanh thu') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  const getTransactionByDate = useCallback(
+    async (date: string) => {
+      const endpoint = `${ROOT_ENDPOINT}/transaction-by-date`
+      const result = await callAppProtectedApi<{ docs: TransactionByDateDto[] }>(endpoint, 'GET', {}, { date }, {})
+
+      if (result) {
+        const { data, error } = result
+        if (data) return { data: data.docs, error: null }
+        if (error.response) return { data: null, error: error.response.data as ErrorResponseDto }
+      }
+
+      return {
+        data: null,
+        error: { message: APP_MESSAGE.LOAD_DATA_FAILED('doanh thu') } as ErrorResponseDto
+      }
+    },
+    [callAppProtectedApi]
+  )
+
+  return {
+    getTotalSumary,
+    getClassByStatus,
+    getLeanerEnrolledByMonth,
+    getRevenueSumByMonth,
+    getTransactionByMonth,
+    getTransactionByDate
+  }
 }
