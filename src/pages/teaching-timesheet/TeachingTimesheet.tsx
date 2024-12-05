@@ -1,6 +1,5 @@
 import FullCalendar from '@fullcalendar/react'
 import { Box, CircularProgress, Typography } from '@mui/material'
-import dayjs from 'dayjs'
 import { useRef, useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Calendar from '~/components/calendar/Calendar'
@@ -50,35 +49,32 @@ const TeachingTimesheet = () => {
     const { data: teachingTimesheet, error: apiError } = await getTeachingTimesheet(startDate, apiViewType)
 
     if (teachingTimesheet) {
-      const transformedEventData = teachingTimesheet.map((slot) => {
-        const dayPassed = dayjs().isAfter(dayjs(slot.start), 'day')
-        return {
-          id: slot._id,
-          title: slot.metadata
-            ? `${slot.hasTakenAttendance ? '' : viewType === 'dayGridMonth' ? '(*) ' : '(Chưa điểm danh) '}${slot.metadata?.code} - ${slot.metadata?.title}`
-            : 'Không có dữ liệu',
-          start: slot.start.toString(),
-          end: slot.end.toString(),
-          display: 'block',
-          backgroundColor:
-            slot.slotNumber === 1
-              ? 'var(--fc-first-event-bg-color)'
-              : slot.slotNumber === 2
-                ? 'var(--fc-second-event-bg-color)'
-                : slot.slotNumber === 3
-                  ? 'var(--fc-third-event-bg-color)'
-                  : 'var(--fc-fourth-event-bg-color)',
-          textColor:
-            slot.slotNumber === 1
-              ? 'var(--fc-first-event-text-color)'
-              : slot.slotNumber === 2
-                ? 'var(--fc-second-event-text-color)'
-                : slot.slotNumber === 3
-                  ? 'var(--fc-third-event-text-color)'
-                  : 'var(--fc-fourth-event-text-color',
-          classNames: (viewType === 'dayGridMonth' ? `slot${slot.slotNumber}` : '') + (dayPassed ? ' dayPassed' : '')
-        }
-      })
+      const transformedEventData = teachingTimesheet.map((slot) => ({
+        id: slot._id,
+        title: slot.metadata
+          ? `${slot.hasTakenAttendance ? '' : viewType === 'dayGridMonth' ? '(*) ' : '(Chưa điểm danh) '}${slot.metadata?.code} - ${slot.metadata?.title}`
+          : 'Không có dữ liệu',
+        start: slot.start.toString(),
+        end: slot.end.toString(),
+        display: 'block',
+        backgroundColor:
+          slot.slotNumber === 1
+            ? 'var(--fc-first-event-bg-color)'
+            : slot.slotNumber === 2
+              ? 'var(--fc-second-event-bg-color)'
+              : slot.slotNumber === 3
+                ? 'var(--fc-third-event-bg-color)'
+                : 'var(--fc-fourth-event-bg-color)',
+        textColor:
+          slot.slotNumber === 1
+            ? 'var(--fc-first-event-text-color)'
+            : slot.slotNumber === 2
+              ? 'var(--fc-second-event-text-color)'
+              : slot.slotNumber === 3
+                ? 'var(--fc-third-event-text-color)'
+                : 'var(--fc-fourth-event-text-color',
+        classNames: viewType === 'dayGridMonth' ? `slot${slot.slotNumber}` : ''
+      }))
 
       setEventData(transformedEventData)
     }
@@ -125,6 +121,7 @@ const TeachingTimesheet = () => {
         <li>
           <span style={{ fontWeight: 600, color: 'var(--fc-fourth-event-text-color)' }}>Tiết 4</span>: 15:30 - 1:30
         </li>
+        <li>(*) Chưa điểm danh</li>
       </Typography>
       <Box sx={{ position: 'relative' }}>
         <Calendar

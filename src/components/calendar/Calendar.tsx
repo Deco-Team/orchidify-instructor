@@ -86,6 +86,9 @@ const Calendar: React.FC<GardenCalendarProps> = ({
       slotEventOverlap={false}
       expandRows={true}
       datesSet={handleDatesSet}
+      dateClick={(arg) => {
+        if (arg.view.type === 'dayGridMonth') calendarRef?.current?.getApi().changeView('timeGridWeek', arg.dateStr)
+      }}
     />
   )
 }

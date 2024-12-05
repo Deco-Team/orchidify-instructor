@@ -155,9 +155,21 @@
 
 .slot4 {
   position: absolute;
-  top: 90px
+  top: 90px;
 }
 
-.dayPassed {
-  opacity: 0.6;
+.fc-day {
+  cursor: pointer;
+}
+
+.fc-day-past {
+  background-color: #2ec2b317;
+}
+
+.fc-col-header-cell {
+  background-color: #fff;
+}
+
+.fc-day-disabled {
+  cursor: default;
 }
