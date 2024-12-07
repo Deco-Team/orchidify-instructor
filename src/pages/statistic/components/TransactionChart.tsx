@@ -48,8 +48,8 @@ const TransactionChart = () => {
           <Select size='small' displayEmpty value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
             <MenuItem value=''>Chọn năm</MenuItem>
             {[
-              { name: '2022', value: '2022' },
-              { name: '2023', value: '2023' },
+              // { name: '2022', value: '2022' },
+              // { name: '2023', value: '2023' },
               { name: '2024', value: '2024' }
             ].map((item) => (
               <MenuItem key={item.name} value={item.value}>
@@ -95,7 +95,12 @@ const TransactionChart = () => {
                   }
                 }
               },
-              colors: ['#2ec4b6']
+              colors: ['#2ec4b6'],
+              tooltip: {
+                enabled: true,
+                intersect: false,
+                hideEmptySeries: true
+              }
             }}
             series={[
               {

@@ -1,92 +1,80 @@
-import { Grid, Paper, Box, Typography, Divider, MenuItem, Select } from '@mui/material'
+import { Grid, Paper, Box, Typography, Divider, TextField } from '@mui/material'
 import dayjs from 'dayjs'
 import { useEffect, useMemo, useState } from 'react'
 import ReactApexChart from 'react-apexcharts'
 import { TransactionByDateDto } from '~/data/report/report.dto'
 import { useReportApi } from '~/hooks/api/useReportApi'
 import { notifyError } from '~/utils/toastify'
+import isoWeek from 'dayjs/plugin/isoWeek'
+import { formatCurrency } from '~/utils/format'
+
+const fillWeekData = (data: TransactionByDateDto[], selectedDate: string) => {
+  // Determine the start and end of the week based on the selectedDate
+  const startDate = dayjs(selectedDate).startOf('isoWeek') // Start of the week (Monday)
+  const endDate = startDate.add(6, 'days') // End of the week (Sunday)
+
+  // Generate all dates in the week
+  const allDates = []
+  for (let date = startDate; date.isBefore(endDate) || date.isSame(endDate); date = date.add(1, 'day')) {
+    allDates.push(date.format('YYYY-MM-DD'))
+  }
+
+  // Create a map of the input data for quick lookup
+  const dataMap = data.reduce((map: { [key: string]: TransactionByDateDto }, item) => {
+    map[item._id] = item
+    return map
+  }, {})
+
+  // Fill in missing dates with default values
+  return allDates.map((date) => {
+    return (
+      dataMap[date] || {
+        _id: date,
+        payoutAmount: 0,
+        date: dayjs(date).toISOString()
+      }
+    )
+  })
+}
 
 const TransactionDetailChart = () => {
+  dayjs.extend(isoWeek)
+
   const [transactionByDate, setTransactionByDate] = useState<TransactionByDateDto[] | null>(null)
-  const [selectedDate, setSelectedDate] = useState<string>(dayjs(new Date()).format('DD-MM-YYYY'))
+  const [selectedDate, setSelectedDate] = useState<string>(dayjs(new Date()).format('YYYY-MM-DD'))
   const { getTransactionByDate } = useReportApi()
 
   useEffect(() => {
     ;(async () => {
       if (!selectedDate) return
-      const { data, error } = await getTransactionByDate(dayjs(new Date()).format('YYYY-MM-DD'))
-      setTransactionByDate(data)
+      const { data, error } = await getTransactionByDate(selectedDate)
+      if (data) setTransactionByDate(fillWeekData(data, selectedDate))
 
       if (error) notifyError(error.message)
     })()
   }, [getTransactionByDate, selectedDate])
-
-  function convertToWeeklyArray(data: TransactionByDateDto[]) {
-    // Create a 7-element array initialized with zeros
-    const weeklyArray = Array(7).fill(0)
-
-    // Map day of the week (0 for Monday, 6 for Sunday) to array indices
-    const dayIndex = (date: string) => {
-      const day = new Date(date).getDay() // Get day (0 is Sunday, 6 is Saturday)
-      return day === 0 ? 6 : day - 1 // Convert Sunday to index 6 and adjust others
-    }
-
-    // Iterate over the input data and populate the array
-    data.forEach((item) => {
-      const index = dayIndex(item.date)
-      weeklyArray[index] = item.payoutAmount || 0 // Use payoutAmount or 0 as fallback
-    })
-
-    return weeklyArray
-  }
 
   return (
     <Grid item xs={12} md={6}>
       <Paper elevation={2}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px' }}>
           <Typography variant='h6'>Giao dịch</Typography>
-          <Select size='small' displayEmpty value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}>
-            <MenuItem value=''>Chọn ngày</MenuItem>
-            {[
-              {
-                name: dayjs(new Date()).add(-56, 'day').format('DD-MM-YYYY'),
-                value: dayjs(new Date()).add(-56, 'day').format('DD-MM-YYYY')
-              },
-              {
-                name: dayjs(new Date()).add(-49, 'day').format('DD-MM-YYYY'),
-                value: dayjs(new Date()).add(-49, 'day').format('DD-MM-YYYY')
-              },
-              {
-                name: dayjs(new Date()).add(-42, 'day').format('DD-MM-YYYY'),
-                value: dayjs(new Date()).add(-42, 'day').format('DD-MM-YYYY')
-              },
-              {
-                name: dayjs(new Date()).add(-35, 'day').format('DD-MM-YYYY'),
-                value: dayjs(new Date()).add(-35, 'day').format('DD-MM-YYYY')
-              },
-              {
-                name: dayjs(new Date()).add(-28, 'day').format('DD-MM-YYYY'),
-                value: dayjs(new Date()).add(-28, 'day').format('DD-MM-YYYY')
-              },
-              {
-                name: dayjs(new Date()).add(-21, 'day').format('DD-MM-YYYY'),
-                value: dayjs(new Date()).add(-21, 'day').format('DD-MM-YYYY')
-              },
-              {
-                name: dayjs(new Date()).add(-14, 'day').format('DD-MM-YYYY'),
-                value: dayjs(new Date()).add(-14, 'day').format('DD-MM-YYYY')
-              },
-              {
-                name: dayjs(new Date()).add(-7, 'day').format('DD-MM-YYYY'),
-                value: dayjs(new Date()).add(-7, 'day').format('DD-MM-YYYY')
-              },
-              { name: dayjs(new Date()).format('DD-MM-YYYY'), value: dayjs(new Date()).format('DD-MM-YYYY') }
-            ].map((item) => (
-              <MenuItem key={item.name} value={item.value}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Select>
+          <TextField
+            id='weekSelect'
+            type='week'
+            size='small'
+            inputProps={{
+              min: dayjs(new Date()).format('YYYY-[W]') + '01',
+              max: dayjs(new Date()).format('YYYY-[W]') + dayjs(new Date()).isoWeek()
+            }}
+            value={dayjs(selectedDate).format('YYYY-[W]') + dayjs(selectedDate).isoWeek().toString().padStart(2, '0')}
+            onChange={(e) => {
+              const [year, week] = e.target.value.split('-W')
+              setSelectedDate(
+                dayjs().year(Number.parseInt(year)).isoWeek(parseInt(week)).startOf('isoWeek').format('YYYY-MM-DD')
+              )
+            }}
+          />
         </Box>
         <Divider />
         <Box sx={{ p: 1 }}>
@@ -108,28 +96,51 @@ const TransactionDetailChart = () => {
                   enabled: true
                 }
               },
+              plotOptions: {
+                bar: {
+                  dataLabels: {
+                    position: 'top'
+                  }
+                }
+              },
               dataLabels: {
-                enabled: false
+                enabled: true,
+                offsetY: -20,
+                style: {
+                  fontSize: '12px',
+                  colors: ['#304758']
+                },
+                formatter: (value: number) => {
+                  return formatCurrency(value)
+                }
               },
               stroke: {
                 curve: 'smooth'
               },
-              labels: ['T2', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+              labels: [...(transactionByDate?.map((item) => dayjs(item.date).format('D/MM')) || [])],
               yaxis: {
                 labels: {
                   style: {
                     fontSize: '12px',
                     colors: ['#304758']
+                  },
+                  formatter: (value: number) => {
+                    return formatCurrency(value)
                   }
                 }
               },
-              colors: ['#ef5350']
+              colors: ['#2ec4b6'],
+              tooltip: {
+                enabled: true,
+                intersect: false,
+                hideEmptySeries: true
+              }
             }}
             series={[
               {
                 name: 'Giao dịch',
                 data: useMemo(() => {
-                  return convertToWeeklyArray(transactionByDate || [])
+                  return transactionByDate?.map((item) => item.payoutAmount) || []
                 }, [transactionByDate])
               }
             ]}
