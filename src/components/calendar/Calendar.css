@@ -114,8 +114,8 @@
 }
 
 .fc-daygrid-event {
-  margin-left: 5px !important;
-  margin-right: 5px !important;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
 }
 
 .fc-event-title {
@@ -129,4 +129,47 @@
 
 .fc-event {
   cursor: pointer;
+}
+
+.fc-daygrid-day-events {
+  height: calc(100% - 40px);
+  position: relative;
+  overflow: hidden;
+  margin: 2px;
+}
+
+.slot1 {
+  position: absolute;
+  top: 0;
+}
+
+.slot2 {
+  position: absolute;
+  top: 30px;
+}
+
+.slot3 {
+  position: absolute;
+  top: 60px;
+}
+
+.slot4 {
+  position: absolute;
+  top: 90px;
+}
+
+.fc-day {
+  cursor: pointer;
+}
+
+.fc-day-past {
+  background-color: #2ec2b317;
+}
+
+.fc-col-header-cell {
+  background-color: #fff;
+}
+
+.fc-day-disabled {
+  cursor: default;
 }
