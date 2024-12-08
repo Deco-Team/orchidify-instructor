@@ -20,7 +20,7 @@ export const publishClassSchema = z.object({
     .refine(
       (dateStr) => {
         const date = stripTime(new Date(dateStr))
-        const minDate = stripTime(ONE_MONTH_ADDITIONAL)
+        const minDate = stripTime(/* ONE_MONTH_ADDITIONAL */ new Date())
         const maxDate = stripTime(THREE_MONTH_ADDITIONAL)
         return date >= minDate && date <= maxDate
       },
