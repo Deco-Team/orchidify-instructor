@@ -62,6 +62,7 @@ const UpdateAssignmentDeadlineForm = ({ classId, assignment }: UpdateAssignmentF
             min: dayjs(assignment.minDeadline).format('YYYY-MM-DD'),
             max: dayjs(assignment.maxDeadline).format('YYYY-MM-DD')
           }}
+          disabled={dayjs(assignment.maxDeadline).isBefore(dayjs())}
         />
         {errors.deadline ? <FormHelperText error>{errors.deadline.message}</FormHelperText> : null}
       </Box>
