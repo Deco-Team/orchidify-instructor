@@ -1,5 +1,5 @@
 import FullCalendar from '@fullcalendar/react'
-import { Box, CircularProgress } from '@mui/material'
+import { Box, CircularProgress, Typography } from '@mui/material'
 import { useRef, useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Calendar from '~/components/calendar/Calendar'
@@ -17,7 +17,15 @@ const TeachingTimesheet = () => {
 
   const [displayEventTime, setDisplayEventTime] = useState(true)
   const [eventData, setEventData] = useState<
-    { id: string; title: string; start: string; end: string; display: string; backgroundColor: string }[]
+    {
+      id: string
+      title: string
+      start: string
+      end: string
+      display: string
+      backgroundColor: string
+      classNames: string
+    }[]
   >([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -43,7 +51,9 @@ const TeachingTimesheet = () => {
     if (teachingTimesheet) {
       const transformedEventData = teachingTimesheet.map((slot) => ({
         id: slot._id,
-        title: slot.metadata ? `${slot.metadata?.code} - ${slot.metadata?.title}` : 'Không có dữ liệu',
+        title: slot.metadata
+          ? `${slot.hasTakenAttendance ? '' : viewType === 'dayGridMonth' ? '(*) ' : '(Chưa điểm danh) '}${slot.metadata?.code} - ${slot.metadata?.title}`
+          : 'Không có dữ liệu',
         start: slot.start.toString(),
         end: slot.end.toString(),
         display: 'block',
@@ -62,7 +72,8 @@ const TeachingTimesheet = () => {
               ? 'var(--fc-second-event-text-color)'
               : slot.slotNumber === 3
                 ? 'var(--fc-third-event-text-color)'
-                : 'var(--fc-fourth-event-text-color'
+                : 'var(--fc-fourth-event-text-color',
+        classNames: viewType === 'dayGridMonth' ? `slot${slot.slotNumber}` : ''
       }))
 
       setEventData(transformedEventData)
@@ -76,7 +87,7 @@ const TeachingTimesheet = () => {
   }
 
   useEffect(() => {
-    const viewType = searchParams.get('viewType') || 'dayGridMonth'
+    const viewType = searchParams.get('viewType') || 'timeGridWeek'
     const startDate = searchParams.get('startDate') || new Date().toISOString().split('T')[0]
 
     fetchTimesheetData(viewType, startDate)
@@ -96,6 +107,22 @@ const TeachingTimesheet = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
       <PageHeader title='Lịch dạy' />
+      <Typography variant='body2'>
+        <span style={{ textDecoration: 'underline' }}>Chú thích:</span>
+        <li>
+          <span style={{ fontWeight: 600, color: 'var(--fc-first-event-text-color)' }}>Tiết 1</span>: 7:00 - 9:00
+        </li>
+        <li>
+          <span style={{ fontWeight: 600, color: 'var(--fc-second-event-text-color)' }}>Tiết 2</span>: 9:30 - 11:30
+        </li>
+        <li>
+          <span style={{ fontWeight: 600, color: 'var(--fc-third-event-text-color)' }}>Tiết 3</span>: 13:00 - 15:00
+        </li>
+        <li>
+          <span style={{ fontWeight: 600, color: 'var(--fc-fourth-event-text-color)' }}>Tiết 4</span>: 15:30 - 1:30
+        </li>
+        <li>(*) Chưa điểm danh</li>
+      </Typography>
       <Box sx={{ position: 'relative' }}>
         <Calendar
           calendarRef={calendarRef}

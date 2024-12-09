@@ -28,6 +28,7 @@ interface SelectedSlotEvent {
   display: string
   backgroundColor: string
   textColor?: string
+  classNames?: string
 }
 
 const weekdayMapping = {
@@ -117,7 +118,8 @@ const updateEventTimesWithSlots = (events: SelectedSlotEvent[], slotNumber: Slot
             ? 'var(--fc-second-event-text-color)'
             : slotNumber === 3
               ? 'var(--fc-third-event-text-color)'
-              : 'var(--fc-fourth-event-text-color'
+              : 'var(--fc-fourth-event-text-color',
+      classNames: `slot${slotNumber}`
     })
   })
 
@@ -185,7 +187,8 @@ const PublishClassForm = ({ courseId, duration }: PublishClassFormProps) => {
               ? 'var(--fc-second-event-text-color)'
               : slot.slotNumber === 3
                 ? 'var(--fc-third-event-text-color)'
-                : 'var(--fc-fourth-event-text-color'
+                : 'var(--fc-fourth-event-text-color',
+        classNames: viewType === 'dayGridMonth' ? `slot${slot.slotNumber}` : ''
       }))
 
       setEvents((prev) => {
