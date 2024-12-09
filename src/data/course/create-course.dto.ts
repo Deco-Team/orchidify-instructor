@@ -42,8 +42,8 @@ export const createCourseSchema = z.object({
   price: z.coerce
     .number({ message: APP_MESSAGE.INVALID_VALUE(['số nguyên']) })
     .int({ message: APP_MESSAGE.INVALID_VALUE(['số nguyên']) })
-    .min(1000, APP_MESSAGE.VALUE_OUT_OF_RANGE(formatCurrency(1000), formatCurrency(10000000)))
-    .max(10000000, APP_MESSAGE.VALUE_OUT_OF_RANGE(formatCurrency(1000), formatCurrency(10000000))),
+    .min(100000, APP_MESSAGE.VALUE_OUT_OF_RANGE(formatCurrency(100000), formatCurrency(10000000)))
+    .max(10000000, APP_MESSAGE.VALUE_OUT_OF_RANGE(formatCurrency(100000), formatCurrency(10000000))),
   level: z.string().trim().min(1, APP_MESSAGE.REQUIRED_FIELD('Cấp độ')),
   type: z.array(z.string().trim()).nonempty(APP_MESSAGE.REQUIRED_FIELD('Thể loại')),
   duration: z.coerce

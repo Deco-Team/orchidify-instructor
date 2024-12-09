@@ -63,7 +63,7 @@ const CourseFields = ({ control, courseTypes }: CourseFieldsProps) => {
             controller={{ name: 'price', control: control }}
             label='Giá'
             placeholder='Nhập giá'
-            type='number'
+            inputMode='numeric'
             fullWidth
             sx={{ gap: 1 }}
           />
