@@ -119,7 +119,7 @@ const TeachingTimesheet = () => {
           <span style={{ fontWeight: 600, color: 'var(--fc-third-event-text-color)' }}>Tiết 3</span>: 13:00 - 15:00
         </li>
         <li>
-          <span style={{ fontWeight: 600, color: 'var(--fc-fourth-event-text-color)' }}>Tiết 4</span>: 15:30 - 1:30
+          <span style={{ fontWeight: 600, color: 'var(--fc-fourth-event-text-color)' }}>Tiết 4</span>: 15:30 - 17:30
         </li>
         <li>(*) Chưa điểm danh</li>
       </Typography>
