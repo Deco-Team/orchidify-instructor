@@ -34,3 +34,15 @@ export interface RevenueSumByMonthDto {
     total: number
   }
 }
+
+export interface TransactionByMonthDto {
+  _id: string
+  quantity: number
+  month: number
+}
+
+export interface TransactionByDateDto {
+  _id: string
+  date: string
+  payoutAmount: number
+}
