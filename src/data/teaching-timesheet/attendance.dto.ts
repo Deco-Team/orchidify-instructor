@@ -10,7 +10,7 @@ export interface AttendanceListResponseDto {
 export interface AttendanceListItemResponseDto {
   _id: string
   status: AttendanceStatus
-  note: string
+  note?: string
   learnerId: string
   learner: LearnerDetailResponseDto
   createdAt: Date
