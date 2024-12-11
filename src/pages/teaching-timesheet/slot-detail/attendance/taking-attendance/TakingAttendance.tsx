@@ -10,6 +10,9 @@ import TakingAttendanceHeader from './TakingAttendanceHeader'
 import TakingAttendanceTable from './components/TakingAttendanceTable'
 import { Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { AttendanceStatus } from '~/global/constants'
 
 const TakingAttendance = () => {
   const params = useParams()
@@ -53,12 +56,21 @@ const TakingAttendance = () => {
     note: item.note
   }))
 
+  const takeAttendanceSchema = z.record(
+    z.object({
+      status: z.enum([AttendanceStatus.PRESENT, AttendanceStatus.ABSENT]),
+      learnerId: z.string().min(1, APP_MESSAGE.REQUIRED_FIELD('Học viên')),
+      note: z.string().trim().max(100, APP_MESSAGE.FIELD_TOO_LONG('Ghi chú', 100))
+    })
+  )
+
   const {
     handleSubmit,
     control,
     formState: { isSubmitting }
   } = useForm<TakeAttendanceDto[]>({
-    defaultValues: defaultFormValues
+    defaultValues: defaultFormValues,
+    resolver: zodResolver(takeAttendanceSchema)
   })
 
   const onSubmit = handleSubmit(async (formData) => {

@@ -31,10 +31,6 @@ const CreatePayoutRequestForm = () => {
   const [error, setError] = useState<ErrorResponseDto | null>(null)
   const [checked, setChecked] = useState(false)
 
-  const handleCheckMaxAvailableAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked)
-  }
-
   const defaultFormValues: CreatePayoutRequestDto = {
     amount: 0,
     description: ''
@@ -58,12 +54,25 @@ const CreatePayoutRequestForm = () => {
     handleSubmit,
     control,
     setValue,
+    watch,
     trigger,
     formState: { isSubmitting, errors, isSubmitted }
   } = useForm<CreatePayoutRequestDto>({
     defaultValues: defaultFormValues,
     resolver: zodResolver(createPayoutRequestSchema)
   })
+
+  const handleCheckMaxAvailableAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked)
+    if (event.target.checked) {
+      setValue('amount', Math.min(usageData?.balance ?? 0, 50000000 - (usageData?.usage ?? 0)))
+    } else {
+      setValue('amount', 0)
+    }
+    if (isSubmitted) {
+      trigger('amount')
+    }
+  }
 
   const onSubmit = handleSubmit(async (formData) => {
     notifyLoading()
@@ -112,16 +121,16 @@ const CreatePayoutRequestForm = () => {
     navigate(-1)
   }
 
+  const formValues = watch()
+
   useEffect(() => {
-    if (checked) {
-      setValue('amount', Math.min(usageData?.balance ?? 0, 50000000 - (usageData?.usage ?? 0)))
-    } else {
-      setValue('amount', 0)
+    const maxAmount = Math.min(usageData?.balance ?? 0, 50000000 - (usageData?.usage ?? 0))
+    if (checked && formValues.amount != maxAmount) {
+      setChecked(false) // Uncheck if the value changes manually
+    } else if (!checked && formValues.amount == maxAmount) {
+      setChecked(true)
     }
-    if (isSubmitted) {
-      trigger('amount')
-    }
-  }, [checked, isSubmitted, setValue, trigger, usageData?.balance, usageData?.usage])
+  }, [formValues.amount, checked, usageData?.balance, usageData?.usage])
 
   return usageData ? (
     <>

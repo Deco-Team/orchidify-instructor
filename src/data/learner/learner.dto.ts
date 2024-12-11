@@ -4,7 +4,7 @@ export type LearnerDetailResponseDto = {
   _id: string
   email: string
   name: string
-  avatar: string
+  avatar?: string
   dateOfBirth: string
   phone: string
   status: LearnerStatus

@@ -76,8 +76,16 @@ export const takingAttendanceColumns = ({
       <Controller
         name={`${row.index}.note`}
         control={control}
-        defaultValue={row.original.note}
-        render={({ field }) => <TextField {...field} fullWidth size='small' />}
+        defaultValue={row.original.note ?? ''}
+        render={({ field, fieldState }) => (
+          <TextField
+            {...field}
+            error={!!fieldState.error}
+            fullWidth
+            size='small'
+            helperText={fieldState.error?.message}
+          />
+        )}
       />
     )
   }

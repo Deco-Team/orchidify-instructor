@@ -79,8 +79,8 @@ const AttendanceTable = ({ attendance, hasTakenAttendance, takeAttendance }: Att
           }
         },
         icons: {
-          CancelIcon: () => <Close sx={{ color: '#000000dd' }} />,
-          SaveIcon: () => <Done sx={{ color: '#000000dd' }} />
+          CancelIcon: () => <Close sx={{ color: '#F66868' }} />,
+          SaveIcon: () => <Done sx={{ color: '#20C017' }} />
         },
         renderRowActions: (props) => (
           <Tooltip title='Chỉnh sửa'>
@@ -100,6 +100,9 @@ const AttendanceTable = ({ attendance, hasTakenAttendance, takeAttendance }: Att
             props.row.original.status !== props.values.status ||
             props.row.original.note !== props.values.note.trim()
           ) {
+            if (props.values.note.trim().length > 100) {
+              return
+            }
             const result = await takeAttendance({
               status: props.values.status,
               note: props.values.note,
