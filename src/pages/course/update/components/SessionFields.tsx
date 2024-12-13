@@ -214,19 +214,27 @@ const SessionFields = ({
                     </>
                   )}
                   {index < sessionValues.length - 1 && !sessionValues[index]?.assignments && (
-                    <Button
-                      onClick={() => {
-                        updateSession(index, {
-                          ...sessionValues[index],
-                          assignments: [{ title: '', description: '', attachments: [] }]
-                        })
-                        if (isSubmitted) trigger()
-                      }}
-                      startIcon={<Add />}
-                      sx={{ maxWidth: 'fit-content' }}
-                    >
-                      Thêm bài tập
-                    </Button>
+                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                      <Button
+                        onClick={() => {
+                          updateSession(index, {
+                            ...sessionValues[index],
+                            assignments: [{ title: '', description: '', attachments: [] }]
+                          })
+                          if (isSubmitted) trigger()
+                        }}
+                        disabled={sessionFields.flatMap((field) => field.assignments || []).length >= 3}
+                        startIcon={<Add />}
+                        sx={{ maxWidth: 'fit-content' }}
+                      >
+                        Thêm bài tập
+                      </Button>
+                      {sessionFields.flatMap((field) => field.assignments || []).length >= 3 && (
+                        <Typography sx={{ fontSize: '12px', fontStyle: 'italic' }}>
+                          *Số lượng bài tập tối đa là 3
+                        </Typography>
+                      )}
+                    </Box>
                   )}
                 </Box>
               </Collapse>

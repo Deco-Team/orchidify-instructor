@@ -2,11 +2,12 @@ import { Avatar, Box, FormControlLabel, Radio, RadioGroup, Typography } from '@m
 import { MRT_ColumnDef } from 'material-react-table'
 import AttendanceStatusTag from '~/components/tag/AttendanceStatusTag'
 import { AttendanceListItemResponseDto } from '~/data/teaching-timesheet/attendance.dto'
+import { APP_MESSAGE } from '~/global/app-message'
 import { AttendanceStatus } from '~/global/constants'
 
 export const attendanceColumns: MRT_ColumnDef<AttendanceListItemResponseDto>[] = [
   {
-    accessorKey: 'learner.avatar',
+    accessorKey: 'learner._id',
     header: 'Ảnh đại diện',
     size: 120,
     grow: false,
@@ -67,7 +68,7 @@ export const attendanceColumns: MRT_ColumnDef<AttendanceListItemResponseDto>[] =
 
 export const takenAttendanceColumns: MRT_ColumnDef<AttendanceListItemResponseDto>[] = [
   {
-    accessorKey: 'learner.avatar',
+    accessorKey: 'learner._id',
     header: 'Ảnh đại diện',
     size: 120,
     grow: false,
@@ -136,8 +137,14 @@ export const takenAttendanceColumns: MRT_ColumnDef<AttendanceListItemResponseDto
     header: 'Ghi chú',
     size: 300,
     grow: false,
-    muiEditTextFieldProps: {
-      variant: 'outlined'
+    muiEditTextFieldProps: (props) => {
+      const error = props.row._valuesCache.note.trim().length > 100
+      return {
+        variant: 'outlined',
+        error: error,
+        helperText: error && APP_MESSAGE.FIELD_TOO_LONG('Ghi chú', 100),
+        onChange: (e) => (props.row._valuesCache.note = e.target.value)
+      }
     }
   },
   {
@@ -164,7 +171,7 @@ export const takenAttendanceColumns: MRT_ColumnDef<AttendanceListItemResponseDto
 
 export const attendanceHistoryColumns: MRT_ColumnDef<AttendanceListItemResponseDto>[] = [
   {
-    accessorKey: 'learner.avatar',
+    accessorKey: 'learner._id',
     header: 'Ảnh đại diện',
     size: 120,
     grow: false,
