@@ -115,6 +115,18 @@ const Profile = () => {
         />
         <Field label='Tên TK' content={data.paymentInfo ? data.paymentInfo.accountName : 'Chưa cập nhật'} />
         <Field label='STK' content={data.paymentInfo ? data.paymentInfo.accountNumber : 'Chưa cập nhật'} />
+      </Paper>
+      <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', padding: 3, gap: 1.5 }}>
+        <HeaderWrapper>
+          <Typography variant='h5' fontWeight={'bold'}>
+            Thông tin số dư
+          </Typography>
+          <Line />
+        </HeaderWrapper>
+        <Typography variant='body1' fontWeight={400} fontStyle={'italic'}>
+          *Đây là số dư bạn có trong Orchidify. Số dư này sẽ được cập nhật khi bạn thực hiện rút tiền hoặc lớp học kết
+          thúc.
+        </Typography>
         <Field label='Số dư hệ thống' content={formatCurrency(data.balance)} />
       </Paper>
     </StyledContainer>

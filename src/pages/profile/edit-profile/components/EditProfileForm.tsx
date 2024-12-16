@@ -89,11 +89,7 @@ const EditProfileForm = ({ instructorData, bankData }: EditProfileFormProps) => 
     if (
       JSON.stringify({
         ...formData,
-        avatar: formData.avatar?.length
-          ? Array(
-              Object.assign({ url: instructorData?.avatar, resource_type: 'image', public_id: instructorData?.avatar })
-            )
-          : null
+        avatar: formData.avatar?.length ? formData.avatar : null
       }) === JSON.stringify(defaultValues)
     ) {
       return
