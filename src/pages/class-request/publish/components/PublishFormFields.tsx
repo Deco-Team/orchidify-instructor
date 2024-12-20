@@ -1,7 +1,10 @@
 import { Box, Grid, InputAdornment, InputLabel, OutlinedInput, Paper, Typography } from '@mui/material'
 import { HeaderWrapper, Line } from './PublishClassForm.styled'
 import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
-import { ONE_MONTH_ADDITIONAL, PublishClasDto, THREE_MONTH_ADDITIONAL } from '~/data/class-request/publish-class.dto'
+import {
+  /* ONE_MONTH_ADDITIONAL,  */ PublishClasDto,
+  THREE_MONTH_ADDITIONAL
+} from '~/data/class-request/publish-class.dto'
 import ControlledSelect from '~/components/form/ControlledSelect'
 import { SlotNumber, Weekday } from '~/global/constants'
 import { Control } from 'react-hook-form'
@@ -51,7 +54,7 @@ const PublishFormFields = ({
             description='Ngày bắt đầu tối thiểu là 1 tháng sau và tối đa là 3 tháng'
             type='date'
             inputProps={{
-              min: new Date(ONE_MONTH_ADDITIONAL).toLocaleString('sv').split(' ')[0],
+              min: new Date(/* ONE_MONTH_ADDITIONAL */).toLocaleString('sv').split(' ')[0],
 
               max: new Date(THREE_MONTH_ADDITIONAL).toLocaleString('sv').split(' ')[0]
             }}
