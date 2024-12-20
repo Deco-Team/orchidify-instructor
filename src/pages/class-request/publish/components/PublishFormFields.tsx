@@ -1,4 +1,4 @@
-import { Box, Grid, InputLabel, OutlinedInput, Paper, Typography } from '@mui/material'
+import { Box, Grid, InputAdornment, InputLabel, OutlinedInput, Paper, Typography } from '@mui/material'
 import { HeaderWrapper, Line } from './PublishClassForm.styled'
 import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
 import { ONE_MONTH_ADDITIONAL, PublishClasDto, THREE_MONTH_ADDITIONAL } from '~/data/class-request/publish-class.dto'
@@ -103,7 +103,13 @@ const PublishFormFields = ({
               {/* <FormHelperText>Thời lượng tối thiểu là 1 tuần và tối đa là 12 tuần</FormHelperText> */}
             </Box>
             <Box>
-              <OutlinedInput size='small' value={duration} fullWidth disabled />
+              <OutlinedInput
+                size='small'
+                value={duration}
+                fullWidth
+                disabled
+                endAdornment={<InputAdornment position='end'>tuần</InputAdornment>}
+              />
             </Box>
           </Box>
         </Grid>

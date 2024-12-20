@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Box, Button, Checkbox, Grid, Paper, Typography } from '@mui/material'
+import { Box, Button, Checkbox, Grid, InputAdornment, Paper, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { HeaderWrapper, Line, StyledForm } from './CreatePayoutRequestForm.styled'
@@ -175,6 +175,7 @@ const CreatePayoutRequestForm = () => {
                 description={`Số tiền tối thiểu mỗi lần rút là ${formatCurrency(200000)} và hạn mức ${formatCurrency(50000000)} trong ngày`}
                 label='Số tiền'
                 placeholder='Nhập số tiền'
+                endAdornment={<InputAdornment position='end'>₫</InputAdornment>}
                 inputMode='numeric'
                 fullWidth
                 sx={{ gap: 1 }}

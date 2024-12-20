@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from '@mui/material'
+import { Grid, InputAdornment, Paper, Typography } from '@mui/material'
 import ControlledOutlinedInput from '~/components/form/ControlledOutlinedInput'
 import ControlledSelect from '~/components/form/ControlledSelect'
 import { ControlledFileAreaUpload, ControlledFileFieldUpload } from '~/components/form/ControlledFileUpload'
@@ -64,6 +64,7 @@ const CourseFields = ({ control, courseTypes }: CourseFieldsProps) => {
             label='Giá'
             placeholder='Nhập giá'
             inputMode='numeric'
+            endAdornment={<InputAdornment position='end'>₫</InputAdornment>}
             fullWidth
             sx={{ gap: 1 }}
           />
@@ -114,6 +115,7 @@ const CourseFields = ({ control, courseTypes }: CourseFieldsProps) => {
             controller={{ name: 'duration', control: control }}
             label='Thời lượng'
             description='Thời lượng tối thiểu là 1 tuần và tối đa là 12 tuần'
+            endAdornment={<InputAdornment position='end'>tuần</InputAdornment>}
             inputMode='numeric'
             fullWidth
             sx={{ gap: 1 }}

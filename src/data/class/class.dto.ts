@@ -21,6 +21,11 @@ export type ClassListItemResponseDto = {
   course: {
     code: string
   }
+  progress?: {
+    total: number
+    completed: number
+    percentage: number
+  }
   createdAt: string
   updatedAt: string
   rate?: number
